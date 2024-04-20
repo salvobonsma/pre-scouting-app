@@ -12,3 +12,48 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Event {
+  id   Int    @id @default(autoincrement())
+  key  String
+  name String @unique
+  year Int
+}
+
+model Team {
+  number Int    @id
+  key    String @unique
+
+  name       String
+  rookieYear Int
+}
+
+model TeamEntry {
+  id     Int    @id @default(autoincrement())
+  number Int
+  key    String
+}
+
+model HistoricalEntry {
+  id   Int @id @default(autoincrement())
+  year Int
+
+  notes String?
+}
+
+model MatchEntry {
+  id Int @id @default(autoincrement())
+
+  notes String?
+}
+
+model Match {
+  key String @id
+
+  matchNubmer     Int
+  redScoure       Int
+  blueScoure      Int
+  scoureBreakdown String
+
+  videoId String?
+}
