@@ -18,20 +18,33 @@ model Event {
   key  String
   name String @unique
   year Int
+
+  city String?
+
+  teams TeamEntry[]
 }
 
 model Team {
   number Int    @id
   key    String @unique
 
-  name       String
-  rookieYear Int
+  name       String?
+  rookieYear Int?
+
+  teamEntries       TeamEntry[]
+  historicalEntries HistoricalEntry[]
 }
 
 model TeamEntry {
-  id     Int    @id @default(autoincrement())
-  number Int
-  key    String
+  id  Int    @id @default(autoincrement())
+  key String
+
+  matchEntries MatchEntry[]
+
+  Team       Team?  @relation(fields: [teamNumber], references: [number])
+  teamNumber Int?
+  Event      Event? @relation(fields: [eventId], references: [id])
+  eventId    Int?
 }
 
 model HistoricalEntry {
@@ -39,21 +52,31 @@ model HistoricalEntry {
   year Int
 
   notes String?
+
+  Team       Team? @relation(fields: [teamNumber], references: [number])
+  teamNumber Int?
 }
 
 model MatchEntry {
   id Int @id @default(autoincrement())
 
   notes String?
+
+  TeamEntry   TeamEntry? @relation(fields: [teamEntryId], references: [id])
+  teamEntryId Int?
+  Match       Match?     @relation(fields: [matchKey], references: [key])
+  matchKey    String?
 }
 
 model Match {
   key String @id
 
-  matchNubmer     Int
-  redScoure       Int
-  blueScoure      Int
-  scoureBreakdown String
+  matchNumber    Int
+  redScore       Int?
+  blueScore      Int?
+  scoreBreakdown String?
 
   videoId String?
+
+  matchEntries MatchEntry[]
 }
