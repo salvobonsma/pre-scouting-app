@@ -10,8 +10,7 @@ export default function NotFound() {
                       <CardTitle>Not Found</CardTitle>
                       <CardDescription>Could not find what you were looking for.</CardDescription>
                   </CardHeader>
-                  <CardFooter className={"flex justify-between"}>
-                      <Link href={"/dashboard"}><Button className={"mr-6"}>Go to Dashboard</Button></Link>
+                  <CardFooter>
                       <Link href={"/"}><Button>Return Home</Button></Link>
                   </CardFooter>
               </Card>

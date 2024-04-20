@@ -1,12 +1,13 @@
 'use client'
 
-import {useEffect} from 'react'
+import {startTransition, useEffect} from 'react'
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import {router} from "next/client";
 
 export default function Error({error, reset}: { error: Error & { digest?: string }, reset: () => void }) {
     useEffect(() => {
-        console.error(error)
+        console.error(error);
     }, [error])
 
     return (
