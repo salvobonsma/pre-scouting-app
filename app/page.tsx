@@ -4,7 +4,7 @@ import {Separator} from "@/components/ui/separator";
 import NewEvent from "@/lib/generate/new-event";
 
 export default async function Home() {
-    await NewEvent("2024wasam", 2024, "test3");
+    await NewEvent("2024wasam", 2024, "test4");
 
     return (
           <>

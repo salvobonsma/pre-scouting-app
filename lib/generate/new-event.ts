@@ -40,9 +40,9 @@ export default async function NewEvent(key: string, year: number, name: string) 
         const teamEntryId = (await prisma.teamEntry.create(
               {
                   data: {
-                      teamNumber: team.number,
-                      eventId: eventId,
                       key: tbaTeam.key,
+                      eventId: eventId,
+                      teamNumber: tbaTeam.team_number
                   }
               }
         )).id;
