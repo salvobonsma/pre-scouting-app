@@ -6,6 +6,9 @@ import NewEvent from "@/lib/generate/new-event";
 export default async function Home() {
     await NewEvent("2024wasam", 2024, "test4");
 
+    // const tbaTeams = (await tba.getEventTeams("2024wasam")).data;
+    // console.log(tbaTeams)
+
     return (
           <>
               <div className={"flex justify-between mt-14"}>
