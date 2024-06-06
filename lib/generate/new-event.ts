@@ -5,16 +5,28 @@ import {tba} from "@/lib/tba/tba";
 export default async function NewEvent(key: string, year: number, name: string) {
     // Add catches
 
+    const event = (await tba.GET("/event/{event_key}", {
+        params: {
+            path: {event_key: key},
+        },
+    })).data
+
     const eventId = (await prisma.event.create({
         data: {
             key: key,
             year: year,
             name: name,
-            city: (await tba.getEvent(key)).data.city
+            city: event?.city
         }
     })).id;
 
-    const tbaTeams = (await tba.getEventTeams(key)).data;
+    const tbaTeams = (await tba.GET("/event/{event_key}/teams", {
+        params: {
+            path: {event_key: key},
+        },
+    })).data;
+
+    if (!tbaTeams) return; // Do better
     for (const tbaTeam of tbaTeams) {
         let team = await prisma.team.findUnique({
             where: {
@@ -47,7 +59,16 @@ export default async function NewEvent(key: string, year: number, name: string) 
               }
         )).id;
 
-        const tbaMatches = (await tba.getTeamMatchesByYear(year)).data;
+        const tbaMatches = (await tba.GET("/team/{team_key}/matches/{year}", {
+            params: {
+                path: {
+                    team_key: tbaTeam.key,
+                    year: year
+                },
+            },
+        })).data
+
+        if (!tbaMatches) return; // make better
         for (const tbaMatch of tbaMatches) {
             const match = await prisma.match.findUnique({
                 where: {
