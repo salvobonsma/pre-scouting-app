@@ -10,8 +10,12 @@ import {Input} from "@/components/ui/input";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {useState} from "react";
+import NewEvent from "@/lib/generate/new-event";
 
 export default function Home() {
+    const [loadingNewEvent, setLoadingNewEvent] = useState(false);
+
     const newEventSchema = z.object({
         name: z.string()
               .trim()
@@ -37,10 +41,21 @@ export default function Home() {
 
     async function action(formData: FormData) {
         const isValid = await form.trigger()
-
         if (!isValid) return;
 
-        console.log(formData);
+        setLoadingNewEvent(true);
+        const response = await NewEvent(
+              // @ts-ignore
+              formData.get("event").toString(),
+              // @ts-ignore
+              +formData.get("year"),
+              // @ts-ignore
+              formData.get("name").toString()
+        );
+
+        form.setError("backendError", {message: response.message});
+
+        setLoadingNewEvent(false);
     }
 
     return (
@@ -85,12 +100,12 @@ export default function Home() {
                                       />
                                       <FormField
                                             control={form.control}
-                                            name="year"
+                                            name="event"
                                             render={({field}) => (
                                                   <FormItem className={"formItem"}>
-                                                      <FormLabel>Year</FormLabel>
+                                                      <FormLabel>Event</FormLabel>
                                                       <FormControl>
-                                                          <Input type={"number"} {...field} />
+                                                          <Input type={"text"} {...field} />
                                                       </FormControl>
                                                       <FormMessage/>
                                                   </FormItem>
@@ -106,8 +121,11 @@ export default function Home() {
                                             )}
                                       />
                                   </CardContent>
-                                  <CardFooter className={"flex justify-end"}>
-                                      <Button type={"submit"}>Start Pre-scouting</Button>
+                                  <CardFooter className={"flex-col"}>
+                                      <Button type={"submit"} disabled={loadingNewEvent}>
+                                          {loadingNewEvent ? "Loading..." : "Start Pre-scouting"}
+                                      </Button>
+                                      <p className={"mt muted"}>May take a while to generate, allow up to a minute.</p>
                                   </CardFooter>
                               </form>
                           </Form>

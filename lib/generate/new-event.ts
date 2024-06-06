@@ -1,5 +1,8 @@
+"use server"
+
 import prisma from "@/lib/prisma";
 import {tba} from "@/lib/tba/tba";
+import {redirect} from "next/navigation";
 
 export default async function NewEvent(key: string, year: number, name: string): Promise<ActionResult> {
     const event = (await tba.GET("/event/{event_key}", {
@@ -11,9 +14,9 @@ export default async function NewEvent(key: string, year: number, name: string):
     if (!event.data) {
         return {success: false, message: "TBA API request error: " + event.response.status}
     }
-    if (await prisma.event.findMany({
+    if (await prisma.event.findUnique({
         where: {
-            name
+            name: name
         }
     })) return {success: false, message: "Name has already been taken"};
 
@@ -112,7 +115,7 @@ export default async function NewEvent(key: string, year: number, name: string):
 
     }
 
-    return {success: true, message: "Success"};
+    return redirect("/event/" + name);
 }
 
 interface ActionResult {
