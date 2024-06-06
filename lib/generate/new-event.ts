@@ -1,22 +1,28 @@
-// Promise<ActionResult> see link-shorter
 import prisma from "@/lib/prisma";
 import {tba} from "@/lib/tba/tba";
 
-export default async function NewEvent(key: string, year: number, name: string) {
-    // Add catches
-
+export default async function NewEvent(key: string, year: number, name: string): Promise<ActionResult> {
     const event = (await tba.GET("/event/{event_key}", {
         params: {
             path: {event_key: key},
         },
-    })).data
+    }))
+
+    if (!event.data) {
+        return {success: false, message: "TBA API request error: " + event.response.status}
+    }
+    if (await prisma.event.findMany({
+        where: {
+            name
+        }
+    })) return {success: false, message: "Name has already been taken"};
 
     const eventId = (await prisma.event.create({
         data: {
             key: key,
             year: year,
             name: name,
-            city: event?.city
+            city: event.data.city
         }
     })).id;
 
@@ -24,10 +30,12 @@ export default async function NewEvent(key: string, year: number, name: string) 
         params: {
             path: {event_key: key},
         },
-    })).data;
+    }));
+    if (!tbaTeams.data) {
+        return {success: false, message: "TBA API request error: " + tbaTeams.response.status}
+    }
 
-    if (!tbaTeams) return; // Do better
-    for (const tbaTeam of tbaTeams) {
+    for (const tbaTeam of tbaTeams.data) {
         let team = await prisma.team.findUnique({
             where: {
                 number: tbaTeam.team_number
@@ -66,10 +74,12 @@ export default async function NewEvent(key: string, year: number, name: string) 
                     year: year
                 },
             },
-        })).data
+        }))
+        if (!tbaMatches.data) {
+            return {success: false, message: "TBA API request error: " + tbaMatches.response.status}
+        }
 
-        if (!tbaMatches) return; // make better
-        for (const tbaMatch of tbaMatches) {
+        for (const tbaMatch of tbaMatches.data) {
             const match = await prisma.match.findUnique({
                 where: {
                     key: tbaMatch.key
@@ -99,5 +109,13 @@ export default async function NewEvent(key: string, year: number, name: string) 
                   }
             )
         }
+
     }
+
+    return {success: true, message: "Success"};
+}
+
+interface ActionResult {
+    success: boolean,
+    message: string
 }
