@@ -1,17 +1,19 @@
+'use client'
+
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {CardContent, CardFooter} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
-import {useEffect, useState} from "react";
-import GetEventsByYear, {ClientEventSelector} from "@/lib/generate/get-events-by-year";
+import GetEventsByYear, {ClientEventSelector} from "@/lib/database/get-events-by-year";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import NewEvent from "@/lib/generate/new-event";
+import NewEvent from "@/lib/database/new-event";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {ChevronsUpDown} from "lucide-react";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
+import {useEffect, useState} from "react";
 
 export default function NewEventDialog() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
@@ -145,14 +147,14 @@ export default function NewEventDialog() {
                                     name="event"
                                     render={({field}) => (
                                           <FormItem className="flex flex-col">
-                                              <FormLabel>Language</FormLabel>
+                                              <FormLabel>Event</FormLabel>
                                               <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen}>
                                                   <PopoverTrigger asChild>
                                                       <FormControl>
                                                           <Button
                                                                 variant="outline"
                                                                 role="combobox"
-                                                                className=" justify-between"
+                                                                className="justify-between"
                                                           >
                                                               {field.value
                                                                     ? eventList.find(

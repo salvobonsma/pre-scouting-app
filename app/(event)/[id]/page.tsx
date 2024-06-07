@@ -1,6 +1,9 @@
 import prisma from "@/lib/prisma";
+import NotFound from "@/app/not-found";
 
 export default async function Event({params}: { params: { id: string } }) {
+    if (!+params.id) return NotFound();
+
     const eventData = await prisma.event.findUnique(
           {
               where: {
@@ -17,7 +20,7 @@ export default async function Event({params}: { params: { id: string } }) {
           }
     );
 
-    if (!eventData || !teamData) return;
+    if (!eventData || !teamData) return NotFound();
 
     return (
           <>

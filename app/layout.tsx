@@ -8,7 +8,7 @@ import Header from "@/components/main-layout/header";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "linkshorter"
+    title: "pre-scouting"
 };
 
 export default function RootLayout({
