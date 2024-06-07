@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 
-export default async function EditEvent(id: number, newName: string): Promise<ActionResult> {
+export default async function EditEventName(id: number, newName: string): Promise<ActionResult> {
     const nameCheck = await prisma.event.findUnique(
           {
               where: {

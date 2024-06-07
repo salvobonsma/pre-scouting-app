@@ -5,7 +5,7 @@ import {cn} from "@/lib/utils";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import EventDropdown from "@/components/event-dropdown";
+import EventDropdown from "@/app/event-dropdown";
 
 export default async function Home() {
     const events = await prisma.event.findMany();

@@ -9,9 +9,9 @@ import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Dispatch, SetStateAction} from "react";
-import EditEvent from "@/lib/database/edit-event";
+import EditEventName from "@/lib/database/edit-event-name";
 
-export default function EditEventDialog(props: {
+export default function EditEventNameDialog(props: {
     id: number,
     name: string,
     open: boolean,
@@ -32,7 +32,7 @@ export default function EditEventDialog(props: {
     });
 
     async function onSubmit(data: z.infer<typeof editEventSchema>) {
-        const response = await EditEvent(props.id, data.name);
+        const response = await EditEventName(props.id, data.name);
         if (!response) return;
 
         if (response.success) {
@@ -46,7 +46,7 @@ export default function EditEventDialog(props: {
     return (
           <Dialog open={props.open} onOpenChange={props.setOpen}>
               <DialogContent>
-                  <DialogHeader>Edit Event</DialogHeader>
+                  <DialogHeader>Edit Event Name</DialogHeader>
                   <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)} className={"mt-2"} autoComplete={"off"}>
                           <CardContent className={"formContent"}>
