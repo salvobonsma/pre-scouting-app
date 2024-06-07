@@ -118,7 +118,7 @@ export default async function NewEvent(key: string, year: number, name: string):
 
     }
 
-    return redirect("/event/" + name);
+    return redirect("/" + eventId);
 }
 
 interface ActionResult {
