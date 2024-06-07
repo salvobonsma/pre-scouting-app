@@ -21,7 +21,7 @@ export default async function Home() {
                   No events have been pre-scouted for, yet.
               </p>
               <div className={"flex flex-wrap"}>{events.map(event => (
-                    <Card className={"m-5"}>
+                    <Card className={"m-5 w-full sm:w-fit"} key={event.id}>
                         <CardHeader>
                             <CardTitle>{event.name}</CardTitle>
                             <CardDescription>{event.eventName}</CardDescription>
@@ -30,7 +30,7 @@ export default async function Home() {
                             {/*  progress and time till event  */}
                         </CardContent>
                         <CardFooter className={"flex justify-end"}>
-                            <EventDropdown id={event.id}/>
+                            <EventDropdown id={event.id} name={event.name}/>
                             <Link href={"/" + event.id}><Button>View Event</Button></Link>
                         </CardFooter>
                     </Card>

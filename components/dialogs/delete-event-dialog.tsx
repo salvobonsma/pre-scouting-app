@@ -12,12 +12,18 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import DeleteEvent from "@/lib/database/delete-event";
 
 export default function DeleteEventDialog(props: {
     id: number,
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
 }) {
+    async function deleteEvent(id: number) {
+        await DeleteEvent(id);
+        window.location.reload();
+    }
+
     return (
           <AlertDialog open={props.open} onOpenChange={props.setOpen}>
               <AlertDialogContent>
@@ -29,7 +35,8 @@ export default function DeleteEventDialog(props: {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction asChild><Button variant={"destructive"}>Continue</Button></AlertDialogAction>
+                      <AlertDialogAction asChild><Button onClick={() => deleteEvent(props.id)}
+                                                         variant={"destructive"}>Continue</Button></AlertDialogAction>
                   </AlertDialogFooter>
               </AlertDialogContent>
           </AlertDialog>

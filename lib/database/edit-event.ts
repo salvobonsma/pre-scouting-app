@@ -1,7 +1,6 @@
 'use server'
 
 import prisma from "@/lib/prisma";
-import {redirect} from "next/navigation";
 
 export default async function EditEvent(id: number, newName: string): Promise<ActionResult> {
     const nameCheck = await prisma.event.findUnique(
@@ -13,7 +12,7 @@ export default async function EditEvent(id: number, newName: string): Promise<Ac
     );
     if (nameCheck) return {success: false, message: "Name has already been taken"};
 
-    prisma.event.update(
+    await prisma.event.update(
           {
               where: {
                   id: id
@@ -24,7 +23,7 @@ export default async function EditEvent(id: number, newName: string): Promise<Ac
           }
     )
 
-    return redirect("/m");
+    return {success: true, message: "Success"};
 }
 
 interface ActionResult {

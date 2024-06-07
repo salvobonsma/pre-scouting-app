@@ -29,7 +29,7 @@ export default async function Event({params}: { params: { id: string } }) {
               <p>{eventData.city}</p>
               <p>{eventData.startDate}</p>
               {
-                  teamData.map(value => (<p>{value.teamNumber}</p>))
+                  teamData.map(value => (<p key={value.id}>{value.teamNumber}</p>))
               }
           </>
     )

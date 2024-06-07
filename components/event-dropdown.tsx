@@ -7,13 +7,13 @@ import EditEventDialog from "@/components/dialogs/edit-event-dialog";
 import DeleteEventDialog from "@/components/dialogs/delete-event-dialog";
 import {useState} from "react";
 
-export default function EventDropdown(props: { id: number }) {
+export default function EventDropdown(props: { id: number, name: string }) {
     const [editDialog, setEditDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
 
     return (
           <>
-              <EditEventDialog id={props.id} open={editDialog} setOpen={setEditDialog}/>
+              <EditEventDialog id={props.id} name={props.name} open={editDialog} setOpen={setEditDialog}/>
               <DeleteEventDialog id={props.id} open={deleteDialog} setOpen={setDeleteDialog}/>
               <DropdownMenu>
                   <DropdownMenuTrigger asChild>

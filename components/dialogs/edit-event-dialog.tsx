@@ -13,6 +13,7 @@ import EditEvent from "@/lib/database/edit-event";
 
 export default function EditEventDialog(props: {
     id: number,
+    name: string,
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
 }) {
@@ -26,13 +27,18 @@ export default function EditEventDialog(props: {
     const form = useForm<z.infer<typeof editEventSchema>>({
         resolver: zodResolver(editEventSchema),
         defaultValues: {
-            name: ""
+            name: props.name
         }
     });
 
     async function onSubmit(data: z.infer<typeof editEventSchema>) {
         const response = await EditEvent(props.id, data.name);
         if (!response) return;
+
+        if (response.success) {
+            window.location.reload();
+            return;
+        }
 
         form.setError("name", {message: response.message});
     }
