@@ -10,11 +10,26 @@ import {Input} from "@/components/ui/input";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NewEvent from "@/lib/generate/new-event";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import GetEventsByYear, {ClientEventSelector} from "@/lib/generate/get-events-by-year";
 
 export default function Home() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [eventList, setEventList] = useState<Array<ClientEventSelector>>([]);
+
+    useEffect(() => {
+        const fetchEventList = async () => {
+            const response = await GetEventsByYear(selectedYear);
+
+            setEventList(response);
+        }
+
+        // noinspection JSIgnoredPromiseFromCall
+        fetchEventList();
+    }, [selectedYear]);
 
     const newEventSchema = z.object({
         name: z.string()
@@ -39,14 +54,20 @@ export default function Home() {
         }
     });
 
+    form.watch((data, {name, type}) => {
+        if (!data.year) return;
+        if (name == "year" && type == "change") setSelectedYear(data.year);
+    });
+
     async function action(formData: FormData) {
         const isValid = await form.trigger()
         if (!isValid) return;
 
         setLoadingNewEvent(true);
+        console.log(formData)
         const response = await NewEvent(
               // @ts-ignore
-              formData.get("event").toString(),
+              formData.get("event"),
               // @ts-ignore
               +formData.get("year"),
               // @ts-ignore
@@ -104,9 +125,27 @@ export default function Home() {
                                             render={({field}) => (
                                                   <FormItem className={"formItem"}>
                                                       <FormLabel>Event</FormLabel>
-                                                      <FormControl>
-                                                          <Input type={"text"} {...field} />
-                                                      </FormControl>
+                                                      <Select
+                                                            onValueChange={field.onChange}
+                                                            defaultValue={field.value}
+                                                            disabled={eventList.length <= 0}
+                                                      >
+                                                          <FormControl>
+                                                              <SelectTrigger>
+                                                                  <SelectValue placeholder="Select an event"/>
+                                                              </SelectTrigger>
+                                                          </FormControl>
+                                                          <SelectContent>
+                                                              {eventList.map((value) => {
+                                                                  return (
+                                                                        <SelectItem key={value.value}
+                                                                                    value={value.value}>
+                                                                            {value.display}
+                                                                        </SelectItem>
+                                                                  )
+                                                              })}
+                                                          </SelectContent>
+                                                      </Select>
                                                       <FormMessage/>
                                                   </FormItem>
                                             )}

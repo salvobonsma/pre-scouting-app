@@ -17,7 +17,9 @@ model Event {
   id   Int    @id @default(autoincrement())
   key  String
   name String @unique
-  year Int
+
+  year      Int
+  startDate String
 
   city String?
 
