@@ -164,12 +164,12 @@ export default function NewEventDialog() {
                                                           </Button>
                                                       </FormControl>
                                                   </PopoverTrigger>
-                                                  <PopoverContent className=" w-full p-0" side={"bottom"}
+                                                  <PopoverContent className="p-0" side={"bottom"}
                                                                   align={"center"}>
                                                       <Command>
                                                           <CommandInput placeholder="Search event..."/>
                                                           <CommandEmpty>No events found.</CommandEmpty>
-                                                          <CommandGroup>
+                                                          <CommandGroup className={"max-h-80"}>
                                                               {eventList.map((event, index) => {
                                                                   return (
                                                                         <CommandItem
@@ -179,10 +179,7 @@ export default function NewEventDialog() {
                                                                                   form.setValue("event", event.value)
                                                                                   setSelectEventOpen(false);
                                                                               }}
-                                                                        >
-
-                                                                            {event.display}
-                                                                        </CommandItem>
+                                                                        >{event.display}</CommandItem>
                                                                   )
                                                               })}
                                                           </CommandGroup>
