@@ -5,8 +5,6 @@ import {tba} from "@/lib/tba/tba";
 import {redirect} from "next/navigation";
 
 export default async function NewEvent(key: string, year: number, name: string): Promise<ActionResult> {
-    console.log(key);
-
     const event = (await tba.GET("/event/{event_key}", {
         params: {
             path: {event_key: key},

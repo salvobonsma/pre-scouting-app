@@ -3,18 +3,21 @@ import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {CardContent, CardFooter} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useEffect, useState} from "react";
 import GetEventsByYear, {ClientEventSelector} from "@/lib/generate/get-events-by-year";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import NewEvent from "@/lib/generate/new-event";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {ChevronsUpDown} from "lucide-react";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 
 export default function NewEventDialog() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [eventList, setEventList] = useState<Array<ClientEventSelector>>([]);
+    const [selectEventOpen, setSelectEventOpen] = useState(false);
 
     useEffect(() => {
         const fetchEventList = async () => {
@@ -106,33 +109,86 @@ export default function NewEventDialog() {
                                           </FormItem>
                                     )}
                               />
+                              {/*<FormField*/}
+                              {/*      control={form.control}*/}
+                              {/*      name="event"*/}
+                              {/*      render={({field}) => (*/}
+                              {/*            <FormItem className={"formItem"}>*/}
+                              {/*                <FormLabel>Event</FormLabel>*/}
+                              {/*                <Select*/}
+                              {/*                      onValueChange={field.onChange}*/}
+                              {/*                      defaultValue={field.value}*/}
+                              {/*                      disabled={eventList.length <= 0}*/}
+                              {/*                >*/}
+                              {/*                    <FormControl>*/}
+                              {/*                        <SelectTrigger>*/}
+                              {/*                            <SelectValue placeholder="Select an event"/>*/}
+                              {/*                        </SelectTrigger>*/}
+                              {/*                    </FormControl>*/}
+                              {/*                    <SelectContent>*/}
+                              {/*                        {eventList.map((value) => {*/}
+                              {/*                            return (*/}
+                              {/*                                  <SelectItem key={value.value}*/}
+                              {/*                                              value={value.value}>*/}
+                              {/*                                      {value.display}*/}
+                              {/*                                  </SelectItem>*/}
+                              {/*                            )*/}
+                              {/*                        })}*/}
+                              {/*                    </SelectContent>*/}
+                              {/*                </Select>*/}
+                              {/*                <FormMessage/>*/}
+                              {/*            </FormItem>*/}
+                              {/*      )}*/}
+                              {/*/>*/}
                               <FormField
                                     control={form.control}
                                     name="event"
                                     render={({field}) => (
-                                          <FormItem className={"formItem"}>
-                                              <FormLabel>Event</FormLabel>
-                                              <Select
-                                                    onValueChange={field.onChange}
-                                                    defaultValue={field.value}
-                                                    disabled={eventList.length <= 0}
-                                              >
-                                                  <FormControl>
-                                                      <SelectTrigger>
-                                                          <SelectValue placeholder="Select an event"/>
-                                                      </SelectTrigger>
-                                                  </FormControl>
-                                                  <SelectContent>
-                                                      {eventList.map((value) => {
-                                                          return (
-                                                                <SelectItem key={value.value}
-                                                                            value={value.value}>
-                                                                    {value.display}
-                                                                </SelectItem>
-                                                          )
-                                                      })}
-                                                  </SelectContent>
-                                              </Select>
+                                          <FormItem className="flex flex-col">
+                                              <FormLabel>Language</FormLabel>
+                                              <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen}>
+                                                  <PopoverTrigger asChild>
+                                                      <FormControl>
+                                                          <Button
+                                                                variant="outline"
+                                                                role="combobox"
+                                                                className=" justify-between"
+                                                          >
+                                                              {field.value
+                                                                    ? eventList.find(
+                                                                          (event) => event.value === field.value
+                                                                    )?.display
+                                                                    : "Select event"}
+                                                              <ChevronsUpDown
+                                                                    className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                          </Button>
+                                                      </FormControl>
+                                                  </PopoverTrigger>
+                                                  <PopoverContent className=" w-full p-0" side={"bottom"}
+                                                                  align={"center"}>
+                                                      <Command>
+                                                          <CommandInput placeholder="Search event..."/>
+                                                          <CommandEmpty>No events found.</CommandEmpty>
+                                                          <CommandGroup>
+                                                              {eventList.map((event, index) => {
+                                                                  return (
+                                                                        <CommandItem
+                                                                              value={event.display}
+                                                                              key={event.value}
+                                                                              onSelect={() => {
+                                                                                  form.setValue("event", event.value)
+                                                                                  setSelectEventOpen(false);
+                                                                              }}
+                                                                        >
+
+                                                                            {event.display}
+                                                                        </CommandItem>
+                                                                  )
+                                                              })}
+                                                          </CommandGroup>
+                                                      </Command>
+                                                  </PopoverContent>
+                                              </Popover>
                                               <FormMessage/>
                                           </FormItem>
                                     )}
