@@ -159,3 +159,11 @@ small {
 .formItem {
     @apply flex flex-col space-y-1.5
 }
+
+table tr:nth-child(even) {
+    @apply bg-background
+}
+
+table tr:nth-child(odd) {
+    @apply bg-background
+}

@@ -6,6 +6,9 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import EventDropdown from "@/app/event-dropdown";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Badge} from "@/components/ui/badge";
+import ApiUpdateDropdown from "@/app/api-update-dropdown";
 
 export default async function Home() {
     const events = await prisma.event.findMany();
@@ -13,7 +16,7 @@ export default async function Home() {
           new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
 
     return (
-          <>
+          <div className={"mb-14"}>
               <div className={"flex justify-between mt"}>
                   <h1>Events</h1>
                   <NewEventDialog/>
@@ -39,6 +42,29 @@ export default async function Home() {
               ))}</div>
               <h1 className={"mt"}>API Status</h1>
               <Separator/>
-          </>
+              <div className={"m-4 bg-background"}>
+                  <Table>
+                      <TableHeader>
+                          <TableRow className={"border-t-0"}>
+                              <TableHead className="font-medium w-[10.6em]">API</TableHead>
+                              <TableHead>Status</TableHead>
+                              <TableHead className={"w-5"}></TableHead>
+                          </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                          <TableRow>
+                              <TableCell>The Blue Alliance</TableCell>
+                              <TableCell><Badge variant={"destructive"}>Invalid</Badge></TableCell>
+                              <TableCell><ApiUpdateDropdown api={{api: "tba"}}/></TableCell>
+                          </TableRow>
+                          <TableRow className={"ag-row-odd"}>
+                              <TableCell>Statbotics</TableCell>
+                              <TableCell><Badge variant={"outline"}>Disabled</Badge></TableCell>
+                              <TableCell><ApiUpdateDropdown api={{api: "tba"}}/></TableCell>
+                          </TableRow>
+                      </TableBody>
+                  </Table>
+              </div>
+          </div>
     );
 }
