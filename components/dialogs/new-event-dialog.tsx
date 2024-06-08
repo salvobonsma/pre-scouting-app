@@ -76,7 +76,7 @@ export default function NewEventDialog() {
 
     return (
           <Dialog>
-              <DialogTrigger asChild><Button>New Event</Button></DialogTrigger>
+              <DialogTrigger asChild><Button className={"m-1.5"}>New Event</Button></DialogTrigger>
               <DialogContent>
                   <DialogHeader>New Event</DialogHeader>
                   <DialogDescription>

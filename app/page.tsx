@@ -9,10 +9,12 @@ import EventDropdown from "@/app/event-dropdown";
 
 export default async function Home() {
     const events = await prisma.event.findMany();
+    events.sort((a, b) =>
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
 
     return (
           <>
-              <div className={"flex justify-between mt-14"}>
+              <div className={"flex justify-between mt"}>
                   <h1>Events</h1>
                   <NewEventDialog/>
               </div>
@@ -35,6 +37,8 @@ export default async function Home() {
                         </CardFooter>
                     </Card>
               ))}</div>
+              <h1 className={"mt"}>API Status</h1>
+              <Separator/>
           </>
     );
 }

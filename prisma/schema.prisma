@@ -42,6 +42,8 @@ model TeamEntry {
   id  Int    @id @default(autoincrement())
   key String
 
+  progress String @default("notStarted") // "notStarted" | "inProgress" | "completed"
+
   matchEntries MatchEntry[]
 
   Team       Team?  @relation(fields: [teamNumber], references: [number])

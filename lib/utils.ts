@@ -7,4 +7,4 @@ export function cn(...inputs: ClassValue[]) {
 
 export function truncate(string: string, length: number) {
     return (string.length > length) ? string.slice(0, length - 1) + '...' : string;
-};
+}
