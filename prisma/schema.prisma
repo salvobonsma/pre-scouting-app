@@ -14,10 +14,12 @@ datasource db {
 }
 
 model Event {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   key       String
-  name      String @unique
+  name      String  @unique
   eventName String
+  district  String?
+  type      String
 
   year      Int
   startDate String

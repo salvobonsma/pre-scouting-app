@@ -27,6 +27,8 @@ export default async function NewEvent(key: string, year: number, name: string):
             startDate: event.data.start_date,
             name: name,
             eventName: event.data.name,
+            district: event.data.district?.display_name,
+            type: event.data.event_type_string,
             city: event.data.city
         }
     })).id;

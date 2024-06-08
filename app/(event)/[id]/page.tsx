@@ -23,9 +23,10 @@ export default async function Event({params}: { params: { id: string } }) {
           }
     );
 
-    const progress = teamData.map(value => +(value.progress == "completed" ? +1 : +0)).reduce(
+    let progress = teamData.map(value => +(value.progress == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     ) / teamData.length * 100;
+    progress = isNaN(progress) ? 0 : progress;
     const notStarted = teamData.map(value => +(value.progress == "notStarted" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
@@ -40,7 +41,7 @@ export default async function Event({params}: { params: { id: string } }) {
 
     return (
           <>
-              <div className={"flex flex-wrap mt-4"}>
+              <div className={"flex flex-wrap mt-4 gap-6"}>
                   {/*event details:
                   time till event
                   num teams attending
@@ -49,7 +50,30 @@ export default async function Event({params}: { params: { id: string } }) {
 
 
                   */}
-                  <Card className={"w-full sm:w-fit max-w-[6in]"}>
+                  <Card className={"w-full sm:w-96"}>
+                      <CardHeader>
+                          <CardTitle>Event Details</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Time until event</p>
+                              <p>3 days</p>
+                          </div>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Teams attending</p>
+                              <p>{teamData.length} teams</p>
+                          </div>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Location</p>
+                              <p>{eventData.city}</p>
+                          </div>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Event Type</p>
+                              <p>{eventData.type}</p>
+                          </div>
+                      </CardContent>
+                  </Card>
+                  <Card className={"w-full sm:w-fit max-w-[32em]"}>
                       <CardHeader><CardTitle>Progress</CardTitle></CardHeader>
                       <CardContent>
                           <div className={"flex items-center gap-3 m-4 mt-0"}>
