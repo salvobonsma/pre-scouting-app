@@ -4,6 +4,8 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import {Separator} from "@/components/ui/separator";
 import {Badge} from "@/components/ui/badge";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 export default async function Event({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -37,6 +39,8 @@ export default async function Event({params}: { params: { id: string } }) {
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
 
+    dayjs.extend(relativeTime);
+
     if (!eventData || !teamData) return NotFound();
 
     return (
@@ -56,8 +60,15 @@ export default async function Event({params}: { params: { id: string } }) {
                       </CardHeader>
                       <CardContent>
                           <div className={"flex justify-between"}>
-                              <p className={"muted"}>Time until event</p>
-                              <p>3 days</p>
+                              <p className={"muted"}>
+                                  Time {dayjs(eventData.startDate).isAfter(dayjs()) ? "until" : "since"} event
+                              </p>
+                              <p>{
+                                  dayjs()
+                                        .to(eventData.startDate)
+                                        .replace("in", "")
+                                        .replace("ago", "")
+                              }</p>
                           </div>
                           <div className={"flex justify-between"}>
                               <p className={"muted"}>Teams attending</p>
