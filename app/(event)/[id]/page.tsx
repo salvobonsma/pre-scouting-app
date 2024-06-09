@@ -1,11 +1,13 @@
 import prisma from "@/lib/prisma";
 import NotFound from "@/app/not-found";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import {Separator} from "@/components/ui/separator";
 import {Badge} from "@/components/ui/badge";
 import EventDetails from "@/components/event-details";
 import Hgroup from "@/components/ui/hgroup";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
 
 export default async function Event({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -45,7 +47,7 @@ export default async function Event({params}: { params: { id: string } }) {
           <>
               <Hgroup h={eventData.name} p={eventData.eventName}/>
               <div className={"mt flex flex-wrap gap-6"}>
-                  <Card className={"w-full sm:w-96"}>
+                  <Card className={"w-full sm:w-80"}>
                       <CardHeader>
                           <CardTitle>Event Details</CardTitle>
                       </CardHeader>
@@ -103,10 +105,23 @@ export default async function Event({params}: { params: { id: string } }) {
                           </div>
                       </CardContent>
                   </Card>
+                  <Card className={"w-full sm:w-80"}>
+                      <CardHeader><CardTitle>Overview</CardTitle></CardHeader>
+                      <CardContent>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Greatest threat level</p>
+                              <p>9442</p>
+                          </div>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Average EPA</p>
+                              <p>10.2 points</p>
+                          </div>
+                      </CardContent>
+                      <CardFooter className={"flex justify-end"}>
+                          <Link href={`/${params.id}/overview`}><Button>View Full Overview</Button></Link>
+                      </CardFooter>
+                  </Card>
               </div>
-
-              <h1 className={"mt"}>Overview</h1>
-              <Separator/>
 
               <h1 className={"mt"}>Teams</h1>
               <Separator/>
