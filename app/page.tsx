@@ -12,6 +12,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {LinkIcon, MoreVertical} from "lucide-react";
 import {tba} from "@/lib/tba/tba";
 import {statbotics} from "@/lib/statbotics/statbotics";
+import EventDetails from "@/components/event-details";
 
 export default async function Home() {
     const events = await prisma.event.findMany();
@@ -39,32 +40,39 @@ export default async function Home() {
         statboticsStatus = statusBadge("offline");
     }
 
-
     return (
           <>
               <div className={"flex justify-between mt"}>
-                  <h1>Events</h1>
+                  <h1 className={"self-center"}>Events</h1>
                   <NewEventDialog/>
               </div>
               <Separator />
               <p className={cn("text-center muted mt-8", events.length > 0 ? "hidden" : "")}>
                   No events have been pre-scouted for, yet.
               </p>
-              <div className={"flex flex-wrap"}>{events.map(event => (
-                    <Card className={"m-5 w-full sm:w-fit"} key={event.id}>
-                        <CardHeader>
-                            <CardTitle>{event.name}</CardTitle>
-                            <CardDescription>{event.eventName}</CardDescription>
-                        </CardHeader>
-                        <CardContent className={"flex"}>
-                            {/*  progress and time till event  */}
-                        </CardContent>
-                        <CardFooter className={"flex justify-end"}>
-                            <EventDropdown id={event.id} name={event.name}/>
-                            <Link href={"/" + event.id}><Button>View Event</Button></Link>
-                        </CardFooter>
-                    </Card>
-              ))}</div>
+              <div className={"flex flex-wrap"}>{events.map(async (event) => {
+                  const teams = await prisma.teamEntry.count(
+                        {
+                            where: {
+                                eventId: event.id
+                            }
+                        }
+                  );
+
+                  return (
+                        <Card className={"m-5 w-full sm:w-fit"} key={event.id}>
+                            <CardHeader>
+                                <CardTitle>{event.name}</CardTitle>
+                                <CardDescription>{event.eventName}</CardDescription>
+                            </CardHeader>
+                            <CardContent className={"w-80"}><EventDetails event={event} teams={teams}/></CardContent>
+                            <CardFooter className={"flex justify-end"}>
+                                <EventDropdown id={event.id} name={event.name}/>
+                                <Link href={"/" + event.id}><Button>View Event</Button></Link>
+                            </CardFooter>
+                        </Card>
+                  )
+              })}</div>
               <h1 className={"mt"}>API Status</h1>
               <Separator/>
               <div className={"m-4 bg-background"}>

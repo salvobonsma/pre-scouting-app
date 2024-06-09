@@ -81,7 +81,7 @@ h1 {
 }
 
 h1.mt {
-    @apply mt-14
+    @apply mt-8 sm:mt-14
 }
 
 h2 {
@@ -89,7 +89,7 @@ h2 {
 }
 
 h2.mt {
-    @apply mt-12
+    @apply mt-6 sm:mt-12
 }
 
 h3 {
@@ -97,15 +97,15 @@ h3 {
 }
 
 h3.mt {
-    @apply mt-10
+    @apply mt-4 sm:mt-10
 }
 
 h4 {
     @apply scroll-m-20 text-xl font-semibold tracking-tight
 }
 
-h4 {
-    @apply mt-8
+h4.mt {
+    @apply mt-2 sm:mt-8
 }
 
 p {
@@ -113,11 +113,11 @@ p {
 }
 
 p.mt {
-    @apply mt-6
+    @apply mt-1 sm:mt-6
 }
 
 .mt {
-    @apply mt-14
+    @apply mt-8 sm:mt-14
 }
 
 blockquote {

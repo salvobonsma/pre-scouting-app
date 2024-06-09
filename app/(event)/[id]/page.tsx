@@ -4,8 +4,8 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import {Separator} from "@/components/ui/separator";
 import {Badge} from "@/components/ui/badge";
-import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime';
+import EventDetails from "@/components/event-details";
+import Hgroup from "@/components/ui/hgroup";
 
 export default async function Event({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -39,50 +39,17 @@ export default async function Event({params}: { params: { id: string } }) {
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
 
-    dayjs.extend(relativeTime);
-
     if (!eventData || !teamData) return NotFound();
 
     return (
           <>
-              <div className={"flex flex-wrap mt-4 gap-6"}>
-                  {/*event details:
-                  time till event
-                  num teams attending
-                  location
-                  district
-
-
-                  */}
+              <Hgroup h={eventData.name} p={eventData.eventName}/>
+              <div className={"mt flex flex-wrap gap-6"}>
                   <Card className={"w-full sm:w-96"}>
                       <CardHeader>
                           <CardTitle>Event Details</CardTitle>
                       </CardHeader>
-                      <CardContent>
-                          <div className={"flex justify-between"}>
-                              <p className={"muted"}>
-                                  Time {dayjs(eventData.startDate).isAfter(dayjs()) ? "until" : "since"} event
-                              </p>
-                              <p>{
-                                  dayjs()
-                                        .to(eventData.startDate)
-                                        .replace("in", "")
-                                        .replace("ago", "")
-                              }</p>
-                          </div>
-                          <div className={"flex justify-between"}>
-                              <p className={"muted"}>Teams attending</p>
-                              <p>{teamData.length} teams</p>
-                          </div>
-                          <div className={"flex justify-between"}>
-                              <p className={"muted"}>Location</p>
-                              <p>{eventData.city}</p>
-                          </div>
-                          <div className={"flex justify-between"}>
-                              <p className={"muted"}>Event Type</p>
-                              <p>{eventData.type}</p>
-                          </div>
-                      </CardContent>
+                      <CardContent><EventDetails event={eventData} teams={teamData.length}/></CardContent>
                   </Card>
                   <Card className={"w-full sm:w-fit max-w-[32em]"}>
                       <CardHeader><CardTitle>Progress</CardTitle></CardHeader>
@@ -137,6 +104,12 @@ export default async function Event({params}: { params: { id: string } }) {
                       </CardContent>
                   </Card>
               </div>
+
+              <h1 className={"mt"}>Overview</h1>
+              <Separator/>
+
+              <h1 className={"mt"}>Teams</h1>
+              <Separator/>
           </>
     )
 }
