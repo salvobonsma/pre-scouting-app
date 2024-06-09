@@ -50,7 +50,7 @@ export default async function Home() {
               <p className={cn("text-center muted mt-8", events.length > 0 ? "hidden" : "")}>
                   No events have been pre-scouted for, yet.
               </p>
-              <div className={"flex flex-wrap"}>{events.map(async (event) => {
+              <div className={"flex flex-wrap mt-sm gap-6"}>{events.map(async (event) => {
                   const teams = await prisma.teamEntry.count(
                         {
                             where: {
@@ -60,7 +60,7 @@ export default async function Home() {
                   );
 
                   return (
-                        <Card className={"m-5 w-full sm:w-fit"} key={event.id}>
+                        <Card className={"w-full sm:w-fit"} key={event.id}>
                             <CardHeader>
                                 <CardTitle>{event.name}</CardTitle>
                                 <CardDescription>{event.eventName}</CardDescription>
@@ -75,7 +75,7 @@ export default async function Home() {
               })}</div>
               <h1 className={"mt"}>API Status</h1>
               <Separator/>
-              <div className={"m-4 bg-background"}>
+              <div className={"mt-sm bg-background border rounded"}>
                   <Table>
                       <TableHeader>
                           <TableRow className={"border-t-0"}>
@@ -90,7 +90,7 @@ export default async function Home() {
                               <TableCell>{tbaStatus}</TableCell>
                               <TableCell>
                                   <APIStatusDropdownMenu link={"https://www.thebluealliance.com/account"}
-                                                         text={"Get API Key"}/>
+                                                         text={"Get an API Key"}/>
                               </TableCell>
                           </TableRow>
                           <TableRow className={"ag-row-odd"}>

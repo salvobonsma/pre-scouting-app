@@ -57,7 +57,7 @@
         --accent: 0 0% 14.9%;
         --accent-foreground: 0 0% 98%;
 
-        --destructive: 0 62.8% 30.6%;
+        --destructive: 0 73.7% 41.8%;
         --destructive-foreground: 0 0% 98%;
 
         --border: 0 0% 14.9%;
@@ -118,6 +118,10 @@ p.mt {
 
 .mt {
     @apply mt-8 sm:mt-14
+}
+
+.mt-sm {
+    @apply mt-6
 }
 
 blockquote {

@@ -111,50 +111,19 @@ export default function NewEventDialog() {
                                           </FormItem>
                                     )}
                               />
-                              {/*<FormField*/}
-                              {/*      control={form.control}*/}
-                              {/*      name="event"*/}
-                              {/*      render={({field}) => (*/}
-                              {/*            <FormItem className={"formItem"}>*/}
-                              {/*                <FormLabel>Event</FormLabel>*/}
-                              {/*                <Select*/}
-                              {/*                      onValueChange={field.onChange}*/}
-                              {/*                      defaultValue={field.value}*/}
-                              {/*                      disabled={eventList.length <= 0}*/}
-                              {/*                >*/}
-                              {/*                    <FormControl>*/}
-                              {/*                        <SelectTrigger>*/}
-                              {/*                            <SelectValue placeholder="Select an event"/>*/}
-                              {/*                        </SelectTrigger>*/}
-                              {/*                    </FormControl>*/}
-                              {/*                    <SelectContent>*/}
-                              {/*                        {eventList.map((value) => {*/}
-                              {/*                            return (*/}
-                              {/*                                  <SelectItem key={value.value}*/}
-                              {/*                                              value={value.value}>*/}
-                              {/*                                      {value.display}*/}
-                              {/*                                  </SelectItem>*/}
-                              {/*                            )*/}
-                              {/*                        })}*/}
-                              {/*                    </SelectContent>*/}
-                              {/*                </Select>*/}
-                              {/*                <FormMessage/>*/}
-                              {/*            </FormItem>*/}
-                              {/*      )}*/}
-                              {/*/>*/}
                               <FormField
                                     control={form.control}
                                     name="event"
                                     render={({field}) => (
-                                          <FormItem className="flex flex-col">
+                                          <FormItem className="flex flex-col max-w-[26em]">
                                               <FormLabel>Event</FormLabel>
                                               <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen}>
                                                   <PopoverTrigger asChild>
-                                                      <FormControl>
+                                                      <FormControl className={"flex justify-between"}>
                                                           <Button
                                                                 variant="outline"
                                                                 role="combobox"
-                                                                className="justify-between"
+                                                                className="overflow-clip"
                                                           >
                                                               {field.value
                                                                     ? eventList.find(
@@ -166,8 +135,10 @@ export default function NewEventDialog() {
                                                           </Button>
                                                       </FormControl>
                                                   </PopoverTrigger>
-                                                  <PopoverContent className="p-0" side={"bottom"}
-                                                                  align={"center"}>
+                                                  <PopoverContent className="p-0"
+                                                                  side={"bottom"}
+                                                                  align={"center"}
+                                                  >
                                                       <Command>
                                                           <CommandInput placeholder="Search event..."/>
                                                           <CommandEmpty>No events found.</CommandEmpty>

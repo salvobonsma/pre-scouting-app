@@ -44,7 +44,8 @@ model TeamEntry {
   id  Int    @id @default(autoincrement())
   key String
 
-  progress String @default("notStarted") // "notStarted" | "inProgress" | "completed"
+  name   String?
+  status String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
 
   matchEntries MatchEntry[]
 

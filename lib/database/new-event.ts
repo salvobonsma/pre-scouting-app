@@ -69,6 +69,7 @@ export default async function NewEvent(key: string, year: number, name: string):
                   data: {
                       key: tbaTeam.key,
                       eventId: eventId,
+                      name: tbaTeam.nickname,
                       teamNumber: tbaTeam.team_number
                   }
               }

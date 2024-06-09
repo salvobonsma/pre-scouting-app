@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {isPast} from "@/lib/utils";
 
 export default async function EventDetails(props: {
     event: { startDate: string, city: string | null, type: string },
@@ -11,7 +12,7 @@ export default async function EventDetails(props: {
           <>
               <div className={"flex justify-between"}>
                   <p className={"muted"}>
-                      Time {dayjs(props.event.startDate).isAfter(dayjs()) ? "until" : "since"} event
+                      Time {isPast(props.event.startDate) ? "until" : "since"} event
                   </p>
                   <p>{
                       dayjs()

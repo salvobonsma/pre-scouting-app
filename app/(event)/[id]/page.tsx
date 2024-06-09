@@ -8,6 +8,8 @@ import EventDetails from "@/components/event-details";
 import Hgroup from "@/components/ui/hgroup";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import {isPast} from "@/lib/utils";
+import TeamsTable, {columns} from "@/app/(event)/[id]/teams-table";
 
 export default async function Event({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -26,27 +28,27 @@ export default async function Event({params}: { params: { id: string } }) {
               }
           }
     );
+    if (!eventData || !teamData) return NotFound();
 
-    let progress = teamData.map(value => +(value.progress == "completed" ? +1 : +0)).reduce(
+    let progress = teamData.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     ) / teamData.length * 100;
     progress = isNaN(progress) ? 0 : progress;
-    const notStarted = teamData.map(value => +(value.progress == "notStarted" ? +1 : +0)).reduce(
+    const notStarted = teamData.map(value => +(value.status == "notStarted" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
-    const inProgress = teamData.map(value => +(value.progress == "inProgress" ? +1 : +0)).reduce(
-          (previousValue, currentValue) => previousValue + currentValue, 0
-    );
-    const completed = teamData.map(value => +(value.progress == "completed" ? +1 : +0)).reduce(
+    const inProgress = teamData.map(value => +(value.status == "inProgress" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
 
-    if (!eventData || !teamData) return NotFound();
+    const completed = teamData.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
+          (previousValue, currentValue) => previousValue + currentValue, 0
+    );
 
     return (
           <>
               <Hgroup h={eventData.name} p={eventData.eventName}/>
-              <div className={"mt flex flex-wrap gap-6"}>
+              <div className={"mt-sm flex flex-wrap gap-6"}>
                   <Card className={"w-full sm:w-80"}>
                       <CardHeader>
                           <CardTitle>Event Details</CardTitle>
@@ -125,6 +127,25 @@ export default async function Event({params}: { params: { id: string } }) {
 
               <h1 className={"mt"}>Teams</h1>
               <Separator/>
+              {teamData.length > 0 ? (
+                    <div className={"mt-sm"}>
+                        <TeamsTable
+                              // @ts-ignore
+                              columns={columns}
+                              data={teamData.map(team => ({
+                                  teamNumber: team.teamNumber ?? 0,
+                                  teamName: team.name ?? "",
+                                  status: team.status
+                              }))}
+                              eventId={eventData.id}
+                        />
+                    </div>
+              ) : (
+                    <p className={"text-center muted mt-8"}>
+                        No teams {isPast(eventData.startDate) ? "are attending" : "have attended"} this event
+                        {isPast(eventData.startDate) ? ", yet" : ""}.
+                    </p>
+              )}
           </>
     )
 }
