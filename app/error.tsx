@@ -1,9 +1,8 @@
 'use client'
 
-import {startTransition, useEffect} from 'react'
+import {useEffect} from 'react'
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {router} from "next/client";
 
 export default function Error({error, reset}: { error: Error & { digest?: string }, reset: () => void }) {
     useEffect(() => {
@@ -18,7 +17,7 @@ export default function Error({error, reset}: { error: Error & { digest?: string
                       <CardDescription>Something when wrong.</CardDescription>
                   </CardHeader>
                   <CardFooter className={"flex justify-end"}>
-                      <Button onClick={() => reset}>Try Again</Button>
+                      <Button onClick={() => window.location.reload()}>Try Again</Button>
                   </CardFooter>
               </Card>
           </div>

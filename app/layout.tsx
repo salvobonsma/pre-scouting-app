@@ -27,7 +27,7 @@ export default function RootLayout({
                   >
                       <div className={"flex flex-col min-h-screen w-full"}>
                           <Header/>
-                          <main className={"container relative bottom flex-1"}>
+                          <main className={"container relative bottom flex-1 mb-14"}>
                               {children}
                           </main>
                       </div>

@@ -1,0 +1,4684 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Statbotics REST API",
+    "description": "The REST API for Statbotics. Please be nice to our servers! If you are looking to do large-scale data science projects, use the CSV exports on the GitHub repo.",
+    "version": "3.0.0"
+  },
+  "paths": {
+    "/v3/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root_v3__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/year/{year}": {
+      "get": {
+        "tags": [
+          "Year"
+        ],
+        "summary": "Query a single year",
+        "description": "Returns a single Year object. Requires a four-digit year, e.g. `2019`.",
+        "operationId": "read_year_v3_year__year__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Year V3 Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/years": {
+      "get": {
+        "tags": [
+          "Year"
+        ],
+        "summary": "Query multiple years",
+        "operationId": "read_years_v3_years_get",
+        "parameters": [
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of Years since 2002. Older data is not available.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Years V3 Years Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team/{team}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Query a single team",
+        "description": "Returns a single Team object. Requires a team number (no prefix).",
+        "operationId": "read_team_v3_team__team__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Team"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team V3 Team  Team  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/teams": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Query multiple teams",
+        "description": "Returns up to 1000 teams at a time. Specify limit and offset to page through results.",
+        "operationId": "read_teams_v3_teams_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized country name, e.g. `USA` or `Canada`.",
+              "title": "Country"
+            },
+            "description": "Capitalized country name, e.g. `USA` or `Canada`."
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized two-letter state code, e.g. `NC`.",
+              "title": "State"
+            },
+            "description": "Capitalized two-letter state code, e.g. `NC`."
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]",
+              "title": "District"
+            },
+            "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]"
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the team has played in the last year.",
+              "title": "Active"
+            },
+            "description": "Whether the team has played in the last year."
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Teams V3 Teams Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_year/{team}/{year}": {
+      "get": {
+        "tags": [
+          "TeamYear"
+        ],
+        "summary": "Query a single team year",
+        "description": "Returns a single Team Year object. Requires a team number and year.",
+        "operationId": "read_team_year_v3_team_year__team___year__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Year V3 Team Year  Team   Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_years": {
+      "get": {
+        "tags": [
+          "TeamYear"
+        ],
+        "summary": "Query multiple team years",
+        "description": "Returns up to 1000 team years at a time. Specify limit and offset to page through results.",
+        "operationId": "read_team_years_v3_team_years_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Team number (no prefix), e.g. `5511`.",
+              "title": "Team"
+            },
+            "description": "Team number (no prefix), e.g. `5511`."
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2024,
+                  "minimum": 2002
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Four-digit year",
+              "title": "Year"
+            },
+            "description": "Four-digit year"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized country name, e.g. `USA` or `Canada`.",
+              "title": "Country"
+            },
+            "description": "Capitalized country name, e.g. `USA` or `Canada`."
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized two-letter state code, e.g. `NC`.",
+              "title": "State"
+            },
+            "description": "Capitalized two-letter state code, e.g. `NC`."
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]",
+              "title": "District"
+            },
+            "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]"
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Years V3 Team Years Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/event/{event}": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Query a single event",
+        "description": "Returns a single Event object. Requires an event key, e.g. `2019ncwak`.",
+        "operationId": "read_event_v3_event__event__get",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Event V3 Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Query multiple events",
+        "description": "Returns up to 1000 events at a time. Specify limit and offset to page through results.",
+        "operationId": "read_events_v3_events_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2024,
+                  "minimum": 2002
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Four-digit year",
+              "title": "Year"
+            },
+            "description": "Four-digit year"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized country name, e.g. `USA` or `Canada`.",
+              "title": "Country"
+            },
+            "description": "Capitalized country name, e.g. `USA` or `Canada`."
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized two-letter state code, e.g. `NC`.",
+              "title": "State"
+            },
+            "description": "Capitalized two-letter state code, e.g. `NC`."
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]",
+              "title": "District"
+            },
+            "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`].",
+              "title": "Type"
+            },
+            "description": "One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]."
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 9,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason.",
+              "title": "Week"
+            },
+            "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason."
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events V3 Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_event/{team}/{event}": {
+      "get": {
+        "tags": [
+          "TeamEvent"
+        ],
+        "summary": "Query a single team event",
+        "description": "Returns a single Team Event object. Requires a team number and event key, e.g. `5511` and `2019ncwak`.",
+        "operationId": "read_team_event_v3_team_event__team___event__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Event V3 Team Event  Team   Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_events": {
+      "get": {
+        "tags": [
+          "TeamEvent"
+        ],
+        "summary": "Query multiple team events",
+        "description": "Returns up to 1000 team events at a time. Specify limit and offset to page through results.",
+        "operationId": "read_team_events_v3_team_events_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Team number (no prefix), e.g. `5511`.",
+              "title": "Team"
+            },
+            "description": "Team number (no prefix), e.g. `5511`."
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2024,
+                  "minimum": 2002
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Four-digit year",
+              "title": "Year"
+            },
+            "description": "Four-digit year"
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Event key, e.g. `2019ncwak`.",
+              "title": "Event"
+            },
+            "description": "Event key, e.g. `2019ncwak`."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized country name, e.g. `USA` or `Canada`.",
+              "title": "Country"
+            },
+            "description": "Capitalized country name, e.g. `USA` or `Canada`."
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Capitalized two-letter state code, e.g. `NC`.",
+              "title": "State"
+            },
+            "description": "Capitalized two-letter state code, e.g. `NC`."
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]",
+              "title": "District"
+            },
+            "description": "One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`]"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`].",
+              "title": "Type"
+            },
+            "description": "One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]."
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 9,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason.",
+              "title": "Week"
+            },
+            "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason."
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events V3 Team Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/match/{match}": {
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "summary": "Query a single match",
+        "description": "Returns a single Match object. Requires a match key, e.g. `2019ncwak_f1m1`.",
+        "operationId": "read_match_v3_match__match__get",
+        "parameters": [
+          {
+            "name": "match",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Match V3 Match  Match  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/matches": {
+      "get": {
+        "tags": [
+          "Match"
+        ],
+        "summary": "Query multiple matches",
+        "description": "Returns up to 1000 matches at a time. Specify limit and offset to page through results.",
+        "operationId": "read_matches_v3_matches_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Team number (no prefix), e.g. `5511`.",
+              "title": "Team"
+            },
+            "description": "Team number (no prefix), e.g. `5511`."
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2024,
+                  "minimum": 2002
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Four-digit year",
+              "title": "Year"
+            },
+            "description": "Four-digit year"
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Event key, e.g. `2019ncwak`.",
+              "title": "Event"
+            },
+            "description": "Event key, e.g. `2019ncwak`."
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 9,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason.",
+              "title": "Week"
+            },
+            "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason."
+          },
+          {
+            "name": "elim",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the match is an elimination match.",
+              "title": "Elim"
+            },
+            "description": "Whether the match is an elimination match."
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Matches V3 Matches Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_match/{team}/{match}": {
+      "get": {
+        "tags": [
+          "TeamMatch"
+        ],
+        "summary": "Query a single team match",
+        "description": "Returns a single Team Match object. Requires a team number and match key, e.g. `5511` and `2019ncwak_f1m1`.",
+        "operationId": "read_team_match_v3_team_match__team___match__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "match",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Match V3 Team Match  Team   Match  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/team_matches": {
+      "get": {
+        "tags": [
+          "TeamMatch"
+        ],
+        "summary": "Query multiple team matches",
+        "description": "Returns up to 1000 team matches at a time. Specify limit and offset to page through results.",
+        "operationId": "read_team_matches_v3_team_matches_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Team number (no prefix), e.g. `5511`.",
+              "title": "Team"
+            },
+            "description": "Team number (no prefix), e.g. `5511`."
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2024,
+                  "minimum": 2002
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Four-digit year",
+              "title": "Year"
+            },
+            "description": "Four-digit year"
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Event key, e.g. `2019ncwak`.",
+              "title": "Event"
+            },
+            "description": "Event key, e.g. `2019ncwak`."
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 9,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason.",
+              "title": "Week"
+            },
+            "description": "Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason."
+          },
+          {
+            "name": "match",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Match key, e.g. `2019ncwak_f1m1`.",
+              "title": "Match"
+            },
+            "description": "Match key, e.g. `2019ncwak_f1m1`."
+          },
+          {
+            "name": "elim",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the match is an elimination match.",
+              "title": "Elim"
+            },
+            "description": "Whether the match is an elimination match."
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether the event is an offseason event.",
+              "title": "Offseason"
+            },
+            "description": "Whether the event is an offseason event."
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How to sort the returned values. Any column in the table is valid.",
+              "title": "Metric"
+            },
+            "description": "How to sort the returned values. Any column in the table is valid."
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Whether to sort the returned values in ascending order. Default is ascending",
+              "title": "Ascending"
+            },
+            "description": "Whether to sort the returned values in ascending order. Default is ascending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Maximum number of events to return. Default is 1000.",
+              "title": "Limit"
+            },
+            "description": "Maximum number of events to return. Default is 1000."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Offset from the first result to return.",
+              "title": "Offset"
+            },
+            "description": "Offset from the first result to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Matches V3 Team Matches Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root_v2__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/year/{year}": {
+      "get": {
+        "tags": [
+          "v2/Year"
+        ],
+        "summary": "Read Year",
+        "description": "Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy. After 2016, separated into components and ranking points included.",
+        "operationId": "read_year_v2_year__year__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Year object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Year V2 Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/years": {
+      "get": {
+        "tags": [
+          "v2/Year"
+        ],
+        "summary": "Read Years",
+        "description": "Get a list of Year objects from 2002 to 2023. Specify a four-digit year, ex: 2019",
+        "operationId": "read_years_v2_years_get",
+        "parameters": [
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Year objects. See /year/{year} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Years V2 Years Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team/{team}": {
+      "get": {
+        "tags": [
+          "v2/Team"
+        ],
+        "summary": "Read Team",
+        "description": "Get a single Team object containing team name, location, normalized EPA statistics, and winrate.",
+        "operationId": "read_team_v2_team__team__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Team object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team V2 Team  Team  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams/district/{district}": {
+      "get": {
+        "tags": [
+          "v2/Team"
+        ],
+        "summary": "Read Teams District",
+        "description": "Get a list of Team objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim",
+        "operationId": "read_teams_district_v2_teams_district__district__get",
+        "parameters": [
+          {
+            "name": "district",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "District"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team objects. See /team/{team} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Teams District V2 Teams District  District  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams/state/{state}": {
+      "get": {
+        "tags": [
+          "v2/Team"
+        ],
+        "summary": "Read Teams State",
+        "description": "Get a list of Team objects from a single state. Specify uppercase state abbreviation, ex: NC, CA",
+        "operationId": "read_teams_state_v2_teams_state__state__get",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team objects. See /team/{team} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Teams State V2 Teams State  State  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams": {
+      "get": {
+        "tags": [
+          "v2/Team"
+        ],
+        "summary": "Read Teams",
+        "description": "Get a list of Team objects with optional filters.",
+        "operationId": "read_teams_v2_teams_get",
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "District"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Active"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "team",
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team objects. See /team/{team} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Teams V2 Teams Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_year/{team}/{year}": {
+      "get": {
+        "tags": [
+          "v2/TeamYear"
+        ],
+        "summary": "Read Team Year",
+        "description": "Get a single TeamYear object containing EPA summary, winrates, and location rankings",
+        "operationId": "read_team_year_v2_team_year__team___year__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A TeamYear object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Year V2 Team Year  Team   Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_years/team/{team}": {
+      "get": {
+        "tags": [
+          "v2/TeamYear"
+        ],
+        "summary": "Read Team Years Team",
+        "description": "Get a list of TeamYear objects for a single team. Specify team number, ex: 254, 1114",
+        "operationId": "read_team_years_team_v2_team_years_team__team__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TeamYear objects. See /team_year/{team}/{year} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Years Team V2 Team Years Team  Team  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_years/year/{year}/district/{district}": {
+      "get": {
+        "tags": [
+          "v2/TeamYear"
+        ],
+        "summary": "Read Team Years District",
+        "description": "Get a list of TeamYear objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim",
+        "operationId": "read_team_years_district_v2_team_years_year__year__district__district__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "district",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "District"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TeamYear objects. See /team_year/{team}/{year} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Years District V2 Team Years Year  Year  District  District  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_years/year/{year}/state/{state}": {
+      "get": {
+        "tags": [
+          "v2/TeamYear"
+        ],
+        "summary": "Read Team Years State",
+        "description": "Get a list of TeamYear objects from a single state. Specify lowercase state abbreviation, ex: ca, tx",
+        "operationId": "read_team_years_state_v2_team_years_year__year__state__state__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TeamYear objects. See /team_year/{team}/{year} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Years State V2 Team Years Year  Year  State  State  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_years": {
+      "get": {
+        "tags": [
+          "v2/TeamYear"
+        ],
+        "summary": "Read Team Years",
+        "description": "Get a list of TeamYear objects with optional filters.",
+        "operationId": "read_team_years_v2_team_years_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "District"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TeamYear objects. See /team_year/{team}/{year} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Years V2 Team Years Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Event",
+        "description": "Get a single Event object containing event location, dates, EPA stats, prediction stats. Specify event key ex: 2019ncwak, 2022cmptx",
+        "operationId": "read_event_v2_event__event__get",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An Event object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Event V2 Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events/year/{year}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events Year",
+        "description": "Get a list of Event objects for a single year. Specify year, ex: 2019, 2020",
+        "operationId": "read_events_year_v2_events_year__year__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events Year V2 Events Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events/year/{year}/district/{district}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events Year District",
+        "description": "Get a list of Event objects for a single (year, district) pair. Specify year as four-digit number, district as lowercase abbreviation.",
+        "operationId": "read_events_year_district_v2_events_year__year__district__district__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "district",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "District"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events Year District V2 Events Year  Year  District  District  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events/year/{year}/state/{state}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events Year State",
+        "description": "Get a list of Event objects for a single (year, state) pair. Specify year as four-digit number, state as uppercase two-letter abbreviation.",
+        "operationId": "read_events_year_state_v2_events_year__year__state__state__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events Year State V2 Events Year  Year  State  State  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events/district/{district}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events District",
+        "description": "Get a list of Event objects for a single district. Specify district as lowercase abbreviation, ex fnc, fim.",
+        "operationId": "read_events_district_v2_events_district__district__get",
+        "parameters": [
+          {
+            "name": "district",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "District"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events District V2 Events District  District  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events/state/{state}": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events State",
+        "description": "Get a list of Event objects for a single state. Specify state as uppercase two-letter abbreviation, ex CA, TX.",
+        "operationId": "read_events_state_v2_events_state__state__get",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events State V2 Events State  State  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/events": {
+      "get": {
+        "tags": [
+          "v2/Event"
+        ],
+        "summary": "Read Events",
+        "description": "Get a list of all Event objects with optional filters.",
+        "operationId": "read_events_v2_events_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "District"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Week"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Event objects. See /event/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Events V2 Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_event/{team}/{event}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Event",
+        "description": "Get a single Team Event object containing event metadata, EPA statistics, and winrate. Specify team number and event key ex: 5511, 2019ncwak",
+        "operationId": "read_team_event_v2_team_event__team___event__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Team Event object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Event V2 Team Event  Team   Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events/team/{team}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events Team",
+        "description": "Get a list of Team Event objects for a single team. Specify team number, ex: 5511",
+        "operationId": "read_team_events_team_v2_team_events_team__team__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events Team V2 Team Events Team  Team  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events/team/{team}/year/{year}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events Team Year",
+        "description": "Get a list of Team Event objects for a single team and year. Specify team number and year, ex: 5511, 2019",
+        "operationId": "read_team_events_team_year_v2_team_events_team__team__year__year__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events Team Year V2 Team Events Team  Team  Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events Event",
+        "description": "Get a list of Team Event objects for a single event. Specify event key, ex: 2019ncwak",
+        "operationId": "read_team_events_event_v2_team_events_event__event__get",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events Event V2 Team Events Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events/year/{year}/district/{district}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events Year District",
+        "description": "Get a list of Team Event objects for a single year and district. Specify year and district, ex: 2019, fnc",
+        "operationId": "read_team_events_year_district_v2_team_events_year__year__district__district__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "district",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "District"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events Year District V2 Team Events Year  Year  District  District  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events/year/{year}/state/{state}": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events Year State",
+        "description": "Get a list of Team Event objects for a single year and state. Specify year and state, ex: 2019, NC",
+        "operationId": "read_team_events_year_state_v2_team_events_year__year__state__state__get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events Year State V2 Team Events Year  Year  State  State  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_events": {
+      "get": {
+        "tags": [
+          "v2/TeamEvent"
+        ],
+        "summary": "Read Team Events",
+        "description": "Get a list of all Team Event objects with optional filters.",
+        "operationId": "read_team_events_v2_team_events_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Event"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "name": "district",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "District"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Week"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Event objects. See /team_event/{team}/{event} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Events V2 Team Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/match/{match}": {
+      "get": {
+        "tags": [
+          "v2/Match"
+        ],
+        "summary": "Read Match",
+        "description": "Get a single Match object containing teams, score prediction, and actual results. Specify match key ex: 2019ncwak_f1m1",
+        "operationId": "read_match_v2_match__match__get",
+        "parameters": [
+          {
+            "name": "match",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Match object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Match V2 Match  Match  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/matches/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/Match"
+        ],
+        "summary": "Read Matches Event",
+        "description": "Get a list of Match objects for a single event. Specify event key ex: 2019ncwak, 2022cmptx",
+        "operationId": "read_matches_event_v2_matches_event__event__get",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Match objects. See /match/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Matches Event V2 Matches Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/matches/team/{team}/year/{year}": {
+      "get": {
+        "tags": [
+          "v2/Match"
+        ],
+        "summary": "Read Matches Team Year",
+        "description": "Get a list of Match objects for a single team in a single year. Specify team number and year, ex: 254, 2019",
+        "operationId": "read_matches_team_year_v2_matches_team__team__year__year__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Match objects. See /match/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Matches Team Year V2 Matches Team  Team  Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/matches/team/{team}/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/Match"
+        ],
+        "summary": "Read Matches Team Event",
+        "description": "Get a list of Match objects for a single team in a single event. Specify team number and event key, ex: 5511, 2019ncwak",
+        "operationId": "read_matches_team_event_v2_matches_team__team__event__event__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Match objects. See /match/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Matches Team Event V2 Matches Team  Team  Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/matches": {
+      "get": {
+        "tags": [
+          "v2/Match"
+        ],
+        "summary": "Read Matches",
+        "description": "Get a list of Matches with optional filters",
+        "operationId": "read_matches_v2_matches_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Event"
+            }
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Week"
+            }
+          },
+          {
+            "name": "elims",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Elims"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Match objects. See /match/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Matches V2 Matches Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_match/{team}/{match}": {
+      "get": {
+        "tags": [
+          "v2/TeamMatch"
+        ],
+        "summary": "Read Team Match",
+        "description": "Get a single Team Match object containing team and EPA predictions. Specify team number and match key ex: 5511, 2019ncwak_f1m1",
+        "operationId": "read_team_match_v2_team_match__team___match__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "match",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Team Match object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Read Team Match V2 Team Match  Team   Match  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_matches/team/{team}/year/{year}": {
+      "get": {
+        "tags": [
+          "v2/TeamMatch"
+        ],
+        "summary": "Read Team Matches Team Year",
+        "description": "Get a list of Team Match objects for a single team and year. Specify team number and year ex: 5511, 2019. Note, includes offseason events.",
+        "operationId": "read_team_matches_team_year_v2_team_matches_team__team__year__year__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Match objects. See /team_match/{team}/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Matches Team Year V2 Team Matches Team  Team  Year  Year  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_matches/team/{team}/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/TeamMatch"
+        ],
+        "summary": "Read Team Matches Team Event",
+        "description": "Get a list of Team Match objects for a single team and event. Specify team number and event key ex: 5511, 2019ncwak",
+        "operationId": "read_team_matches_team_event_v2_team_matches_team__team__event__event__get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Team"
+            }
+          },
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Match objects. See /team_match/{team}/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Matches Team Event V2 Team Matches Team  Team  Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_matches/event/{event}": {
+      "get": {
+        "tags": [
+          "v2/TeamMatch"
+        ],
+        "summary": "Read Team Matches Event",
+        "description": "Get a list of Team Match objects for a single event. Specify event key ex: 2019ncwak",
+        "operationId": "read_team_matches_event_v2_team_matches_event__event__get",
+        "parameters": [
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Match objects. See /team_match/{team}/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Matches Event V2 Team Matches Event  Event  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/team_matches": {
+      "get": {
+        "tags": [
+          "v2/TeamMatch"
+        ],
+        "summary": "Read Team Matches",
+        "description": "Get a list of Team Match objects with optional filters",
+        "operationId": "read_team_matches_v2_team_matches_get",
+        "parameters": [
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Team"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Event"
+            }
+          },
+          {
+            "name": "week",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Week"
+            }
+          },
+          {
+            "name": "match",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Match"
+            }
+          },
+          {
+            "name": "elims",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Elims"
+            }
+          },
+          {
+            "name": "offseason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "title": "Offseason"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ascending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Team Match objects. See /team_match/{team}/{match} for more information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "title": "Response Read Team Matches V2 Team Matches Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

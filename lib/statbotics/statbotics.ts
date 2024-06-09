@@ -1,6 +1,4 @@
-import OpenAPIClientAxios from "openapi-client-axios";
-import {Client} from "@/lib/statbotics/schema";
+import createClient from "openapi-fetch";
+import type {paths} from "./schema";
 
-export const statbotics = await new OpenAPIClientAxios({
-    definition: "https://api.statbotics.io/openapi.json"
-}).init<Client>();
+export let statbotics = createClient<paths>({baseUrl: "https://www.statbotics.io/api/"});

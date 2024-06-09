@@ -83,22 +83,22 @@ export default async function Event({params}: { params: { id: string } }) {
                           <div className={"hidden sm:block"}>{/*Hidden and flex not compatible*/}
                               <div className={"flex justify-between my-4 gap-1 h-16 text-center"}>
                                   <div className={"m-2"}>
-                                      <Badge>Not started</Badge>
+                                      <Badge variant={"destructive"}>Not started</Badge>
                                       <p>{notStarted}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
                                   <div className={"m-2"}>
-                                      <Badge>In progress</Badge>
+                                      <Badge variant={"secondary"}>In progress</Badge>
                                       <p>{inProgress}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
                                   <div className={"m-2"}>
-                                      <Badge>Completed</Badge>
+                                      <Badge variant={"default"}>Completed</Badge>
                                       <p>{completed}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
                                   <div className={"m-2"}>
-                                      <Badge>Total</Badge>
+                                      <Badge variant={"outline"}>Total</Badge>
                                       <p>{teamData.length}</p>
                                   </div>
                               </div>
@@ -106,19 +106,19 @@ export default async function Event({params}: { params: { id: string } }) {
                           <div className={"block sm:hidden"}>{/*Hidden and flex not compatible*/}
                               <div className={"flex justify-around my-4 gap-4 text-center flex-wrap"}>
                                   <div className={"flex gap-2"}>
-                                      <Badge>Not started</Badge>
+                                      <Badge variant={"destructive"}>Not started</Badge>
                                       <p>{notStarted}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
-                                      <Badge>In progress</Badge>
+                                      <Badge variant={"secondary"}>In progress</Badge>
                                       <p>{inProgress}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
-                                      <Badge>Completed</Badge>
+                                      <Badge variant={"default"}>Completed</Badge>
                                       <p>{completed}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
-                                      <Badge>Total</Badge>
+                                      <Badge variant={"outline"}>Total</Badge>
                                       <p>{teamData.length}</p>
                                   </div>
                               </div>
