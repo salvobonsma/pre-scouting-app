@@ -34,10 +34,12 @@ export type Team = {
 }
 
 export default function TeamsTable<TData>({data, eventId}: {
-    data: TData[]
+    data: { teamNumber: number, teamName: string, status: TeamStatus }[]
     eventId: number
 }) {
-    const [statusStates, setStatusStates] = useState<{ teamNumber: number, status: TeamStatus }[]>();
+    const [statusStates, setStatusStates] = useState(
+          data.map(team => ({teamNumber: team.teamNumber, status: team.status}))
+    );
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -118,7 +120,9 @@ export default function TeamsTable<TData>({data, eventId}: {
             },
             cell: ({row}) => (
                   <div className={"flex justify-end mr-4"}>
-                      <StatusBadge status={row.getValue("status")}/>
+                      <StatusBadge status={statusStates.find(
+                            value => value.teamNumber == row.getValue("teamNumber")
+                      )?.status ?? "notStarted"}/>
                   </div>
             )
         },
@@ -187,7 +191,8 @@ export default function TeamsTable<TData>({data, eventId}: {
     }
 
     async function setStatuesByTeam(status: TeamStatus, teams: number[]) {
-        await SetTeamStatues(eventId, teams, status);
+        // @ts-ignore
+        setStatusStates(await SetTeamStatues(eventId, teams, status));
     }
 
     return (
