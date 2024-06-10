@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Dispatch, SetStateAction} from "react";
 import EditEventName from "@/lib/database/edit-event-name";
+import {reload} from "@/lib/utils";
 
 export default function EditEventNameDialog(props: {
     id: number,
@@ -36,7 +37,7 @@ export default function EditEventNameDialog(props: {
         if (!response) return;
 
         if (response.success) {
-            window.location.reload();
+            reload();
             return;
         }
 

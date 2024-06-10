@@ -13,6 +13,7 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import DeleteEvent from "@/lib/database/delete-event";
+import {reload} from "@/lib/utils";
 
 export default function DeleteEventDialog(props: {
     id: number,
@@ -21,7 +22,7 @@ export default function DeleteEventDialog(props: {
 }) {
     async function deleteEvent(id: number) {
         await DeleteEvent(id);
-        window.location.reload();
+        reload();
     }
 
     return (

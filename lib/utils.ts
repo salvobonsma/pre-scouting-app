@@ -14,3 +14,7 @@ export function isPast(date: Date | string) {
     const newDate = typeof date == "string" ? new Date(date) : date;
     return dayjs(newDate).isAfter(dayjs())
 }
+
+export function reload() {
+    window.location.reload();
+}

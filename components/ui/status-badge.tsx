@@ -1,4 +1,5 @@
 import {Badge} from "@/components/ui/badge";
+import {TeamStatus} from "@/lib/database/set-team-statues";
 
 export default function StatusBadge({status}: { status: TeamStatus }) {
     let display;
@@ -22,5 +23,3 @@ export default function StatusBadge({status}: { status: TeamStatus }) {
           <Badge variant={variant ?? "default"} className={"whitespace-nowrap"}>{(display)}</Badge>
     )
 }
-
-type TeamStatus = "notStarted" | "inProgress" | "completed";
