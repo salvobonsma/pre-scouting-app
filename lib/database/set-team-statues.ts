@@ -3,9 +3,9 @@
 import prisma from "@/lib/prisma";
 
 export default async function SetTeamStatues(eventId: number, teamNumbers: number[], status: TeamStatus): Promise<{
-    teamNumber: number,
+    teamNumber: number;
     status: TeamStatus
-}> {
+}[]> {
     for (const teamNumber of teamNumbers) {
         // Should only be one update.
         await prisma.teamEntry.updateMany(
@@ -27,7 +27,7 @@ export default async function SetTeamStatues(eventId: number, teamNumbers: numbe
                   eventId: eventId
               }
           }
-    )).map(team => ({teamNumber: team.teamNumber ?? 0, status: team.status}));
+    )).map(team => ({teamNumber: team.teamNumber ?? 0, status: team.status as TeamStatus}));
 }
 
 export type TeamStatus = "notStarted" | "inProgress" | "completed";

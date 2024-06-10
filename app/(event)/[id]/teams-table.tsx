@@ -1,5 +1,3 @@
-'use client'
-
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -15,7 +13,7 @@ import StatusBadge from "@/components/ui/status-badge";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
-import React, {useState} from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import {ArrowUpDown, TagIcon} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {
@@ -33,13 +31,12 @@ export type Team = {
     status: TeamStatus
 }
 
-export default function TeamsTable<TData>({data, eventId}: {
+export default function TeamsTable({data, eventId, statusStates, setStatusStates}: {
     data: { teamNumber: number, teamName: string, status: TeamStatus }[]
-    eventId: number
+    eventId: number,
+    statusStates: { teamNumber: number, status: TeamStatus }[],
+    setStatusStates: Dispatch<SetStateAction<{ teamNumber: number, status: TeamStatus }[]>>
 }) {
-    const [statusStates, setStatusStates] = useState(
-          data.map(team => ({teamNumber: team.teamNumber, status: team.status}))
-    );
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
