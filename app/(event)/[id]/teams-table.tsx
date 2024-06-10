@@ -15,23 +15,17 @@ import StatusBadge from "@/components/ui/status-badge";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
-import React from "react";
-import {ArrowUpDown, MoreVertical, TagIcon} from "lucide-react";
+import React, {useState} from "react";
+import {ArrowUpDown, TagIcon} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuPortal,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
     DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger
+    DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
-import {reload} from "@/lib/utils";
+import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
 
 export type Team = {
     teamNumber: number,
@@ -39,8 +33,16 @@ export type Team = {
     status: TeamStatus
 }
 
-export function Columns(eventID: number): ColumnDef<Team>[] {
-    return [
+export default function TeamsTable<TData>({data, eventId}: {
+    data: TData[]
+    eventId: number
+}) {
+    const [statusStates, setStatusStates] = useState<{ teamNumber: number, status: TeamStatus }[]>();
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [rowSelection, setRowSelection] = React.useState({});
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+
+    const columns: ColumnDef<Team>[] = [
         {
             id: "select",
             header: ({table}) => (
@@ -75,7 +77,7 @@ export function Columns(eventID: number): ColumnDef<Team>[] {
                 )
             },
             cell: ({row}) => (
-                  <Link href={`/${eventID}/${row.getValue("teamNumber")}`}>
+                  <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamNumber")}</Button>
                   </Link>
             )
@@ -94,7 +96,7 @@ export function Columns(eventID: number): ColumnDef<Team>[] {
                 )
             },
             cell: ({row}) => (
-                  <Link href={`/${eventID}/${row.getValue("teamNumber")}`}>
+                  <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamName")}</Button>
                   </Link>
             )
@@ -119,19 +121,46 @@ export function Columns(eventID: number): ColumnDef<Team>[] {
                       <StatusBadge status={row.getValue("status")}/>
                   </div>
             )
+        },
+        {
+            id: "actions",
+            size: 20,
+            cell: ({row}) => (
+                  <div className={"flex justify-center"}>
+                      <ActionDropdown statusMenu={(
+                            <>
+                                <DropdownMenuSubTrigger>
+                                    <TagIcon className="mr-2 h-4 w-4"/>
+                                    Set status
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuPortal>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem
+                                              className={"justify-center"}
+                                              onClick={() => setStatuesByTeam("notStarted", [row.getValue("teamNumber")])}
+                                        >
+                                            <StatusBadge status={"notStarted"}/>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                              className={"justify-center"}
+                                              onClick={() => setStatuesByTeam("inProgress", [row.getValue("teamNumber")])}
+                                        >
+                                            <StatusBadge status={"inProgress"}/>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                              className={"justify-center"}
+                                              onClick={() => setStatuesByTeam("completed", [row.getValue("teamNumber")])}
+                                        >
+                                            <StatusBadge status={"completed"}/>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </>
+                      )}/>
+                  </div>
+            )
         }
-    ]
-}
-
-export default function TeamsTable<TData>({data, eventId}: {
-    data: TData[]
-    eventId: number
-}) {
-    const columns = Columns(eventId);
-
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [rowSelection, setRowSelection] = React.useState({});
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    ];
 
     const table = useReactTable({
         data,
@@ -150,13 +179,15 @@ export default function TeamsTable<TData>({data, eventId}: {
         },
     });
 
-    async function SetStatues(status: TeamStatus) {
-        await SetTeamStatues(
-              eventId,
-              table.getFilteredSelectedRowModel().rows.map(row => row.getValue("teamNumber")),
-              status
+    async function setStatues(status: TeamStatus) {
+        await setStatuesByTeam(
+              status,
+              table.getFilteredSelectedRowModel().rows.map(row => row.getValue("teamNumber"))
         );
-        reload();
+    }
+
+    async function setStatuesByTeam(status: TeamStatus, teams: number[]) {
+        await SetTeamStatues(eventId, teams, status);
     }
 
     return (
@@ -169,45 +200,36 @@ export default function TeamsTable<TData>({data, eventId}: {
                             onChange={(event) => table.getColumn("teamName")?.setFilterValue(event.target.value)}
                       />
                   </div>
-                  <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size={"icon"} className={"mx-2"}>
-                              <MoreVertical/>
-                          </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent side={"bottom"} align={"end"} className={"w-44"}>
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator/>
-                          <DropdownMenuSub>
-                              <DropdownMenuSubTrigger>
-                                  <TagIcon className="mr-2 h-4 w-4"/>
-                                  Set {table.getFilteredSelectedRowModel().rows.length > 1 ? "Statues" : "Status"}
-                              </DropdownMenuSubTrigger>
-                              <DropdownMenuPortal>
-                                  <DropdownMenuSubContent>
-                                      <DropdownMenuItem
-                                            className={"justify-center"}
-                                            onClick={() => SetStatues("notStarted")}
-                                      >
-                                          <StatusBadge status={"notStarted"}/>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                            className={"justify-center"}
-                                            onClick={() => SetStatues("inProgress")}
-                                      >
-                                          <StatusBadge status={"inProgress"}/>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                            className={"justify-center"}
-                                            onClick={() => SetStatues("completed")}
-                                      >
-                                          <StatusBadge status={"completed"}/>
-                                      </DropdownMenuItem>
-                                  </DropdownMenuSubContent>
-                              </DropdownMenuPortal>
-                          </DropdownMenuSub>
-                      </DropdownMenuContent>
-                  </DropdownMenu>
+                  <ActionDropdown statusMenu={(
+                        <>
+                            <DropdownMenuSubTrigger>
+                                <TagIcon className="mr-2 h-4 w-4"/>
+                                Set {table.getFilteredSelectedRowModel().rows.length > 1 ? "statues" : "status"}
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                          onClick={() => setStatues("notStarted")}
+                                    >
+                                        <StatusBadge status={"notStarted"}/>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                          onClick={() => setStatues("inProgress")}
+                                    >
+                                        <StatusBadge status={"inProgress"}/>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                          onClick={() => setStatues("completed")}
+                                    >
+                                        <StatusBadge status={"completed"}/>
+                                    </DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </>
+                  )}/>
               </div>
               <Table className={"overflow-x-scroll"}>
                   <TableHeader>

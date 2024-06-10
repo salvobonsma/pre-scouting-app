@@ -3,9 +3,6 @@
 import prisma from "@/lib/prisma";
 
 export default async function SetTeamStatues(eventId: number, teamNumbers: number[], status: TeamStatus) {
-    console.log(teamNumbers)
-    console.log(status)
-
     for (const teamNumber of teamNumbers) {
         // Should only be one update.
         await prisma.teamEntry.updateMany(
