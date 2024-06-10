@@ -75,7 +75,7 @@ export default async function Home() {
               })}</div>
               <h1 className={"mt"}>API Status</h1>
               <Separator/>
-              <div className={"mt-sm bg-background border rounded"}>
+              <div className={"mt-sm"}>
                   <Table>
                       <TableHeader>
                           <TableRow className={"border-t-0"}>

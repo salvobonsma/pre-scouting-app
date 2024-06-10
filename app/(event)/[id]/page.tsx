@@ -9,7 +9,8 @@ import Hgroup from "@/components/ui/hgroup";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {isPast} from "@/lib/utils";
-import TeamsTable, {columns} from "@/app/(event)/[id]/teams-table";
+import StatusBadge from "@/components/ui/status-badge";
+import TeamsTable from "@/app/(event)/[id]/teams-table";
 
 export default async function Event({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -65,17 +66,17 @@ export default async function Event({params}: { params: { id: string } }) {
                           <div className={"hidden sm:block"}>{/*Hidden and flex not compatible*/}
                               <div className={"flex justify-between my-4 gap-1 h-16 text-center"}>
                                   <div className={"m-2"}>
-                                      <Badge variant={"destructive"}>Not started</Badge>
+                                      <StatusBadge status={"notStarted"}/>
                                       <p>{notStarted}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
                                   <div className={"m-2"}>
-                                      <Badge variant={"secondary"}>In progress</Badge>
+                                      <StatusBadge status={"inProgress"}/>
                                       <p>{inProgress}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
                                   <div className={"m-2"}>
-                                      <Badge variant={"default"}>Completed</Badge>
+                                      <StatusBadge status={"completed"}/>
                                       <p>{completed}</p>
                                   </div>
                                   <Separator orientation={"vertical"}/>
@@ -88,15 +89,15 @@ export default async function Event({params}: { params: { id: string } }) {
                           <div className={"block sm:hidden"}>{/*Hidden and flex not compatible*/}
                               <div className={"flex justify-around my-4 gap-4 text-center flex-wrap"}>
                                   <div className={"flex gap-2"}>
-                                      <Badge variant={"destructive"}>Not started</Badge>
+                                      <StatusBadge status={"notStarted"}/>
                                       <p>{notStarted}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
-                                      <Badge variant={"secondary"}>In progress</Badge>
+                                      <StatusBadge status={"inProgress"}/>
                                       <p>{inProgress}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
-                                      <Badge variant={"default"}>Completed</Badge>
+                                      <StatusBadge status={"completed"}/>
                                       <p>{completed}</p>
                                   </div>
                                   <div className={"flex gap-2"}>
@@ -130,8 +131,6 @@ export default async function Event({params}: { params: { id: string } }) {
               {teamData.length > 0 ? (
                     <div className={"mt-sm"}>
                         <TeamsTable
-                              // @ts-ignore
-                              columns={columns}
                               data={teamData.map(team => ({
                                   teamNumber: team.teamNumber ?? 0,
                                   teamName: team.name ?? "",
