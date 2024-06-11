@@ -14,7 +14,6 @@ import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import React, {Dispatch, SetStateAction} from "react";
 import {ArrowUpDown, TagIcon} from "lucide-react";
-import {Input} from "@/components/ui/input";
 import {
     DropdownMenuItem,
     DropdownMenuPortal,
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
 import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
+import DebouncedInput from "@/components/debounced-input";
 
 export type Team = {
     teamNumber: number,
@@ -195,10 +195,11 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
           <>
               <div className={"flex justify-between mb-6"}>
                   <div className="flex items-center">
-                      <Input
+                      <DebouncedInput
+                            debounce={0.1}
                             placeholder="Search..."
                             value={globalFilter}
-                            onChange={(event) => setGlobalFilter(event.target.value)}
+                            onChange={(value) => setGlobalFilter(value)}
                       />
                   </div>
                   <ActionDropdown statusMenu={(
