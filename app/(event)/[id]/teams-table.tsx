@@ -199,7 +199,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                             debounce={0.1}
                             placeholder="Search..."
                             value={globalFilter}
-                            onChange={(value) => setGlobalFilter(value)}
+                            onChange={(value) => setGlobalFilter(String(value))}
                       />
                   </div>
                   <ActionDropdown statusMenu={(
