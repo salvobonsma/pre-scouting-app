@@ -194,14 +194,13 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
     return (
           <>
               <div className={"flex justify-between mb-6"}>
-                  <div className="flex items-center">
-                      <DebouncedInput
-                            debounce={0.1}
-                            placeholder="Search..."
-                            value={globalFilter}
-                            onChange={(value) => setGlobalFilter(String(value))}
-                      />
-                  </div>
+                  <DebouncedInput
+                        debounce={0.1}
+                        placeholder="Search..."
+                        value={globalFilter}
+                        onChange={(value) => setGlobalFilter(String(value))}
+                        className={"max-w-md"}
+                  />
                   <ActionDropdown statusMenu={(
                         <>
                             <DropdownMenuSubTrigger>
