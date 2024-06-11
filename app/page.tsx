@@ -65,7 +65,7 @@ export default async function Home() {
                                 <CardTitle>{event.name}</CardTitle>
                                 <CardDescription>{event.eventName}</CardDescription>
                             </CardHeader>
-                            <CardContent className={"w-80"}><EventDetails event={event} teams={teams}/></CardContent>
+                            <CardContent><EventDetails event={event} teams={teams}/></CardContent>
                             <CardFooter className={"flex justify-end"}>
                                 <EventDropdown id={event.id} name={event.name}/>
                                 <Link href={"/" + event.id}><Button>View Event</Button></Link>

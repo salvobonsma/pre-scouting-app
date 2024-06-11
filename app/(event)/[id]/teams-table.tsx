@@ -1,14 +1,13 @@
 import {
     ColumnDef,
-    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getSortedRowModel,
     SortingState,
     useReactTable
-} from "@tanstack/react-table"
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
+} from "@tanstack/react-table";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import StatusBadge from "@/components/ui/status-badge";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
@@ -39,17 +38,14 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
 }) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [globalFilter, setGlobalFilter] = React.useState("");
 
     const columns: ColumnDef<Team>[] = [
         {
             id: "select",
             header: ({table}) => (
                   <Checkbox
-                        checked={
-                              table.getIsAllPageRowsSelected() ||
-                              (table.getIsSomePageRowsSelected() && "indeterminate")
-                        }
+                        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
                         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                         aria-label="Select all"
                   />
@@ -73,13 +69,14 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                           <span className={"whitespace-nowrap"}>Team #</span>
                           <ArrowUpDown className="ml-2 h-4 w-4"/>
                       </Button>
-                )
+                );
             },
             cell: ({row}) => (
                   <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamNumber")}</Button>
                   </Link>
-            )
+            ),
+            enableGlobalFilter: true
         },
         {
             accessorKey: "teamName",
@@ -92,13 +89,14 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                           Name
                           <ArrowUpDown className="ml-2 h-4 w-4"/>
                       </Button>
-                )
+                );
             },
             cell: ({row}) => (
                   <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamName")}</Button>
                   </Link>
-            )
+            ),
+            enableGlobalFilter: true
         },
         {
             accessorKey: "status",
@@ -113,7 +111,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                               <ArrowUpDown className="ml-2 h-4 w-4"/>
                           </Button>
                       </div>
-                )
+                );
             },
             cell: ({row}) => (
                   <div className={"flex justify-end mr-4"}>
@@ -121,11 +119,11 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                             value => value.teamNumber == row.getValue("teamNumber")
                       )?.status ?? "notStarted"}/>
                   </div>
-            )
+            ),
+            enableGlobalFilter: true
         },
         {
             id: "actions",
-            size: 20,
             cell: ({row}) => (
                   <div className={"flex justify-center"}>
                       <ActionDropdown statusMenu={(
@@ -171,13 +169,14 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         onRowSelectionChange: setRowSelection,
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
             rowSelection,
-            columnFilters
+            globalFilter,
         },
+        getFilteredRowModel: getFilteredRowModel(),
+        onGlobalFilterChange: setGlobalFilter,
+        globalFilterFn: "includesString"
     });
 
     async function setStatues(status: TeamStatus) {
@@ -198,8 +197,8 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                   <div className="flex items-center">
                       <Input
                             placeholder="Search..."
-                            value={(table.getColumn("teamName")?.getFilterValue() as string) ?? ""}
-                            onChange={(event) => table.getColumn("teamName")?.setFilterValue(event.target.value)}
+                            value={globalFilter}
+                            onChange={(event) => setGlobalFilter(event.target.value)}
                       />
                   </div>
                   <ActionDropdown statusMenu={(
@@ -280,6 +279,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                             </TableRow>
                       )}
                   </TableBody>
-              </Table></>
-    )
+              </Table>
+          </>
+    );
 }

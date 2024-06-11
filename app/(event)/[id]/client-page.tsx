@@ -1,6 +1,6 @@
 'use client'
 
-import Hgroup from "@/components/ui/hgroup";
+import Hgroup from "@/components/hgroup";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/ui/status-badge";
