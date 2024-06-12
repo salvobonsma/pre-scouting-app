@@ -36,7 +36,10 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
     statusStates: { teamNumber: number, status: TeamStatus }[],
     setStatusStates: Dispatch<SetStateAction<{ teamNumber: number, status: TeamStatus }[]>>
 }) {
-    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [sorting, setSorting] = React.useState<SortingState>([{
+        id: "status",
+        desc: true
+    }]);
     const [rowSelection, setRowSelection] = React.useState({});
     const [globalFilter, setGlobalFilter] = React.useState("");
 
@@ -184,11 +187,12 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
               status,
               table.getFilteredSelectedRowModel().rows.map(row => row.getValue("teamNumber"))
         );
-    }
 
+    }
     async function setStatuesByTeam(status: TeamStatus, teams: number[]) {
         // @ts-ignore
         setStatusStates(await SetTeamStatues(eventId, teams, status));
+
     }
 
     return (
