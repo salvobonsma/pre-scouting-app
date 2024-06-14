@@ -30,7 +30,7 @@ export default async function EventDetails(props: {
                   <p>{props.event.city}</p>
               </div>
               <div className={"flex justify-between"}>
-                  <p className={"muted"}>Event Type</p>
+                  <p className={"muted"}>Event type</p>
                   <p>{props.event.type}</p>
               </div>
           </>

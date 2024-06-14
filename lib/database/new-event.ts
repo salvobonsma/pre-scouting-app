@@ -56,6 +56,8 @@ export default async function NewEvent(key: string, year: number, name: string):
                           number: tbaTeam.team_number,
                           key: tbaTeam.key,
                           name: tbaTeam.nickname,
+                          state: tbaTeam.state_prov,
+                          school: tbaTeam.school_name,
                           rookieYear: tbaTeam.rookie_year,
                       }
                   }
@@ -70,6 +72,7 @@ export default async function NewEvent(key: string, year: number, name: string):
                       key: tbaTeam.key,
                       eventId: eventId,
                       name: tbaTeam.nickname,
+                      threatGrade: "A",
                       teamNumber: tbaTeam.team_number
                   }
               }

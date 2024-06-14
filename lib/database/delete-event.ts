@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 
 export default async function DeleteEvent(id: number): Promise<ActionResult> {
-    console.log("delete")
     await prisma.event.delete(
           {
               where: {

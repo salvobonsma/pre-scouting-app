@@ -37,7 +37,7 @@ export default async function Event({params}: { params: { id: string } }) {
                           <CardContent><EventDetails event={eventData} teams={teamData.length}/></CardContent>
                       </Card>
                 )}
-                overview={(
+                overview={teamData.length > 0 ? (
                       <Card className={"w-full sm:w-80"}>
                           <CardHeader><CardTitle>Overview</CardTitle></CardHeader>
                           <CardContent>
@@ -53,6 +53,13 @@ export default async function Event({params}: { params: { id: string } }) {
                           <CardFooter className={"flex justify-end"}>
                               <Link href={`/${params.id}/overview`}><Button>View Full Overview</Button></Link>
                           </CardFooter>
+                      </Card>
+                ) : (
+                      <Card className={"w-full sm:w-80"}>
+                          <CardHeader><CardTitle>Overview</CardTitle></CardHeader>
+                          <CardContent>
+                              <p className={"muted"}>Not enough data to generate an overview.</p>
+                          </CardContent>
                       </Card>
                 )}
           />

@@ -35,6 +35,8 @@ model Team {
 
   name       String?
   rookieYear Int?
+  state      String?
+  school     String?
 
   teamEntries       TeamEntry[]
   historicalEntries HistoricalEntry[]
@@ -44,8 +46,9 @@ model TeamEntry {
   id  Int    @id @default(autoincrement())
   key String
 
-  name   String?
-  status String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
+  name        String?
+  status      String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
+  threatGrade String
 
   matchEntries MatchEntry[]
 

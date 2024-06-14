@@ -1,15 +1,15 @@
 'use client'
 
-import Hgroup from "@/components/hgroup";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
-import StatusBadge from "@/components/ui/status-badge";
+import StatusBadge from "@/components/status-badge";
 import {Separator} from "@/components/ui/separator";
 import {Badge} from "@/components/ui/badge";
 import TeamsTable from "@/app/(event)/[id]/teams-table";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {isPast} from "@/lib/utils";
 import {ReactNode, useState} from "react";
+import Back from "@/components/back";
 
 export default function ClientPage({event, teams, eventDetails, overview}: {
     event: { id: number, name: string, eventName: string, startDate: string },
@@ -37,7 +37,10 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
 
     return (
           <>
-              <Hgroup h={event.name} p={event.eventName}/>
+              <Back link={"/"} display={"Events"}/>
+              <h1>{event.name}</h1>
+              <p className={"muted"}>{event.eventName}</p>
+              <Separator/>
               <div className={"mt-sm flex flex-wrap gap-6"}>
                   {eventDetails}
                   <Card className={"w-full sm:w-fit max-w-[32em]"}>

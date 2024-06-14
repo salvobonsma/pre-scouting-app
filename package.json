@@ -31,6 +31,7 @@
     "clsx": "^2.1.0",
     "cmdk": "0.2.0",
     "dayjs": "^1.11.11",
+    "embla-carousel-react": "^8.1.5",
     "lucide-react": "^0.372.0",
     "next": "^14.2.3",
     "next-themes": "^0.3.0",
