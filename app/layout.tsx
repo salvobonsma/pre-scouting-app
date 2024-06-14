@@ -4,6 +4,7 @@ import "./globals.css";
 import {ThemeProvider} from "@/components/theme/theme-provider";
 import Footer from "@/components/main-layout/footer";
 import Header from "@/components/main-layout/header";
+import Scroll from "@/app/scroll";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -28,6 +29,7 @@ export default function RootLayout({
                       <div className={"flex flex-col min-h-screen w-full"}>
                           <Header/>
                           <main className={"container relative bottom flex-1 mb-14"}>
+                              <Scroll/>
                               {children}
                           </main>
                       </div>
