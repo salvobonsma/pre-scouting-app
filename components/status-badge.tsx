@@ -1,6 +1,7 @@
 import {Badge} from "@/components/ui/badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 
+
 export default function StatusBadge({status}: { status: TeamStatus }) {
     let display;
     let variant: "destructive" | "secondary" | "default";

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 
@@ -11,7 +10,7 @@ export default function NotFound() {
                       <CardDescription>Could not find what you were looking for.</CardDescription>
                   </CardHeader>
                   <CardFooter className={"flex justify-end"}>
-                      <Link href={"/"}><Button>Return Home</Button></Link>
+                      <a href={"/"}><Button>Return Home</Button></a>
                   </CardFooter>
               </Card>
           </div>

@@ -33,7 +33,7 @@
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.1.5",
     "lucide-react": "^0.372.0",
-    "next": "^14.2.3",
+    "next": "^14.2.4",
     "next-themes": "^0.3.0",
     "openapi-client-axios": "^7.5.5",
     "openapi-fetch": "^0.9.7",

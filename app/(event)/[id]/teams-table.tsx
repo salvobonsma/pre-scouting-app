@@ -9,7 +9,6 @@ import {
 } from "@tanstack/react-table";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import StatusBadge from "@/components/status-badge";
-import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import React, {Dispatch, SetStateAction} from "react";
@@ -75,9 +74,9 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
+                  <a href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamNumber")}</Button>
-                  </Link>
+                  </a>
             ),
             enableGlobalFilter: true
         },
@@ -95,9 +94,9 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <Link href={`/${eventId}/${row.getValue("teamNumber")}`}>
+                  <a href={`/${eventId}/${row.getValue("teamNumber")}`}>
                       <Button variant={"link"}>{row.getValue("teamName")}</Button>
-                  </Link>
+                  </a>
             ),
             enableGlobalFilter: true
         },

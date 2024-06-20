@@ -3,7 +3,6 @@ import NewEventDialog from "@/components/dialogs/new-event-dialog";
 import prisma from "@/lib/prisma";
 import {cn} from "@/lib/utils";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import EventDropdown from "@/app/event-dropdown";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
@@ -70,7 +69,7 @@ export default async function Home() {
                             </CardContent>
                             <CardFooter className={"flex justify-end"}>
                                 <EventDropdown id={event.id} name={event.name}/>
-                                <Link href={"/" + event.id}><Button>View Event</Button></Link>
+                                <a href={"/" + event.id}><Button>View Event</Button></a>
                             </CardFooter>
                         </Card>
                   )
@@ -131,12 +130,12 @@ function APIStatusDropdownMenu(props: { link: string, text: string }) {
                   </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent side={"bottom"} align={"end"}>
-                  <Link target={"_blank"} href={props.link}>
+                  <a target={"_blank"} href={props.link}>
                       <DropdownMenuItem>
                           <LinkIcon className="mr-2 h-4 w-4"/>
                           {props.text}
                       </DropdownMenuItem>
-                  </Link>
+                  </a>
               </DropdownMenuContent>
           </DropdownMenu>
     )
