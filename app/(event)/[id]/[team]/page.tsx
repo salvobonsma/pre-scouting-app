@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 import ClientPage from "@/app/(event)/[id]/[team]/client-page";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
-
     if (!+params.id || !+params.team) return NotFound();
 
     const event = await prisma.event.findUnique(

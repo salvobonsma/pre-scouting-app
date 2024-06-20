@@ -97,8 +97,19 @@ export default function ClientPage({event, team, teamEntry}: {
                               </DropdownMenu>
                           </div>
                       </CardContent>
-                  </Card>
+                  </Card>`
               </div>
+              `
+              <h1 className={"mt"}>Statistics</h1>
+              <Separator/>
+              <h1 className={"mt"}>Events</h1>
+              <Separator/>
+              <h1 className={"mt"}>Notes</h1>
+              <Separator/>
+              <h1 className={"mt"}>Matches</h1>
+              <Separator/>
+              <h1 className={"mt"}>Past Seasons</h1>
+              <Separator/>
           </>
     )
 }
