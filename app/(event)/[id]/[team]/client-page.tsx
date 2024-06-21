@@ -155,7 +155,7 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
                         </Card>
                         <Card className={"w-full sm:w-60"}>
                             <CardHeader>
-                                <CardTitle>EPA Breakdown</CardTitle>
+                                <CardTitle>EPA</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className={"flex justify-between"}>

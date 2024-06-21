@@ -48,7 +48,28 @@ model TeamEntry {
 
   name        String?
   status      String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
-  threatGrade String
+  threatGrade String?
+
+  wins   Int?
+  ties   Int?
+  losses Int?
+
+  worldRank     Int?
+  worldTotal    Int
+  countyRank    Int?
+  countyTotal   Int
+  districtRank  Int?
+  districtTotal Int
+  eventRank     Int?
+
+  autoEPA    Int?
+  teleopEPA  Int?
+  endgameEPA Int?
+
+  autoDeviation    Int?
+  teleopDeviation  Int?
+  endgameDeviation Int?
+  totalDeviation   Int?
 
   matchEntries MatchEntry[]
 

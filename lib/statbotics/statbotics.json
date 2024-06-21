@@ -432,6 +432,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "$ref": "#/components/schemas/TeamYear",
                   "title": "Response Read Team Year V3 Team Year  Team   Year  Get"
                 }
               }
@@ -4633,6 +4634,132 @@
   },
   "components": {
     "schemas": {
+      "TeamYear": {
+        "properties": {
+          "epa": {
+            "required": [
+              "breakdown",
+              "ranks"
+            ],
+            "type": "object",
+            "properties": {
+              "breakdown": {
+                "required": [
+                  "auto_points",
+                  "teleop_points",
+                  "endgame_points"
+                ],
+                "type": "object",
+                "properties": {
+                  "auto_points": {
+                    "type": "object",
+                    "properties": {
+                      "mean": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "teleop_points": {
+                    "type": "object",
+                    "properties": {
+                      "mean": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "endgame_points": {
+                    "type": "object",
+                    "properties": {
+                      "mean": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              },
+              "ranks": {
+                "type": "object",
+                "required": [
+                  "country",
+                  "district",
+                  "total"
+                ],
+                "properties": {
+                  "total": {
+                    "type": "object",
+                    "required": [
+                      "team_count"
+                    ],
+                    "properties": {
+                      "rank": {
+                        "type": "number"
+                      },
+                      "team_count": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "country": {
+                    "type": "object",
+                    "required": [
+                      "team_count"
+                    ],
+                    "properties": {
+                      "rank": {
+                        "type": "number"
+                      },
+                      "team_count": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "district": {
+                    "type": "object",
+                    "required": [
+                      "team_count"
+                    ],
+                    "properties": {
+                      "rank": {
+                        "type": "number"
+                      },
+                      "team_count": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "record": {
+            "type": "object",
+            "required": [
+              "season"
+            ],
+            "properties": {
+              "season": {
+                "type": "object",
+                "properties": {
+                  "wins": {
+                    "type": "number"
+                  },
+                  "ties": {
+                    "type": "number"
+                  },
+                  "losses": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "record",
+          "epa"
+        ]
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {

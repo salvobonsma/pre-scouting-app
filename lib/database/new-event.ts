@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import {tba} from "@/lib/tba/tba";
 import {redirect} from "next/navigation";
+import {statbotics} from "@/lib/statbotics/statbotics";
 
 export default async function NewEvent(key: string, year: number, name: string): Promise<ActionResult> {
     const event = (await tba.GET("/event/{event_key}", {
@@ -64,12 +65,10 @@ export default async function NewEvent(key: string, year: number, name: string):
             )
         }
 
-        // Autofill team information.
-
-        //statbotics
-
-
-        //statbotics end
+        const stats = await statbotics.GET("/v3/team_year/{team}/{year}", {
+            params: {path: {year: year, team: tbaTeam.team_number.toString()}}
+        });
+        if (!stats.data) return {success: false, message: "Statbotics API request error: " + stats.response.status};
 
         const teamEntryId = (await prisma.teamEntry.create(
               {
@@ -77,8 +76,19 @@ export default async function NewEvent(key: string, year: number, name: string):
                       key: tbaTeam.key,
                       eventId: eventId,
                       name: tbaTeam.nickname,
-                      threatGrade: "A",
-                      teamNumber: tbaTeam.team_number
+                      teamNumber: tbaTeam.team_number,
+                      wins: stats.data.record.season.wins,
+                      ties: stats.data.record.season.ties,
+                      losses: stats.data.record.season.losses,
+                      worldRank: stats.data.epa.ranks.total.rank,
+                      worldTotal: stats.data.epa.ranks.total.team_count,
+                      countyRank: stats.data.epa.ranks.country.rank,
+                      countyTotal: stats.data.epa.ranks.country.team_count,
+                      districtRank: stats.data.epa.ranks.district.rank,
+                      districtTotal: stats.data.epa.ranks.district.team_count,
+                      autoEPA: stats.data.epa.breakdown.auto_points.mean,
+                      teleopEPA: stats.data.epa.breakdown.teleop_points.mean,
+                      endgameEPA: stats.data.epa.breakdown.endgame_points.mean
                   }
               }
         )).id;

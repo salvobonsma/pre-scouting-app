@@ -5,380 +5,416 @@
 
 
 export interface paths {
-    "/v3/": {
-        /** Read Root */
-        get: operations["read_root_v3__get"];
-    };
-    "/v3/year/{year}": {
-        /**
-         * Query a single year
-         * @description Returns a single Year object. Requires a four-digit year, e.g. `2019`.
-         */
-        get: operations["read_year_v3_year__year__get"];
-    };
-    "/v3/years": {
-        /** Query multiple years */
-        get: operations["read_years_v3_years_get"];
-    };
-    "/v3/team/{team}": {
-        /**
-         * Query a single team
-         * @description Returns a single Team object. Requires a team number (no prefix).
-         */
-        get: operations["read_team_v3_team__team__get"];
-    };
-    "/v3/teams": {
-        /**
-         * Query multiple teams
-         * @description Returns up to 1000 teams at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_teams_v3_teams_get"];
-    };
-    "/v3/team_year/{team}/{year}": {
-        /**
-         * Query a single team year
-         * @description Returns a single Team Year object. Requires a team number and year.
-         */
-        get: operations["read_team_year_v3_team_year__team___year__get"];
-    };
-    "/v3/team_years": {
-        /**
-         * Query multiple team years
-         * @description Returns up to 1000 team years at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_team_years_v3_team_years_get"];
-    };
-    "/v3/event/{event}": {
-        /**
-         * Query a single event
-         * @description Returns a single Event object. Requires an event key, e.g. `2019ncwak`.
-         */
-        get: operations["read_event_v3_event__event__get"];
-    };
-    "/v3/events": {
-        /**
-         * Query multiple events
-         * @description Returns up to 1000 events at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_events_v3_events_get"];
-    };
-    "/v3/team_event/{team}/{event}": {
-        /**
-         * Query a single team event
-         * @description Returns a single Team Event object. Requires a team number and event key, e.g. `5511` and `2019ncwak`.
-         */
-        get: operations["read_team_event_v3_team_event__team___event__get"];
-    };
-    "/v3/team_events": {
-        /**
-         * Query multiple team events
-         * @description Returns up to 1000 team events at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_team_events_v3_team_events_get"];
-    };
-    "/v3/match/{match}": {
-        /**
-         * Query a single match
-         * @description Returns a single Match object. Requires a match key, e.g. `2019ncwak_f1m1`.
-         */
-        get: operations["read_match_v3_match__match__get"];
-    };
-    "/v3/matches": {
-        /**
-         * Query multiple matches
-         * @description Returns up to 1000 matches at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_matches_v3_matches_get"];
-    };
-    "/v3/team_match/{team}/{match}": {
-        /**
-         * Query a single team match
-         * @description Returns a single Team Match object. Requires a team number and match key, e.g. `5511` and `2019ncwak_f1m1`.
-         */
-        get: operations["read_team_match_v3_team_match__team___match__get"];
-    };
-    "/v3/team_matches": {
-        /**
-         * Query multiple team matches
-         * @description Returns up to 1000 team matches at a time. Specify limit and offset to page through results.
-         */
-        get: operations["read_team_matches_v3_team_matches_get"];
-    };
-    "/v2/": {
-        /** Read Root */
-        get: operations["read_root_v2__get"];
-    };
-    "/v2/year/{year}": {
-        /**
-         * Read Year
-         * @description Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy. After 2016, separated into components and ranking points included.
-         */
-        get: operations["read_year_v2_year__year__get"];
-    };
-    "/v2/years": {
-        /**
-         * Read Years
-         * @description Get a list of Year objects from 2002 to 2023. Specify a four-digit year, ex: 2019
-         */
-        get: operations["read_years_v2_years_get"];
-    };
-    "/v2/team/{team}": {
-        /**
-         * Read Team
-         * @description Get a single Team object containing team name, location, normalized EPA statistics, and winrate.
-         */
-        get: operations["read_team_v2_team__team__get"];
-    };
-    "/v2/teams/district/{district}": {
-        /**
-         * Read Teams District
-         * @description Get a list of Team objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
-         */
-        get: operations["read_teams_district_v2_teams_district__district__get"];
-    };
-    "/v2/teams/state/{state}": {
-        /**
-         * Read Teams State
-         * @description Get a list of Team objects from a single state. Specify uppercase state abbreviation, ex: NC, CA
-         */
-        get: operations["read_teams_state_v2_teams_state__state__get"];
-    };
-    "/v2/teams": {
-        /**
-         * Read Teams
-         * @description Get a list of Team objects with optional filters.
-         */
-        get: operations["read_teams_v2_teams_get"];
-    };
-    "/v2/team_year/{team}/{year}": {
-        /**
-         * Read Team Year
-         * @description Get a single TeamYear object containing EPA summary, winrates, and location rankings
-         */
-        get: operations["read_team_year_v2_team_year__team___year__get"];
-    };
-    "/v2/team_years/team/{team}": {
-        /**
-         * Read Team Years Team
-         * @description Get a list of TeamYear objects for a single team. Specify team number, ex: 254, 1114
-         */
-        get: operations["read_team_years_team_v2_team_years_team__team__get"];
-    };
-    "/v2/team_years/year/{year}/district/{district}": {
-        /**
-         * Read Team Years District
-         * @description Get a list of TeamYear objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
-         */
-        get: operations["read_team_years_district_v2_team_years_year__year__district__district__get"];
-    };
-    "/v2/team_years/year/{year}/state/{state}": {
-        /**
-         * Read Team Years State
-         * @description Get a list of TeamYear objects from a single state. Specify lowercase state abbreviation, ex: ca, tx
-         */
-        get: operations["read_team_years_state_v2_team_years_year__year__state__state__get"];
-    };
-    "/v2/team_years": {
-        /**
-         * Read Team Years
-         * @description Get a list of TeamYear objects with optional filters.
-         */
-        get: operations["read_team_years_v2_team_years_get"];
-    };
-    "/v2/event/{event}": {
-        /**
-         * Read Event
-         * @description Get a single Event object containing event location, dates, EPA stats, prediction stats. Specify event key ex: 2019ncwak, 2022cmptx
-         */
-        get: operations["read_event_v2_event__event__get"];
-    };
-    "/v2/events/year/{year}": {
-        /**
-         * Read Events Year
-         * @description Get a list of Event objects for a single year. Specify year, ex: 2019, 2020
-         */
-        get: operations["read_events_year_v2_events_year__year__get"];
-    };
-    "/v2/events/year/{year}/district/{district}": {
-        /**
-         * Read Events Year District
-         * @description Get a list of Event objects for a single (year, district) pair. Specify year as four-digit number, district as lowercase abbreviation.
-         */
-        get: operations["read_events_year_district_v2_events_year__year__district__district__get"];
-    };
-    "/v2/events/year/{year}/state/{state}": {
-        /**
-         * Read Events Year State
-         * @description Get a list of Event objects for a single (year, state) pair. Specify year as four-digit number, state as uppercase two-letter abbreviation.
-         */
-        get: operations["read_events_year_state_v2_events_year__year__state__state__get"];
-    };
-    "/v2/events/district/{district}": {
-        /**
-         * Read Events District
-         * @description Get a list of Event objects for a single district. Specify district as lowercase abbreviation, ex fnc, fim.
-         */
-        get: operations["read_events_district_v2_events_district__district__get"];
-    };
-    "/v2/events/state/{state}": {
-        /**
-         * Read Events State
-         * @description Get a list of Event objects for a single state. Specify state as uppercase two-letter abbreviation, ex CA, TX.
-         */
-        get: operations["read_events_state_v2_events_state__state__get"];
-    };
-    "/v2/events": {
-        /**
-         * Read Events
-         * @description Get a list of all Event objects with optional filters.
-         */
-        get: operations["read_events_v2_events_get"];
-    };
-    "/v2/team_event/{team}/{event}": {
-        /**
-         * Read Team Event
-         * @description Get a single Team Event object containing event metadata, EPA statistics, and winrate. Specify team number and event key ex: 5511, 2019ncwak
-         */
-        get: operations["read_team_event_v2_team_event__team___event__get"];
-    };
-    "/v2/team_events/team/{team}": {
-        /**
-         * Read Team Events Team
-         * @description Get a list of Team Event objects for a single team. Specify team number, ex: 5511
-         */
-        get: operations["read_team_events_team_v2_team_events_team__team__get"];
-    };
-    "/v2/team_events/team/{team}/year/{year}": {
-        /**
-         * Read Team Events Team Year
-         * @description Get a list of Team Event objects for a single team and year. Specify team number and year, ex: 5511, 2019
-         */
-        get: operations["read_team_events_team_year_v2_team_events_team__team__year__year__get"];
-    };
-    "/v2/team_events/event/{event}": {
-        /**
-         * Read Team Events Event
-         * @description Get a list of Team Event objects for a single event. Specify event key, ex: 2019ncwak
-         */
-        get: operations["read_team_events_event_v2_team_events_event__event__get"];
-    };
-    "/v2/team_events/year/{year}/district/{district}": {
-        /**
-         * Read Team Events Year District
-         * @description Get a list of Team Event objects for a single year and district. Specify year and district, ex: 2019, fnc
-         */
-        get: operations["read_team_events_year_district_v2_team_events_year__year__district__district__get"];
-    };
-    "/v2/team_events/year/{year}/state/{state}": {
-        /**
-         * Read Team Events Year State
-         * @description Get a list of Team Event objects for a single year and state. Specify year and state, ex: 2019, NC
-         */
-        get: operations["read_team_events_year_state_v2_team_events_year__year__state__state__get"];
-    };
-    "/v2/team_events": {
-        /**
-         * Read Team Events
-         * @description Get a list of all Team Event objects with optional filters.
-         */
-        get: operations["read_team_events_v2_team_events_get"];
-    };
-    "/v2/match/{match}": {
-        /**
-         * Read Match
-         * @description Get a single Match object containing teams, score prediction, and actual results. Specify match key ex: 2019ncwak_f1m1
-         */
-        get: operations["read_match_v2_match__match__get"];
-    };
-    "/v2/matches/event/{event}": {
-        /**
-         * Read Matches Event
-         * @description Get a list of Match objects for a single event. Specify event key ex: 2019ncwak, 2022cmptx
-         */
-        get: operations["read_matches_event_v2_matches_event__event__get"];
-    };
-    "/v2/matches/team/{team}/year/{year}": {
-        /**
-         * Read Matches Team Year
-         * @description Get a list of Match objects for a single team in a single year. Specify team number and year, ex: 254, 2019
-         */
-        get: operations["read_matches_team_year_v2_matches_team__team__year__year__get"];
-    };
-    "/v2/matches/team/{team}/event/{event}": {
-        /**
-         * Read Matches Team Event
-         * @description Get a list of Match objects for a single team in a single event. Specify team number and event key, ex: 5511, 2019ncwak
-         */
-        get: operations["read_matches_team_event_v2_matches_team__team__event__event__get"];
-    };
-    "/v2/matches": {
-        /**
-         * Read Matches
-         * @description Get a list of Matches with optional filters
-         */
-        get: operations["read_matches_v2_matches_get"];
-    };
-    "/v2/team_match/{team}/{match}": {
-        /**
-         * Read Team Match
-         * @description Get a single Team Match object containing team and EPA predictions. Specify team number and match key ex: 5511, 2019ncwak_f1m1
-         */
-        get: operations["read_team_match_v2_team_match__team___match__get"];
-    };
-    "/v2/team_matches/team/{team}/year/{year}": {
-        /**
-         * Read Team Matches Team Year
-         * @description Get a list of Team Match objects for a single team and year. Specify team number and year ex: 5511, 2019. Note, includes offseason events.
-         */
-        get: operations["read_team_matches_team_year_v2_team_matches_team__team__year__year__get"];
-    };
-    "/v2/team_matches/team/{team}/event/{event}": {
-        /**
-         * Read Team Matches Team Event
-         * @description Get a list of Team Match objects for a single team and event. Specify team number and event key ex: 5511, 2019ncwak
-         */
-        get: operations["read_team_matches_team_event_v2_team_matches_team__team__event__event__get"];
-    };
-    "/v2/team_matches/event/{event}": {
-        /**
-         * Read Team Matches Event
-         * @description Get a list of Team Match objects for a single event. Specify event key ex: 2019ncwak
-         */
-        get: operations["read_team_matches_event_v2_team_matches_event__event__get"];
-    };
-    "/v2/team_matches": {
-        /**
-         * Read Team Matches
-         * @description Get a list of Team Match objects with optional filters
-         */
-        get: operations["read_team_matches_v2_team_matches_get"];
-    };
+  "/v3/": {
+    /** Read Root */
+    get: operations["read_root_v3__get"];
+  };
+  "/v3/year/{year}": {
+    /**
+     * Query a single year
+     * @description Returns a single Year object. Requires a four-digit year, e.g. `2019`.
+     */
+    get: operations["read_year_v3_year__year__get"];
+  };
+  "/v3/years": {
+    /** Query multiple years */
+    get: operations["read_years_v3_years_get"];
+  };
+  "/v3/team/{team}": {
+    /**
+     * Query a single team
+     * @description Returns a single Team object. Requires a team number (no prefix).
+     */
+    get: operations["read_team_v3_team__team__get"];
+  };
+  "/v3/teams": {
+    /**
+     * Query multiple teams
+     * @description Returns up to 1000 teams at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_teams_v3_teams_get"];
+  };
+  "/v3/team_year/{team}/{year}": {
+    /**
+     * Query a single team year
+     * @description Returns a single Team Year object. Requires a team number and year.
+     */
+    get: operations["read_team_year_v3_team_year__team___year__get"];
+  };
+  "/v3/team_years": {
+    /**
+     * Query multiple team years
+     * @description Returns up to 1000 team years at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_team_years_v3_team_years_get"];
+  };
+  "/v3/event/{event}": {
+    /**
+     * Query a single event
+     * @description Returns a single Event object. Requires an event key, e.g. `2019ncwak`.
+     */
+    get: operations["read_event_v3_event__event__get"];
+  };
+  "/v3/events": {
+    /**
+     * Query multiple events
+     * @description Returns up to 1000 events at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_events_v3_events_get"];
+  };
+  "/v3/team_event/{team}/{event}": {
+    /**
+     * Query a single team event
+     * @description Returns a single Team Event object. Requires a team number and event key, e.g. `5511` and `2019ncwak`.
+     */
+    get: operations["read_team_event_v3_team_event__team___event__get"];
+  };
+  "/v3/team_events": {
+    /**
+     * Query multiple team events
+     * @description Returns up to 1000 team events at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_team_events_v3_team_events_get"];
+  };
+  "/v3/match/{match}": {
+    /**
+     * Query a single match
+     * @description Returns a single Match object. Requires a match key, e.g. `2019ncwak_f1m1`.
+     */
+    get: operations["read_match_v3_match__match__get"];
+  };
+  "/v3/matches": {
+    /**
+     * Query multiple matches
+     * @description Returns up to 1000 matches at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_matches_v3_matches_get"];
+  };
+  "/v3/team_match/{team}/{match}": {
+    /**
+     * Query a single team match
+     * @description Returns a single Team Match object. Requires a team number and match key, e.g. `5511` and `2019ncwak_f1m1`.
+     */
+    get: operations["read_team_match_v3_team_match__team___match__get"];
+  };
+  "/v3/team_matches": {
+    /**
+     * Query multiple team matches
+     * @description Returns up to 1000 team matches at a time. Specify limit and offset to page through results.
+     */
+    get: operations["read_team_matches_v3_team_matches_get"];
+  };
+  "/v2/": {
+    /** Read Root */
+    get: operations["read_root_v2__get"];
+  };
+  "/v2/year/{year}": {
+    /**
+     * Read Year
+     * @description Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy. After 2016, separated into components and ranking points included.
+     */
+    get: operations["read_year_v2_year__year__get"];
+  };
+  "/v2/years": {
+    /**
+     * Read Years
+     * @description Get a list of Year objects from 2002 to 2023. Specify a four-digit year, ex: 2019
+     */
+    get: operations["read_years_v2_years_get"];
+  };
+  "/v2/team/{team}": {
+    /**
+     * Read Team
+     * @description Get a single Team object containing team name, location, normalized EPA statistics, and winrate.
+     */
+    get: operations["read_team_v2_team__team__get"];
+  };
+  "/v2/teams/district/{district}": {
+    /**
+     * Read Teams District
+     * @description Get a list of Team objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
+     */
+    get: operations["read_teams_district_v2_teams_district__district__get"];
+  };
+  "/v2/teams/state/{state}": {
+    /**
+     * Read Teams State
+     * @description Get a list of Team objects from a single state. Specify uppercase state abbreviation, ex: NC, CA
+     */
+    get: operations["read_teams_state_v2_teams_state__state__get"];
+  };
+  "/v2/teams": {
+    /**
+     * Read Teams
+     * @description Get a list of Team objects with optional filters.
+     */
+    get: operations["read_teams_v2_teams_get"];
+  };
+  "/v2/team_year/{team}/{year}": {
+    /**
+     * Read Team Year
+     * @description Get a single TeamYear object containing EPA summary, winrates, and location rankings
+     */
+    get: operations["read_team_year_v2_team_year__team___year__get"];
+  };
+  "/v2/team_years/team/{team}": {
+    /**
+     * Read Team Years Team
+     * @description Get a list of TeamYear objects for a single team. Specify team number, ex: 254, 1114
+     */
+    get: operations["read_team_years_team_v2_team_years_team__team__get"];
+  };
+  "/v2/team_years/year/{year}/district/{district}": {
+    /**
+     * Read Team Years District
+     * @description Get a list of TeamYear objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
+     */
+    get: operations["read_team_years_district_v2_team_years_year__year__district__district__get"];
+  };
+  "/v2/team_years/year/{year}/state/{state}": {
+    /**
+     * Read Team Years State
+     * @description Get a list of TeamYear objects from a single state. Specify lowercase state abbreviation, ex: ca, tx
+     */
+    get: operations["read_team_years_state_v2_team_years_year__year__state__state__get"];
+  };
+  "/v2/team_years": {
+    /**
+     * Read Team Years
+     * @description Get a list of TeamYear objects with optional filters.
+     */
+    get: operations["read_team_years_v2_team_years_get"];
+  };
+  "/v2/event/{event}": {
+    /**
+     * Read Event
+     * @description Get a single Event object containing event location, dates, EPA stats, prediction stats. Specify event key ex: 2019ncwak, 2022cmptx
+     */
+    get: operations["read_event_v2_event__event__get"];
+  };
+  "/v2/events/year/{year}": {
+    /**
+     * Read Events Year
+     * @description Get a list of Event objects for a single year. Specify year, ex: 2019, 2020
+     */
+    get: operations["read_events_year_v2_events_year__year__get"];
+  };
+  "/v2/events/year/{year}/district/{district}": {
+    /**
+     * Read Events Year District
+     * @description Get a list of Event objects for a single (year, district) pair. Specify year as four-digit number, district as lowercase abbreviation.
+     */
+    get: operations["read_events_year_district_v2_events_year__year__district__district__get"];
+  };
+  "/v2/events/year/{year}/state/{state}": {
+    /**
+     * Read Events Year State
+     * @description Get a list of Event objects for a single (year, state) pair. Specify year as four-digit number, state as uppercase two-letter abbreviation.
+     */
+    get: operations["read_events_year_state_v2_events_year__year__state__state__get"];
+  };
+  "/v2/events/district/{district}": {
+    /**
+     * Read Events District
+     * @description Get a list of Event objects for a single district. Specify district as lowercase abbreviation, ex fnc, fim.
+     */
+    get: operations["read_events_district_v2_events_district__district__get"];
+  };
+  "/v2/events/state/{state}": {
+    /**
+     * Read Events State
+     * @description Get a list of Event objects for a single state. Specify state as uppercase two-letter abbreviation, ex CA, TX.
+     */
+    get: operations["read_events_state_v2_events_state__state__get"];
+  };
+  "/v2/events": {
+    /**
+     * Read Events
+     * @description Get a list of all Event objects with optional filters.
+     */
+    get: operations["read_events_v2_events_get"];
+  };
+  "/v2/team_event/{team}/{event}": {
+    /**
+     * Read Team Event
+     * @description Get a single Team Event object containing event metadata, EPA statistics, and winrate. Specify team number and event key ex: 5511, 2019ncwak
+     */
+    get: operations["read_team_event_v2_team_event__team___event__get"];
+  };
+  "/v2/team_events/team/{team}": {
+    /**
+     * Read Team Events Team
+     * @description Get a list of Team Event objects for a single team. Specify team number, ex: 5511
+     */
+    get: operations["read_team_events_team_v2_team_events_team__team__get"];
+  };
+  "/v2/team_events/team/{team}/year/{year}": {
+    /**
+     * Read Team Events Team Year
+     * @description Get a list of Team Event objects for a single team and year. Specify team number and year, ex: 5511, 2019
+     */
+    get: operations["read_team_events_team_year_v2_team_events_team__team__year__year__get"];
+  };
+  "/v2/team_events/event/{event}": {
+    /**
+     * Read Team Events Event
+     * @description Get a list of Team Event objects for a single event. Specify event key, ex: 2019ncwak
+     */
+    get: operations["read_team_events_event_v2_team_events_event__event__get"];
+  };
+  "/v2/team_events/year/{year}/district/{district}": {
+    /**
+     * Read Team Events Year District
+     * @description Get a list of Team Event objects for a single year and district. Specify year and district, ex: 2019, fnc
+     */
+    get: operations["read_team_events_year_district_v2_team_events_year__year__district__district__get"];
+  };
+  "/v2/team_events/year/{year}/state/{state}": {
+    /**
+     * Read Team Events Year State
+     * @description Get a list of Team Event objects for a single year and state. Specify year and state, ex: 2019, NC
+     */
+    get: operations["read_team_events_year_state_v2_team_events_year__year__state__state__get"];
+  };
+  "/v2/team_events": {
+    /**
+     * Read Team Events
+     * @description Get a list of all Team Event objects with optional filters.
+     */
+    get: operations["read_team_events_v2_team_events_get"];
+  };
+  "/v2/match/{match}": {
+    /**
+     * Read Match
+     * @description Get a single Match object containing teams, score prediction, and actual results. Specify match key ex: 2019ncwak_f1m1
+     */
+    get: operations["read_match_v2_match__match__get"];
+  };
+  "/v2/matches/event/{event}": {
+    /**
+     * Read Matches Event
+     * @description Get a list of Match objects for a single event. Specify event key ex: 2019ncwak, 2022cmptx
+     */
+    get: operations["read_matches_event_v2_matches_event__event__get"];
+  };
+  "/v2/matches/team/{team}/year/{year}": {
+    /**
+     * Read Matches Team Year
+     * @description Get a list of Match objects for a single team in a single year. Specify team number and year, ex: 254, 2019
+     */
+    get: operations["read_matches_team_year_v2_matches_team__team__year__year__get"];
+  };
+  "/v2/matches/team/{team}/event/{event}": {
+    /**
+     * Read Matches Team Event
+     * @description Get a list of Match objects for a single team in a single event. Specify team number and event key, ex: 5511, 2019ncwak
+     */
+    get: operations["read_matches_team_event_v2_matches_team__team__event__event__get"];
+  };
+  "/v2/matches": {
+    /**
+     * Read Matches
+     * @description Get a list of Matches with optional filters
+     */
+    get: operations["read_matches_v2_matches_get"];
+  };
+  "/v2/team_match/{team}/{match}": {
+    /**
+     * Read Team Match
+     * @description Get a single Team Match object containing team and EPA predictions. Specify team number and match key ex: 5511, 2019ncwak_f1m1
+     */
+    get: operations["read_team_match_v2_team_match__team___match__get"];
+  };
+  "/v2/team_matches/team/{team}/year/{year}": {
+    /**
+     * Read Team Matches Team Year
+     * @description Get a list of Team Match objects for a single team and year. Specify team number and year ex: 5511, 2019. Note, includes offseason events.
+     */
+    get: operations["read_team_matches_team_year_v2_team_matches_team__team__year__year__get"];
+  };
+  "/v2/team_matches/team/{team}/event/{event}": {
+    /**
+     * Read Team Matches Team Event
+     * @description Get a list of Team Match objects for a single team and event. Specify team number and event key ex: 5511, 2019ncwak
+     */
+    get: operations["read_team_matches_team_event_v2_team_matches_team__team__event__event__get"];
+  };
+  "/v2/team_matches/event/{event}": {
+    /**
+     * Read Team Matches Event
+     * @description Get a list of Team Match objects for a single event. Specify event key ex: 2019ncwak
+     */
+    get: operations["read_team_matches_event_v2_team_matches_event__event__get"];
+  };
+  "/v2/team_matches": {
+    /**
+     * Read Team Matches
+     * @description Get a list of Team Match objects with optional filters
+     */
+    get: operations["read_team_matches_v2_team_matches_get"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
-    schemas: {
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
+  schemas: {
+    TeamYear: {
+      epa: {
+        breakdown: {
+          auto_points: {
+            mean?: number;
+          };
+          teleop_points: {
+            mean?: number;
+          };
+          endgame_points: {
+            mean?: number;
+          };
         };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
-            /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
+        ranks: {
+          total: {
+            rank?: number;
+            team_count: number;
+          };
+          country: {
+            rank?: number;
+            team_count: number;
+          };
+          district: {
+            rank?: number;
+            team_count: number;
+          };
         };
+      };
+      record: {
+        season: {
+          wins?: number;
+          ties?: number;
+          losses?: number;
+        };
+      };
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /** HTTPValidationError */
+    HTTPValidationError: {
+      /** Detail */
+      detail?: components["schemas"]["ValidationError"][];
+    };
+    /** ValidationError */
+    ValidationError: {
+      /** Location */
+      loc: (string | number)[];
+      /** Message */
+      msg: string;
+      /** Error Type */
+      type: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 
 export type $defs = Record<string, never>;
@@ -387,1455 +423,1455 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-    /** Read Root */
-    read_root_v3__get: {
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": unknown;
-                };
-            };
+  /** Read Root */
+  read_root_v3__get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": unknown;
         };
+      };
     };
-    /**
-     * Query a single year
-     * @description Returns a single Year object. Requires a four-digit year, e.g. `2019`.
-     */
-    read_year_v3_year__year__get: {
-        parameters: {
-            path: {
-                year: number;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single year
+   * @description Returns a single Year object. Requires a four-digit year, e.g. `2019`.
+   */
+  read_year_v3_year__year__get: {
+    parameters: {
+      path: {
+        year: number;
+      };
     };
-    /** Query multiple years */
-    read_years_v3_years_get: {
-        parameters: {
-            query?: {
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description Returns a list of Years since 2002. Older data is not available. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single team
-     * @description Returns a single Team object. Requires a team number (no prefix).
-     */
-    read_team_v3_team__team__get: {
-        parameters: {
-            path: {
-                team: string;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /** Query multiple years */
+  read_years_v3_years_get: {
+    parameters: {
+      query?: {
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Query multiple teams
-     * @description Returns up to 1000 teams at a time. Specify limit and offset to page through results.
-     */
-    read_teams_v3_teams_get: {
-        parameters: {
-            query?: {
-                /** @description Capitalized country name, e.g. `USA` or `Canada`. */
-                country?: string | null;
-                /** @description Capitalized two-letter state code, e.g. `NC`. */
-                state?: string | null;
-                /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
-                district?: string | null;
-                /** @description Whether the team has played in the last year. */
-                active?: boolean | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number;
-                /** @description Offset from the first result to return. */
-                offset?: number;
-            };
+    responses: {
+      /** @description Returns a list of Years since 2002. Older data is not available. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single team year
-     * @description Returns a single Team Year object. Requires a team number and year.
-     */
-    read_team_year_v3_team_year__team___year__get: {
-        parameters: {
-            path: {
-                team: string;
-                year: number;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single team
+   * @description Returns a single Team object. Requires a team number (no prefix).
+   */
+  read_team_v3_team__team__get: {
+    parameters: {
+      path: {
+        team: string;
+      };
     };
-    /**
-     * Query multiple team years
-     * @description Returns up to 1000 team years at a time. Specify limit and offset to page through results.
-     */
-    read_team_years_v3_team_years_get: {
-        parameters: {
-            query?: {
-                /** @description Team number (no prefix), e.g. `5511`. */
-                team?: string | null;
-                /** @description Four-digit year */
-                year?: number | null;
-                /** @description Capitalized country name, e.g. `USA` or `Canada`. */
-                country?: string | null;
-                /** @description Capitalized two-letter state code, e.g. `NC`. */
-                state?: string | null;
-                /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
-                district?: string | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single event
-     * @description Returns a single Event object. Requires an event key, e.g. `2019ncwak`.
-     */
-    read_event_v3_event__event__get: {
-        parameters: {
-            path: {
-                event: string;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple teams
+   * @description Returns up to 1000 teams at a time. Specify limit and offset to page through results.
+   */
+  read_teams_v3_teams_get: {
+    parameters: {
+      query?: {
+        /** @description Capitalized country name, e.g. `USA` or `Canada`. */
+        country?: string | null;
+        /** @description Capitalized two-letter state code, e.g. `NC`. */
+        state?: string | null;
+        /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
+        district?: string | null;
+        /** @description Whether the team has played in the last year. */
+        active?: boolean | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number;
+        /** @description Offset from the first result to return. */
+        offset?: number;
+      };
     };
-    /**
-     * Query multiple events
-     * @description Returns up to 1000 events at a time. Specify limit and offset to page through results.
-     */
-    read_events_v3_events_get: {
-        parameters: {
-            query?: {
-                /** @description Four-digit year */
-                year?: number | null;
-                /** @description Capitalized country name, e.g. `USA` or `Canada`. */
-                country?: string | null;
-                /** @description Capitalized two-letter state code, e.g. `NC`. */
-                state?: string | null;
-                /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
-                district?: string | null;
-                /** @description One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]. */
-                type?: string | null;
-                /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
-                week?: number | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single team event
-     * @description Returns a single Team Event object. Requires a team number and event key, e.g. `5511` and `2019ncwak`.
-     */
-    read_team_event_v3_team_event__team___event__get: {
-        parameters: {
-            path: {
-                team: string;
-                event: string;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single team year
+   * @description Returns a single Team Year object. Requires a team number and year.
+   */
+  read_team_year_v3_team_year__team___year__get: {
+    parameters: {
+      path: {
+        team: string;
+        year: number;
+      };
     };
-    /**
-     * Query multiple team events
-     * @description Returns up to 1000 team events at a time. Specify limit and offset to page through results.
-     */
-    read_team_events_v3_team_events_get: {
-        parameters: {
-            query?: {
-                /** @description Team number (no prefix), e.g. `5511`. */
-                team?: string | null;
-                /** @description Four-digit year */
-                year?: number | null;
-                /** @description Event key, e.g. `2019ncwak`. */
-                event?: string | null;
-                /** @description Capitalized country name, e.g. `USA` or `Canada`. */
-                country?: string | null;
-                /** @description Capitalized two-letter state code, e.g. `NC`. */
-                state?: string | null;
-                /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
-                district?: string | null;
-                /** @description One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]. */
-                type?: string | null;
-                /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
-                week?: number | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TeamYear"];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single match
-     * @description Returns a single Match object. Requires a match key, e.g. `2019ncwak_f1m1`.
-     */
-    read_match_v3_match__match__get: {
-        parameters: {
-            path: {
-                match: string;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple team years
+   * @description Returns up to 1000 team years at a time. Specify limit and offset to page through results.
+   */
+  read_team_years_v3_team_years_get: {
+    parameters: {
+      query?: {
+        /** @description Team number (no prefix), e.g. `5511`. */
+        team?: string | null;
+        /** @description Four-digit year */
+        year?: number | null;
+        /** @description Capitalized country name, e.g. `USA` or `Canada`. */
+        country?: string | null;
+        /** @description Capitalized two-letter state code, e.g. `NC`. */
+        state?: string | null;
+        /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
+        district?: string | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Query multiple matches
-     * @description Returns up to 1000 matches at a time. Specify limit and offset to page through results.
-     */
-    read_matches_v3_matches_get: {
-        parameters: {
-            query?: {
-                /** @description Team number (no prefix), e.g. `5511`. */
-                team?: string | null;
-                /** @description Four-digit year */
-                year?: number | null;
-                /** @description Event key, e.g. `2019ncwak`. */
-                event?: string | null;
-                /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
-                week?: number | null;
-                /** @description Whether the match is an elimination match. */
-                elim?: boolean | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Query a single team match
-     * @description Returns a single Team Match object. Requires a team number and match key, e.g. `5511` and `2019ncwak_f1m1`.
-     */
-    read_team_match_v3_team_match__team___match__get: {
-        parameters: {
-            path: {
-                team: string;
-                match: string;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single event
+   * @description Returns a single Event object. Requires an event key, e.g. `2019ncwak`.
+   */
+  read_event_v3_event__event__get: {
+    parameters: {
+      path: {
+        event: string;
+      };
     };
-    /**
-     * Query multiple team matches
-     * @description Returns up to 1000 team matches at a time. Specify limit and offset to page through results.
-     */
-    read_team_matches_v3_team_matches_get: {
-        parameters: {
-            query?: {
-                /** @description Team number (no prefix), e.g. `5511`. */
-                team?: string | null;
-                /** @description Four-digit year */
-                year?: number | null;
-                /** @description Event key, e.g. `2019ncwak`. */
-                event?: string | null;
-                /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
-                week?: number | null;
-                /** @description Match key, e.g. `2019ncwak_f1m1`. */
-                match?: string | null;
-                /** @description Whether the match is an elimination match. */
-                elim?: boolean | null;
-                /** @description Whether the event is an offseason event. */
-                offseason?: boolean | null;
-                /** @description How to sort the returned values. Any column in the table is valid. */
-                metric?: string | null;
-                /** @description Whether to sort the returned values in ascending order. Default is ascending */
-                ascending?: boolean | null;
-                /** @description Maximum number of events to return. Default is 1000. */
-                limit?: number | null;
-                /** @description Offset from the first result to return. */
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /** Read Root */
-    read_root_v2__get: {
-        responses: {
-            /** @description Successful Response */
-            200: {
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple events
+   * @description Returns up to 1000 events at a time. Specify limit and offset to page through results.
+   */
+  read_events_v3_events_get: {
+    parameters: {
+      query?: {
+        /** @description Four-digit year */
+        year?: number | null;
+        /** @description Capitalized country name, e.g. `USA` or `Canada`. */
+        country?: string | null;
+        /** @description Capitalized two-letter state code, e.g. `NC`. */
+        state?: string | null;
+        /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
+        district?: string | null;
+        /** @description One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]. */
+        type?: string | null;
+        /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
+        week?: number | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Read Year
-     * @description Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy. After 2016, separated into components and ranking points included.
-     */
-    read_year_v2_year__year__get: {
-        parameters: {
-            path: {
-                year: number;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A Year object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Years
-     * @description Get a list of Year objects from 2002 to 2023. Specify a four-digit year, ex: 2019
-     */
-    read_years_v2_years_get: {
-        parameters: {
-            query?: {
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
-        };
-        responses: {
-            /** @description A list of Year objects. See /year/{year} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single team event
+   * @description Returns a single Team Event object. Requires a team number and event key, e.g. `5511` and `2019ncwak`.
+   */
+  read_team_event_v3_team_event__team___event__get: {
+    parameters: {
+      path: {
+        team: string;
+        event: string;
+      };
     };
-    /**
-     * Read Team
-     * @description Get a single Team object containing team name, location, normalized EPA statistics, and winrate.
-     */
-    read_team_v2_team__team__get: {
-        parameters: {
-            path: {
-                team: number;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A Team object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Teams District
-     * @description Get a list of Team objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
-     */
-    read_teams_district_v2_teams_district__district__get: {
-        parameters: {
-            path: {
-                district: string;
-            };
-        };
-        responses: {
-            /** @description A list of Team objects. See /team/{team} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple team events
+   * @description Returns up to 1000 team events at a time. Specify limit and offset to page through results.
+   */
+  read_team_events_v3_team_events_get: {
+    parameters: {
+      query?: {
+        /** @description Team number (no prefix), e.g. `5511`. */
+        team?: string | null;
+        /** @description Four-digit year */
+        year?: number | null;
+        /** @description Event key, e.g. `2019ncwak`. */
+        event?: string | null;
+        /** @description Capitalized country name, e.g. `USA` or `Canada`. */
+        country?: string | null;
+        /** @description Capitalized two-letter state code, e.g. `NC`. */
+        state?: string | null;
+        /** @description One of [`fma`, `fnc`, `fit`, `fin`, `fim`, `ne`, `chs`, `ont`, `pnw`, `pch`, `isr`] */
+        district?: string | null;
+        /** @description One of [`regional`, `district`, `district_cmp`, `cmp_division`, `cmp_finals`, `offseason`, or `preseason`]. */
+        type?: string | null;
+        /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
+        week?: number | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Read Teams State
-     * @description Get a list of Team objects from a single state. Specify uppercase state abbreviation, ex: NC, CA
-     */
-    read_teams_state_v2_teams_state__state__get: {
-        parameters: {
-            path: {
-                state: string;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Team objects. See /team/{team} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Teams
-     * @description Get a list of Team objects with optional filters.
-     */
-    read_teams_v2_teams_get: {
-        parameters: {
-            query?: {
-                country?: string | null;
-                district?: string | null;
-                state?: string | null;
-                active?: boolean | null;
-                offseason?: boolean | null;
-                metric?: string;
-                ascending?: boolean;
-                limit?: number;
-                offset?: number;
-            };
-        };
-        responses: {
-            /** @description A list of Team objects. See /team/{team} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single match
+   * @description Returns a single Match object. Requires a match key, e.g. `2019ncwak_f1m1`.
+   */
+  read_match_v3_match__match__get: {
+    parameters: {
+      path: {
+        match: string;
+      };
     };
-    /**
-     * Read Team Year
-     * @description Get a single TeamYear object containing EPA summary, winrates, and location rankings
-     */
-    read_team_year_v2_team_year__team___year__get: {
-        parameters: {
-            path: {
-                team: number;
-                year: number;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A TeamYear object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Years Team
-     * @description Get a list of TeamYear objects for a single team. Specify team number, ex: 254, 1114
-     */
-    read_team_years_team_v2_team_years_team__team__get: {
-        parameters: {
-            path: {
-                team: number;
-            };
-        };
-        responses: {
-            /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple matches
+   * @description Returns up to 1000 matches at a time. Specify limit and offset to page through results.
+   */
+  read_matches_v3_matches_get: {
+    parameters: {
+      query?: {
+        /** @description Team number (no prefix), e.g. `5511`. */
+        team?: string | null;
+        /** @description Four-digit year */
+        year?: number | null;
+        /** @description Event key, e.g. `2019ncwak`. */
+        event?: string | null;
+        /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
+        week?: number | null;
+        /** @description Whether the match is an elimination match. */
+        elim?: boolean | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Read Team Years District
-     * @description Get a list of TeamYear objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
-     */
-    read_team_years_district_v2_team_years_year__year__district__district__get: {
-        parameters: {
-            path: {
-                year: number;
-                district: string;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Years State
-     * @description Get a list of TeamYear objects from a single state. Specify lowercase state abbreviation, ex: ca, tx
-     */
-    read_team_years_state_v2_team_years_year__year__state__state__get: {
-        parameters: {
-            path: {
-                year: number;
-                state: string;
-            };
-        };
-        responses: {
-            /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query a single team match
+   * @description Returns a single Team Match object. Requires a team number and match key, e.g. `5511` and `2019ncwak_f1m1`.
+   */
+  read_team_match_v3_team_match__team___match__get: {
+    parameters: {
+      path: {
+        team: string;
+        match: string;
+      };
     };
-    /**
-     * Read Team Years
-     * @description Get a list of TeamYear objects with optional filters.
-     */
-    read_team_years_v2_team_years_get: {
-        parameters: {
-            query?: {
-                team?: number | null;
-                year?: number | null;
-                country?: string | null;
-                district?: string | null;
-                state?: string | null;
-                offseason?: boolean | null;
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Event
-     * @description Get a single Event object containing event location, dates, EPA stats, prediction stats. Specify event key ex: 2019ncwak, 2022cmptx
-     */
-    read_event_v2_event__event__get: {
-        parameters: {
-            path: {
-                event: string;
-            };
-        };
-        responses: {
-            /** @description An Event object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Query multiple team matches
+   * @description Returns up to 1000 team matches at a time. Specify limit and offset to page through results.
+   */
+  read_team_matches_v3_team_matches_get: {
+    parameters: {
+      query?: {
+        /** @description Team number (no prefix), e.g. `5511`. */
+        team?: string | null;
+        /** @description Four-digit year */
+        year?: number | null;
+        /** @description Event key, e.g. `2019ncwak`. */
+        event?: string | null;
+        /** @description Week of the competition season. 0 is preseason, 8 is CMP, 9 is offseason. */
+        week?: number | null;
+        /** @description Match key, e.g. `2019ncwak_f1m1`. */
+        match?: string | null;
+        /** @description Whether the match is an elimination match. */
+        elim?: boolean | null;
+        /** @description Whether the event is an offseason event. */
+        offseason?: boolean | null;
+        /** @description How to sort the returned values. Any column in the table is valid. */
+        metric?: string | null;
+        /** @description Whether to sort the returned values in ascending order. Default is ascending */
+        ascending?: boolean | null;
+        /** @description Maximum number of events to return. Default is 1000. */
+        limit?: number | null;
+        /** @description Offset from the first result to return. */
+        offset?: number | null;
+      };
     };
-    /**
-     * Read Events Year
-     * @description Get a list of Event objects for a single year. Specify year, ex: 2019, 2020
-     */
-    read_events_year_v2_events_year__year__get: {
-        parameters: {
-            path: {
-                year: number;
-            };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Events Year District
-     * @description Get a list of Event objects for a single (year, district) pair. Specify year as four-digit number, district as lowercase abbreviation.
-     */
-    read_events_year_district_v2_events_year__year__district__district__get: {
-        parameters: {
-            path: {
-                year: number;
-                district: string;
-            };
+  };
+  /** Read Root */
+  read_root_v2__get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": unknown;
         };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+      };
     };
-    /**
-     * Read Events Year State
-     * @description Get a list of Event objects for a single (year, state) pair. Specify year as four-digit number, state as uppercase two-letter abbreviation.
-     */
-    read_events_year_state_v2_events_year__year__state__state__get: {
-        parameters: {
-            path: {
-                year: number;
-                state: string;
-            };
-        };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Year
+   * @description Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy. After 2016, separated into components and ranking points included.
+   */
+  read_year_v2_year__year__get: {
+    parameters: {
+      path: {
+        year: number;
+      };
     };
-    /**
-     * Read Events District
-     * @description Get a list of Event objects for a single district. Specify district as lowercase abbreviation, ex fnc, fim.
-     */
-    read_events_district_v2_events_district__district__get: {
-        parameters: {
-            path: {
-                district: string;
-            };
+    responses: {
+      /** @description A Year object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Events State
-     * @description Get a list of Event objects for a single state. Specify state as uppercase two-letter abbreviation, ex CA, TX.
-     */
-    read_events_state_v2_events_state__state__get: {
-        parameters: {
-            path: {
-                state: string;
-            };
-        };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Years
+   * @description Get a list of Year objects from 2002 to 2023. Specify a four-digit year, ex: 2019
+   */
+  read_years_v2_years_get: {
+    parameters: {
+      query?: {
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
     };
-    /**
-     * Read Events
-     * @description Get a list of all Event objects with optional filters.
-     */
-    read_events_v2_events_get: {
-        parameters: {
-            query?: {
-                year?: number | null;
-                country?: string | null;
-                district?: string | null;
-                state?: string | null;
-                type?: number | null;
-                week?: number | null;
-                offseason?: boolean | null;
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
+    responses: {
+      /** @description A list of Year objects. See /year/{year} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Event objects. See /event/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Event
-     * @description Get a single Team Event object containing event metadata, EPA statistics, and winrate. Specify team number and event key ex: 5511, 2019ncwak
-     */
-    read_team_event_v2_team_event__team___event__get: {
-        parameters: {
-            path: {
-                team: number;
-                event: string;
-            };
-        };
-        responses: {
-            /** @description A Team Event object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team
+   * @description Get a single Team object containing team name, location, normalized EPA statistics, and winrate.
+   */
+  read_team_v2_team__team__get: {
+    parameters: {
+      path: {
+        team: number;
+      };
     };
-    /**
-     * Read Team Events Team
-     * @description Get a list of Team Event objects for a single team. Specify team number, ex: 5511
-     */
-    read_team_events_team_v2_team_events_team__team__get: {
-        parameters: {
-            path: {
-                team: number;
-            };
+    responses: {
+      /** @description A Team object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Events Team Year
-     * @description Get a list of Team Event objects for a single team and year. Specify team number and year, ex: 5511, 2019
-     */
-    read_team_events_team_year_v2_team_events_team__team__year__year__get: {
-        parameters: {
-            path: {
-                team: number;
-                year: number;
-            };
-        };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Teams District
+   * @description Get a list of Team objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
+   */
+  read_teams_district_v2_teams_district__district__get: {
+    parameters: {
+      path: {
+        district: string;
+      };
     };
-    /**
-     * Read Team Events Event
-     * @description Get a list of Team Event objects for a single event. Specify event key, ex: 2019ncwak
-     */
-    read_team_events_event_v2_team_events_event__event__get: {
-        parameters: {
-            path: {
-                event: string;
-            };
+    responses: {
+      /** @description A list of Team objects. See /team/{team} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Events Year District
-     * @description Get a list of Team Event objects for a single year and district. Specify year and district, ex: 2019, fnc
-     */
-    read_team_events_year_district_v2_team_events_year__year__district__district__get: {
-        parameters: {
-            path: {
-                year: number;
-                district: string;
-            };
-        };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Teams State
+   * @description Get a list of Team objects from a single state. Specify uppercase state abbreviation, ex: NC, CA
+   */
+  read_teams_state_v2_teams_state__state__get: {
+    parameters: {
+      path: {
+        state: string;
+      };
     };
-    /**
-     * Read Team Events Year State
-     * @description Get a list of Team Event objects for a single year and state. Specify year and state, ex: 2019, NC
-     */
-    read_team_events_year_state_v2_team_events_year__year__state__state__get: {
-        parameters: {
-            path: {
-                year: number;
-                state: string;
-            };
+    responses: {
+      /** @description A list of Team objects. See /team/{team} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Events
-     * @description Get a list of all Team Event objects with optional filters.
-     */
-    read_team_events_v2_team_events_get: {
-        parameters: {
-            query?: {
-                team?: number | null;
-                year?: number | null;
-                event?: string | null;
-                country?: string | null;
-                district?: string | null;
-                state?: string | null;
-                type?: number | null;
-                week?: number | null;
-                offseason?: boolean | null;
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
-        };
-        responses: {
-            /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Teams
+   * @description Get a list of Team objects with optional filters.
+   */
+  read_teams_v2_teams_get: {
+    parameters: {
+      query?: {
+        country?: string | null;
+        district?: string | null;
+        state?: string | null;
+        active?: boolean | null;
+        offseason?: boolean | null;
+        metric?: string;
+        ascending?: boolean;
+        limit?: number;
+        offset?: number;
+      };
     };
-    /**
-     * Read Match
-     * @description Get a single Match object containing teams, score prediction, and actual results. Specify match key ex: 2019ncwak_f1m1
-     */
-    read_match_v2_match__match__get: {
-        parameters: {
-            path: {
-                match: string;
-            };
+    responses: {
+      /** @description A list of Team objects. See /team/{team} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A Match object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Matches Event
-     * @description Get a list of Match objects for a single event. Specify event key ex: 2019ncwak, 2022cmptx
-     */
-    read_matches_event_v2_matches_event__event__get: {
-        parameters: {
-            path: {
-                event: string;
-            };
-        };
-        responses: {
-            /** @description A list of Match objects. See /match/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team Year
+   * @description Get a single TeamYear object containing EPA summary, winrates, and location rankings
+   */
+  read_team_year_v2_team_year__team___year__get: {
+    parameters: {
+      path: {
+        team: number;
+        year: number;
+      };
     };
-    /**
-     * Read Matches Team Year
-     * @description Get a list of Match objects for a single team in a single year. Specify team number and year, ex: 254, 2019
-     */
-    read_matches_team_year_v2_matches_team__team__year__year__get: {
-        parameters: {
-            path: {
-                team: number;
-                year: number;
-            };
+    responses: {
+      /** @description A TeamYear object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
         };
-        responses: {
-            /** @description A list of Match objects. See /match/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Matches Team Event
-     * @description Get a list of Match objects for a single team in a single event. Specify team number and event key, ex: 5511, 2019ncwak
-     */
-    read_matches_team_event_v2_matches_team__team__event__event__get: {
-        parameters: {
-            path: {
-                team: number;
-                event: string;
-            };
-        };
-        responses: {
-            /** @description A list of Match objects. See /match/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team Years Team
+   * @description Get a list of TeamYear objects for a single team. Specify team number, ex: 254, 1114
+   */
+  read_team_years_team_v2_team_years_team__team__get: {
+    parameters: {
+      path: {
+        team: number;
+      };
     };
-    /**
-     * Read Matches
-     * @description Get a list of Matches with optional filters
-     */
-    read_matches_v2_matches_get: {
-        parameters: {
-            query?: {
-                team?: number | null;
-                year?: number | null;
-                event?: string | null;
-                week?: number | null;
-                elims?: boolean | null;
-                offseason?: boolean | null;
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
+    responses: {
+      /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Match objects. See /match/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Match
-     * @description Get a single Team Match object containing team and EPA predictions. Specify team number and match key ex: 5511, 2019ncwak_f1m1
-     */
-    read_team_match_v2_team_match__team___match__get: {
-        parameters: {
-            path: {
-                team: number;
-                match: string;
-            };
-        };
-        responses: {
-            /** @description A Team Match object. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team Years District
+   * @description Get a list of TeamYear objects from a single district. Specify lowercase district abbreviation, ex: fnc, fim
+   */
+  read_team_years_district_v2_team_years_year__year__district__district__get: {
+    parameters: {
+      path: {
+        year: number;
+        district: string;
+      };
     };
-    /**
-     * Read Team Matches Team Year
-     * @description Get a list of Team Match objects for a single team and year. Specify team number and year ex: 5511, 2019. Note, includes offseason events.
-     */
-    read_team_matches_team_year_v2_team_matches_team__team__year__year__get: {
-        parameters: {
-            path: {
-                team: number;
-                year: number;
-            };
+    responses: {
+      /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Matches Team Event
-     * @description Get a list of Team Match objects for a single team and event. Specify team number and event key ex: 5511, 2019ncwak
-     */
-    read_team_matches_team_event_v2_team_matches_team__team__event__event__get: {
-        parameters: {
-            path: {
-                team: number;
-                event: string;
-            };
-        };
-        responses: {
-            /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team Years State
+   * @description Get a list of TeamYear objects from a single state. Specify lowercase state abbreviation, ex: ca, tx
+   */
+  read_team_years_state_v2_team_years_year__year__state__state__get: {
+    parameters: {
+      path: {
+        year: number;
+        state: string;
+      };
     };
-    /**
-     * Read Team Matches Event
-     * @description Get a list of Team Match objects for a single event. Specify event key ex: 2019ncwak
-     */
-    read_team_matches_event_v2_team_matches_event__event__get: {
-        parameters: {
-            path: {
-                event: string;
-            };
+    responses: {
+      /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
         };
-        responses: {
-            /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
+      };
     };
-    /**
-     * Read Team Matches
-     * @description Get a list of Team Match objects with optional filters
-     */
-    read_team_matches_v2_team_matches_get: {
-        parameters: {
-            query?: {
-                team?: number | null;
-                year?: number | null;
-                event?: string | null;
-                week?: number | null;
-                match?: string | null;
-                elims?: boolean | null;
-                offseason?: boolean | null;
-                metric?: string | null;
-                ascending?: boolean | null;
-                limit?: number | null;
-                offset?: number | null;
-            };
-        };
-        responses: {
-            /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
-            200: {
-                content: {
-                    "application/json": Record<string, never>[];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  /**
+   * Read Team Years
+   * @description Get a list of TeamYear objects with optional filters.
+   */
+  read_team_years_v2_team_years_get: {
+    parameters: {
+      query?: {
+        team?: number | null;
+        year?: number | null;
+        country?: string | null;
+        district?: string | null;
+        state?: string | null;
+        offseason?: boolean | null;
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
     };
+    responses: {
+      /** @description A list of TeamYear objects. See /team_year/{team}/{year} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Event
+   * @description Get a single Event object containing event location, dates, EPA stats, prediction stats. Specify event key ex: 2019ncwak, 2022cmptx
+   */
+  read_event_v2_event__event__get: {
+    parameters: {
+      path: {
+        event: string;
+      };
+    };
+    responses: {
+      /** @description An Event object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events Year
+   * @description Get a list of Event objects for a single year. Specify year, ex: 2019, 2020
+   */
+  read_events_year_v2_events_year__year__get: {
+    parameters: {
+      path: {
+        year: number;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events Year District
+   * @description Get a list of Event objects for a single (year, district) pair. Specify year as four-digit number, district as lowercase abbreviation.
+   */
+  read_events_year_district_v2_events_year__year__district__district__get: {
+    parameters: {
+      path: {
+        year: number;
+        district: string;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events Year State
+   * @description Get a list of Event objects for a single (year, state) pair. Specify year as four-digit number, state as uppercase two-letter abbreviation.
+   */
+  read_events_year_state_v2_events_year__year__state__state__get: {
+    parameters: {
+      path: {
+        year: number;
+        state: string;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events District
+   * @description Get a list of Event objects for a single district. Specify district as lowercase abbreviation, ex fnc, fim.
+   */
+  read_events_district_v2_events_district__district__get: {
+    parameters: {
+      path: {
+        district: string;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events State
+   * @description Get a list of Event objects for a single state. Specify state as uppercase two-letter abbreviation, ex CA, TX.
+   */
+  read_events_state_v2_events_state__state__get: {
+    parameters: {
+      path: {
+        state: string;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Events
+   * @description Get a list of all Event objects with optional filters.
+   */
+  read_events_v2_events_get: {
+    parameters: {
+      query?: {
+        year?: number | null;
+        country?: string | null;
+        district?: string | null;
+        state?: string | null;
+        type?: number | null;
+        week?: number | null;
+        offseason?: boolean | null;
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
+    };
+    responses: {
+      /** @description A list of Event objects. See /event/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Event
+   * @description Get a single Team Event object containing event metadata, EPA statistics, and winrate. Specify team number and event key ex: 5511, 2019ncwak
+   */
+  read_team_event_v2_team_event__team___event__get: {
+    parameters: {
+      path: {
+        team: number;
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A Team Event object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events Team
+   * @description Get a list of Team Event objects for a single team. Specify team number, ex: 5511
+   */
+  read_team_events_team_v2_team_events_team__team__get: {
+    parameters: {
+      path: {
+        team: number;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events Team Year
+   * @description Get a list of Team Event objects for a single team and year. Specify team number and year, ex: 5511, 2019
+   */
+  read_team_events_team_year_v2_team_events_team__team__year__year__get: {
+    parameters: {
+      path: {
+        team: number;
+        year: number;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events Event
+   * @description Get a list of Team Event objects for a single event. Specify event key, ex: 2019ncwak
+   */
+  read_team_events_event_v2_team_events_event__event__get: {
+    parameters: {
+      path: {
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events Year District
+   * @description Get a list of Team Event objects for a single year and district. Specify year and district, ex: 2019, fnc
+   */
+  read_team_events_year_district_v2_team_events_year__year__district__district__get: {
+    parameters: {
+      path: {
+        year: number;
+        district: string;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events Year State
+   * @description Get a list of Team Event objects for a single year and state. Specify year and state, ex: 2019, NC
+   */
+  read_team_events_year_state_v2_team_events_year__year__state__state__get: {
+    parameters: {
+      path: {
+        year: number;
+        state: string;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Events
+   * @description Get a list of all Team Event objects with optional filters.
+   */
+  read_team_events_v2_team_events_get: {
+    parameters: {
+      query?: {
+        team?: number | null;
+        year?: number | null;
+        event?: string | null;
+        country?: string | null;
+        district?: string | null;
+        state?: string | null;
+        type?: number | null;
+        week?: number | null;
+        offseason?: boolean | null;
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
+    };
+    responses: {
+      /** @description A list of Team Event objects. See /team_event/{team}/{event} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Match
+   * @description Get a single Match object containing teams, score prediction, and actual results. Specify match key ex: 2019ncwak_f1m1
+   */
+  read_match_v2_match__match__get: {
+    parameters: {
+      path: {
+        match: string;
+      };
+    };
+    responses: {
+      /** @description A Match object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Matches Event
+   * @description Get a list of Match objects for a single event. Specify event key ex: 2019ncwak, 2022cmptx
+   */
+  read_matches_event_v2_matches_event__event__get: {
+    parameters: {
+      path: {
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A list of Match objects. See /match/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Matches Team Year
+   * @description Get a list of Match objects for a single team in a single year. Specify team number and year, ex: 254, 2019
+   */
+  read_matches_team_year_v2_matches_team__team__year__year__get: {
+    parameters: {
+      path: {
+        team: number;
+        year: number;
+      };
+    };
+    responses: {
+      /** @description A list of Match objects. See /match/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Matches Team Event
+   * @description Get a list of Match objects for a single team in a single event. Specify team number and event key, ex: 5511, 2019ncwak
+   */
+  read_matches_team_event_v2_matches_team__team__event__event__get: {
+    parameters: {
+      path: {
+        team: number;
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A list of Match objects. See /match/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Matches
+   * @description Get a list of Matches with optional filters
+   */
+  read_matches_v2_matches_get: {
+    parameters: {
+      query?: {
+        team?: number | null;
+        year?: number | null;
+        event?: string | null;
+        week?: number | null;
+        elims?: boolean | null;
+        offseason?: boolean | null;
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
+    };
+    responses: {
+      /** @description A list of Match objects. See /match/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Match
+   * @description Get a single Team Match object containing team and EPA predictions. Specify team number and match key ex: 5511, 2019ncwak_f1m1
+   */
+  read_team_match_v2_team_match__team___match__get: {
+    parameters: {
+      path: {
+        team: number;
+        match: string;
+      };
+    };
+    responses: {
+      /** @description A Team Match object. */
+      200: {
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Matches Team Year
+   * @description Get a list of Team Match objects for a single team and year. Specify team number and year ex: 5511, 2019. Note, includes offseason events.
+   */
+  read_team_matches_team_year_v2_team_matches_team__team__year__year__get: {
+    parameters: {
+      path: {
+        team: number;
+        year: number;
+      };
+    };
+    responses: {
+      /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Matches Team Event
+   * @description Get a list of Team Match objects for a single team and event. Specify team number and event key ex: 5511, 2019ncwak
+   */
+  read_team_matches_team_event_v2_team_matches_team__team__event__event__get: {
+    parameters: {
+      path: {
+        team: number;
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Matches Event
+   * @description Get a list of Team Match objects for a single event. Specify event key ex: 2019ncwak
+   */
+  read_team_matches_event_v2_team_matches_event__event__get: {
+    parameters: {
+      path: {
+        event: string;
+      };
+    };
+    responses: {
+      /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read Team Matches
+   * @description Get a list of Team Match objects with optional filters
+   */
+  read_team_matches_v2_team_matches_get: {
+    parameters: {
+      query?: {
+        team?: number | null;
+        year?: number | null;
+        event?: string | null;
+        week?: number | null;
+        match?: string | null;
+        elims?: boolean | null;
+        offseason?: boolean | null;
+        metric?: string | null;
+        ascending?: boolean | null;
+        limit?: number | null;
+        offset?: number | null;
+      };
+    };
+    responses: {
+      /** @description A list of Team Match objects. See /team_match/{team}/{match} for more information. */
+      200: {
+        content: {
+          "application/json": Record<string, never>[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
 }
