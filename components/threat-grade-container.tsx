@@ -10,7 +10,7 @@ import SetThreatGrade, {ThreatGradeType} from "@/lib/database/set-threat-grade";
 export default function ThreatGradeContainer({event, team, teamEntry}: {
     event: { id: number },
     team: { number: number },
-    teamEntry: { threatGrade: string }
+    teamEntry: { threatGrade: string | null }
 }) {
     const [carousel, setCarousel] = React.useState<CarouselApi>();
     const [upDisabled, setUpDisabled] = useState(false);

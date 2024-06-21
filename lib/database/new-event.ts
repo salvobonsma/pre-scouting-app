@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import {tba} from "@/lib/tba/tba";
 import {redirect} from "next/navigation";
 import {statbotics} from "@/lib/statbotics/statbotics";
+import {zScore} from "@/lib/utils";
 
 export default async function NewEvent(key: string, year: number, name: string): Promise<ActionResult> {
     const event = (await tba.GET("/event/{event_key}", {
@@ -136,6 +137,43 @@ export default async function NewEvent(key: string, year: number, name: string):
             )
         }
 
+    }
+
+    const teamEntries = await prisma.teamEntry.findMany(
+          {
+              where: {
+                  eventId: eventId
+              }
+          }
+    );
+    const autoEPAs = teamEntries.map(team => team.autoEPA ?? 0);
+    const teleopEPAs = teamEntries.map(team => team.teleopEPA ?? 0);
+    const endgameEPAs = teamEntries.map(team => team.endgameEPA ?? 0);
+    const totalEPAs = teamEntries.map(team =>
+          (team.autoEPA ?? 0) + (team.teleopEPA ?? 0) + (team.endgameEPA ?? 0));
+
+    for (const team of teamEntries) {
+        const totalDeviation = zScore(totalEPAs, (team.autoEPA ?? 0) + (team.teleopEPA ?? 0) + (team.endgameEPA ?? 0));
+        let threatGrade;
+        if (totalDeviation > 1) {
+            threatGrade = "A";
+        } else if (totalDeviation > 2 / 3)
+
+            await prisma.teamEntry.updateMany(
+                  {
+                      where: {
+                          eventId: eventId,
+                          teamNumber: team.teamNumber
+                      },
+                      data: {
+                          autoDeviation: zScore(autoEPAs, team.autoEPA ?? 0),
+                          teleopDeviation: zScore(teleopEPAs, team.teleopEPA ?? 0),
+                          endgameDeviation: zScore(endgameEPAs, team.endgameEPA ?? 0),
+                          totalDeviation: totalDeviation,
+
+                      }
+                  }
+            )
     }
 
     return redirect("/" + eventId);

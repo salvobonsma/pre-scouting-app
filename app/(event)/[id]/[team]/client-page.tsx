@@ -14,7 +14,16 @@ import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 export default function ClientPage({event, team, teamEntry, matchEntries}: {
     event: { id: number },
     team: { rookieYear: number | null, state: string | null, school: string | null, number: number },
-    teamEntry: { teamNumber: number | null, name: string | null, status: string, threatGrade: string },
+    teamEntry: {
+        teamNumber: number | null,
+        name: string | null,
+        status: string,
+        threatGrade: string | null,
+        autoDeviation: number | null,
+        teleopDeviation: number | null,
+        endgameDeviation: number | null,
+        totalDeviation: number | null
+    },
     matchEntries: {}[]
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);

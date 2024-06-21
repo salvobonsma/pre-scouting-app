@@ -46,9 +46,11 @@ model TeamEntry {
   id  Int    @id @default(autoincrement())
   key String
 
-  name        String?
-  status      String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
-  threatGrade String?
+  name   String?
+  status String  @default("notStarted") // "notStarted" | "inProgress" | "completed"
+
+  threatGrade         String?
+  threatGradeModified Boolean @default(false)
 
   wins   Int?
   ties   Int?
@@ -62,14 +64,14 @@ model TeamEntry {
   districtTotal Int
   eventRank     Int?
 
-  autoEPA    Int?
-  teleopEPA  Int?
-  endgameEPA Int?
+  autoEPA    Float?
+  teleopEPA  Float?
+  endgameEPA Float?
 
-  autoDeviation    Int?
-  teleopDeviation  Int?
-  endgameDeviation Int?
-  totalDeviation   Int?
+  autoDeviation    Float @default(0)
+  teleopDeviation  Float @default(0)
+  endgameDeviation Float @default(0)
+  totalDeviation   Float @default(0)
 
   matchEntries MatchEntry[]
 
