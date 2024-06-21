@@ -13,6 +13,8 @@ import {tba} from "@/lib/tba/tba";
 import {statbotics} from "@/lib/statbotics/statbotics";
 import EventDetails from "@/components/event-details";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
     const events = await prisma.event.findMany();
     events.sort((a, b) =>
