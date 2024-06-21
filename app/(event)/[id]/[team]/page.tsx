@@ -28,9 +28,17 @@ export default async function Team({params}: { params: { id: string, team: strin
               }
           }
     );
-    if (!team || !teamEntry) return NotFound();
+    if (!team || !teamEntry[0]) return NotFound();
+
+    const matches = await prisma.matchEntry.findMany(
+          {
+              where: {
+                  teamEntryId: teamEntry[0].id
+              }
+          }
+    );
 
     return (
-          <ClientPage event={event} team={team} teamEntry={teamEntry[0]}/>
+          <ClientPage event={event} team={team} teamEntry={teamEntry[0]} matchEntries={matches}/>
     );
 }

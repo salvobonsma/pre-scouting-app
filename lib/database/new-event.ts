@@ -66,6 +66,11 @@ export default async function NewEvent(key: string, year: number, name: string):
 
         // Autofill team information.
 
+        //statbotics
+
+
+        //statbotics end
+
         const teamEntryId = (await prisma.teamEntry.create(
               {
                   data: {
