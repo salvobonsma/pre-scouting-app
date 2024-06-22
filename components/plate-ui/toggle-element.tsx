@@ -18,7 +18,7 @@ export const ToggleElement = withRef<typeof PlateElement>(
                 contentEditable={false}
                 {...buttonProps}
           >
-            {open ? <Icons.chevronDown/> : <Icons.chevronRight/>}
+            {open ? <Icons.chevronsUpDown/> : <Icons.chevronRight/>}
           </span>
                         {children}
                     </div>

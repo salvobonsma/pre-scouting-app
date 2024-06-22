@@ -6,7 +6,7 @@ import {createBlockquotePlugin, ELEMENT_BLOCKQUOTE} from '@udecode/plate-block-q
 import {createHorizontalRulePlugin, ELEMENT_HR} from '@udecode/plate-horizontal-rule';
 import {createLinkPlugin, ELEMENT_LINK} from '@udecode/plate-link';
 import {createTogglePlugin, ELEMENT_TOGGLE} from '@udecode/plate-toggle';
-import {createColumnPlugin, ELEMENT_COLUMN, ELEMENT_COLUMN_GROUP} from '@udecode/plate-layout';
+import {createColumnPlugin, ELEMENT_COLUMN} from '@udecode/plate-layout';
 import {createParagraphPlugin, ELEMENT_PARAGRAPH} from '@udecode/plate-paragraph';
 import {
     createHeadingPlugin,
@@ -56,7 +56,6 @@ import {HrElement} from '@/components/plate-ui/hr-element';
 import {LinkElement} from '@/components/plate-ui/link-element';
 import {LinkFloatingToolbar} from '@/components/plate-ui/link-floating-toolbar';
 import {ToggleElement} from '@/components/plate-ui/toggle-element';
-import {ColumnGroupElement} from '@/components/plate-ui/column-group-element';
 import {ColumnElement} from '@/components/plate-ui/column-element';
 import {HeadingElement} from '@/components/plate-ui/heading-element';
 import {ParagraphElement} from '@/components/plate-ui/paragraph-element';
@@ -209,7 +208,6 @@ const plugins = createPlugins(
               [ELEMENT_HR]: HrElement,
               [ELEMENT_LINK]: LinkElement,
               [ELEMENT_TOGGLE]: ToggleElement,
-              [ELEMENT_COLUMN_GROUP]: ColumnGroupElement,
               [ELEMENT_COLUMN]: ColumnElement,
               [ELEMENT_H1]: withProps(HeadingElement, {variant: 'h1'}),
               [ELEMENT_H2]: withProps(HeadingElement, {variant: 'h2'}),
@@ -235,15 +233,9 @@ const plugins = createPlugins(
       }
 );
 
-const initialValue = [
-    {
-        id: '1',
-        type: 'p',
-        children: [{text: 'Hello, World!'}],
-    },
-];
-
-export default function RichTextarea() {
+export default function RichTextarea({initialValue}: {
+    initialValue?: { id: string, type: string, children: { text: string }[] }[]
+}) {
     return (
           <Plate plugins={plugins} initialValue={initialValue}>
               <FixedToolbar>
