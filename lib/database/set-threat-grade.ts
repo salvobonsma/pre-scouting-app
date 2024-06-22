@@ -10,7 +10,8 @@ export default async function SetThreatGrade(eventId: number, teamNumber: number
                   teamNumber: teamNumber
               },
               data: {
-                  threatGrade: grade
+                  threatGrade: grade,
+                  threatGradeModified: true
               }
           }
     );

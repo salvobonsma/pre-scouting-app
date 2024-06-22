@@ -63,10 +63,12 @@ model TeamEntry {
   districtRank  Int?
   districtTotal Int
   eventRank     Int?
+  eventTotal    Int
 
   autoEPA    Float?
   teleopEPA  Float?
   endgameEPA Float?
+  totalEPA   Float?
 
   autoDeviation    Float @default(0)
   teleopDeviation  Float @default(0)

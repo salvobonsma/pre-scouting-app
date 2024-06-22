@@ -38,6 +38,14 @@ export default async function Team({params}: { params: { id: string, team: strin
           }
     );
 
+    const teams = await prisma.teamEntry.count(
+          {
+              where: {
+                  eventId: +params.id
+              }
+          }
+    );
+
     return (
           <ClientPage event={event} team={team} teamEntry={teamEntry[0]} matchEntries={matches}/>
     );

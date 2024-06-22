@@ -10,6 +10,8 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
+import {percentile, withOrdinalSuffix} from "@/lib/utils";
+import QuickTooltip from "@/components/quick-tooltip";
 
 export default function ClientPage({event, team, teamEntry, matchEntries}: {
     event: { id: number },
@@ -19,6 +21,21 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
         name: string | null,
         status: string,
         threatGrade: string | null,
+        wins: number | null,
+        ties: number | null,
+        losses: number | null,
+        worldRank: number | null
+        worldTotal: number
+        countyRank: number | null
+        countyTotal: number
+        districtRank: number | null
+        districtTotal: number
+        eventRank: number | null,
+        eventTotal: number
+        autoEPA: number | null,
+        teleopEPA: number | null,
+        endgameEPA: number | null,
+        totalEPA: number | null,
         autoDeviation: number | null,
         teleopDeviation: number | null,
         endgameDeviation: number | null,
@@ -123,77 +140,84 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
                             <CardContent>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Wins</p>
-                                    <p>152</p>
+                                    <p>{teamEntry.wins}</p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Losses</p>
-                                    <p>132</p>
+                                    <p>{teamEntry.losses}</p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Total</p>
-                                    <p>11</p>
+                                    <p>{(teamEntry.wins ?? 0) + (teamEntry.ties ?? 0) + (teamEntry.losses ?? 0)}</p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Win rate</p>
-                                    <p>57 <span className={"muted"}> out of 100</span></p>
+                                    <p>
+                                        <QuickTooltip
+                                              trigger={
+                                                  <>
+                                                      {((teamEntry.wins ?? 0) / ((teamEntry.wins ?? 0) + (teamEntry.losses ?? 0)) * 100).toFixed()}
+                                                      <span className={"muted"}> of 100</span>
+                                                  </>
+                                              }
+                                              content={`Theoretically would win ${
+                                                    ((teamEntry.wins ?? 0) / ((teamEntry.wins ?? 0) + (teamEntry.losses ?? 0)) * 100).toFixed()
+                                              } out of 100 matches`}
+                                        />
+                                    </p>
                                 </div>
                             </CardContent>
                         </Card>
                         <Card className={"w-full sm:w-60"}>
                             <CardHeader>
-                                <CardTitle>Rank</CardTitle>
+                                <CardTitle><QuickTooltip trigger={"Rank"} content={"Based on EPA"}/></CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>World</p>
-                                    <p>152 <span className={"muted"}>of 3474</span></p>
+                                    <p>{teamEntry.worldRank} <span className={"muted"}>of {teamEntry.worldTotal}</span>
+                                    </p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Country</p>
-                                    <p>132 <span className={"muted"}>of 2806</span></p>
+                                    <p>{teamEntry.countyRank} <span
+                                          className={"muted"}>of {teamEntry.countyTotal}</span></p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>District</p>
-                                    <p>11 <span className={"muted"}>of 127</span></p>
+                                    <p>{teamEntry.districtRank} <span
+                                          className={"muted"}>of {teamEntry.districtTotal}</span></p>
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Event</p>
-                                    <p>3 <span className={"muted"}>of 46</span></p>
+                                    <p>{teamEntry.eventRank} <span className={"muted"}>of {teamEntry.eventTotal}</span>
+                                    </p>
                                 </div>
                             </CardContent>
                         </Card>
                         <Card className={"w-full sm:w-60"}>
                             <CardHeader>
-                                <CardTitle>EPA</CardTitle>
+                                <CardTitle><QuickTooltip trigger={"EPA"} content={
+                                    <a className={"hover:underline"} href={"https://www.statbotics.io"}
+                                       target={"_blank"}>Expected Points Added</a>
+                                }/></CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Auto</p>
-                                    <div className={"flex gap-0.5"}>
-                                        <p>11.7</p>
-                                        <Minus className={"w-5 h-5 self-center"}/>
-                                    </div>
+                                    {epaValue(teamEntry.autoEPA ?? 0, teamEntry.autoDeviation ?? 0)}
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Teleop</p>
-                                    <div className={"flex gap-0.5"}>
-                                        <p>23.3</p>
-                                        <ArrowDown className={"w-5 h-5 self-center"}/>
-                                    </div>
+                                    {epaValue(teamEntry.teleopEPA ?? 0, teamEntry.teleopDeviation ?? 0)}
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Endgame</p>
-                                    <div className={"flex gap-0.5"}>
-                                        <p>1.2</p>
-                                        <ArrowUp className={"w-5 h-5 self-center"}/>
-                                    </div>
+                                    {epaValue(teamEntry.endgameEPA ?? 0, teamEntry.endgameDeviation ?? 0)}
                                 </div>
                                 <div className={"flex justify-between"}>
                                     <p className={"muted"}>Total</p>
-                                    <div className={"flex gap-0.5"}>
-                                        <p>36.3</p>
-                                        <ArrowUp className={"w-5 h-5 self-center"}/>
-                                    </div>
+                                    {epaValue(teamEntry.totalEPA ?? 0, teamEntry.totalDeviation ?? 0)}
                                 </div>
                             </CardContent>
                         </Card>
@@ -208,5 +232,32 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
               <h1 className={"mt"}>Past Seasons</h1>
               <Separator/>
           </>
+    );
+}
+
+function epaValue(epa: number, deviation: number) {
+    let arrow;
+    let placement;
+    if (deviation > 0.2) {
+        arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
+        placement = "Above";
+    } else if (deviation > -0.2) {
+        arrow = (<Minus className={"w-5 h-5 self-center"}/>);
+        placement = "Around";
+    } else {
+        arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
+        placement = "Below";
+    }
+
+    return (
+          <QuickTooltip
+                trigger={
+                    <div className={"flex gap-0.5"}>
+                        <p>{epa.toFixed(1)}</p>
+                        {arrow}
+                    </div>
+                }
+                content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
+          />
     );
 }
