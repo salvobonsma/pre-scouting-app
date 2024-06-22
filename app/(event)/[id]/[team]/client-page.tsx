@@ -10,6 +10,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
 import QuickTooltip from "@/components/quick-tooltip";
+import RichTextarea from "@/components/rich-textarea";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -108,7 +109,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                           <CardTitle>Notes</CardTitle>
                       </CardHeader>
                       <CardContent>
-
+                          <RichTextarea/>
                       </CardContent>
                   </Card>
               </div>

@@ -75,7 +75,6 @@ export default async function Team({params}: { params: { id: string, team: strin
                 event={event}
                 team={team}
                 teamEntry={teamEntry}
-                matchEntries={matches}
                 teamDetails={
                     <Card className={"w-full sm:w-80"}>
                         <CardHeader>

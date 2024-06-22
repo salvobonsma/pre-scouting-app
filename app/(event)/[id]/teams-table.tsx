@@ -188,6 +188,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
         );
 
     }
+
     async function setStatuesByTeam(status: TeamStatus, teams: number[]) {
         // @ts-ignore
         setStatusStates(await SetTeamStatues(eventId, teams, status));

@@ -47,7 +47,7 @@ export default async function Home() {
                   <h1 className={"self-center"}>Events</h1>
                   <NewEventDialog/>
               </div>
-              <Separator />
+              <Separator/>
               <p className={cn("text-center muted mt-8", events.length > 0 ? "hidden" : "")}>
                   No events have been pre-scouted for, yet.
               </p>
