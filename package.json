@@ -42,6 +42,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
     "relative-time": "^1.0.0",
+    "simple-statistics": "^7.8.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.5"
