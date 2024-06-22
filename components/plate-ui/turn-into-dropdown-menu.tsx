@@ -20,7 +20,6 @@ import {Icons} from '@/components/icons';
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
@@ -111,7 +110,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
                         className="lg:min-w-[130px]"
                         isDropdown
                         pressed={openState.open}
-                        tooltip="Turn into"
+                        tooltip="Format"
                   >
                       <SelectedItemIcon className="size-5 lg:hidden"/>
                       <span className="max-lg:hidden">{selectedItemLabel}</span>
@@ -119,8 +118,6 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="start" className="min-w-0">
-                  <DropdownMenuLabel>Turn into</DropdownMenuLabel>
-
                   <DropdownMenuRadioGroup
                         className="flex flex-col gap-0.5"
                         onValueChange={(type) => {

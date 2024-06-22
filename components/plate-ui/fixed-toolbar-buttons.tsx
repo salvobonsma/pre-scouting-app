@@ -5,12 +5,14 @@ import {useEditorReadOnly} from '@udecode/plate-common';
 
 import {Icons} from '@/components/icons';
 
-import {InsertDropdownMenu} from './insert-dropdown-menu';
 import {MarkToolbarButton} from './mark-toolbar-button';
 import {ToolbarGroup} from './toolbar';
 import {TurnIntoDropdownMenu} from './turn-into-dropdown-menu';
+import {ModeDropdownMenu} from "@/components/plate-ui/mode-dropdown-menu";
 
-export function FixedToolbarButtons() {
+export function FixedToolbarButtons({modeDropdown}: {
+    modeDropdown: boolean
+}) {
     const readOnly = useEditorReadOnly();
 
     return (
@@ -24,7 +26,6 @@ export function FixedToolbarButtons() {
                   {!readOnly && (
                         <>
                             <ToolbarGroup noSeparator>
-                                <InsertDropdownMenu/>
                                 <TurnIntoDropdownMenu/>
                             </ToolbarGroup>
 
@@ -53,6 +54,8 @@ export function FixedToolbarButtons() {
                   )}
 
                   <div className="grow"/>
+
+                  {modeDropdown && (<ModeDropdownMenu/>)}
               </div>
           </div>
     );
