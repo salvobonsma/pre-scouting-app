@@ -80,7 +80,7 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
                   </Card>
                   <Card className={"w-full sm:w-fit"}>
                       <CardHeader>
-                          <CardTitle>Threat Grade</CardTitle>
+                          <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/></CardTitle>
                       </CardHeader>
                       <CardContent className={"flex gap-4"}>
                           <ThreatGradeContainer event={event} team={team} teamEntry={teamEntry}/>
@@ -162,7 +162,7 @@ export default function ClientPage({event, team, teamEntry, matchEntries}: {
                                               }
                                               content={`Theoretically would win ${
                                                     ((teamEntry.wins ?? 0) / ((teamEntry.wins ?? 0) + (teamEntry.losses ?? 0)) * 100).toFixed()
-                                              } out of 100 matches`}
+                                              } out of 100 matches if put up against the same opponents`}
                                         />
                                     </p>
                                 </div>
