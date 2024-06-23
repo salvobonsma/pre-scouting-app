@@ -1,6 +1,6 @@
 'use client'
 
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import React, {ReactNode} from "react";
 
 export default function QuickTooltip({trigger, content}: {
@@ -8,11 +8,9 @@ export default function QuickTooltip({trigger, content}: {
     content: ReactNode
 }) {
     return (
-          <TooltipProvider delayDuration={100}>
-              <Tooltip>
-                  <TooltipTrigger>{trigger}</TooltipTrigger>
-                  <TooltipContent>{content}</TooltipContent>
-              </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+              <TooltipTrigger>{trigger}</TooltipTrigger>
+              <TooltipContent>{content}</TooltipContent>
+          </Tooltip>
     );
 }

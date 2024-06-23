@@ -9,8 +9,8 @@ import React, {ReactNode, useState} from "react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
-import QuickTooltip from "@/components/quick-tooltip";
 import RichTextarea from "@/components/rich-textarea";
+import QuickTooltip from "@/components/quick-tooltip";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -60,7 +60,8 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   {teamDetails}
                   <Card className={"w-full sm:w-fit"}>
                       <CardHeader>
-                          <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/></CardTitle>
+                          <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/>
+                          </CardTitle>
                       </CardHeader>
                       <CardContent className={"flex gap-4"}>
                           <ThreatGradeContainer event={event} team={team} teamEntry={teamEntry}/>
