@@ -233,16 +233,17 @@ const plugins = createPlugins(
       }
 );
 
-export default function RichTextarea({initialValue, modeDropdown}: {
+export default function RichTextarea({initialValue, readOnly, modeDropdown}: {
     modeDropdown?: boolean
+    readOnly?: boolean,
     initialValue?: { id: string, type: string, children: { text: string }[] }[]
 }) {
     return (
-          <Plate plugins={plugins} initialValue={initialValue}>
+          <Plate plugins={plugins} initialValue={initialValue} readOnly={readOnly}>
               <FixedToolbar>
                   <FixedToolbarButtons modeDropdown={modeDropdown ?? false}/>
               </FixedToolbar>
-              <Editor/>
+              <Editor focusRing={false}/>
               <FloatingToolbar>
                   <FloatingToolbarButtons/>
               </FloatingToolbar>
