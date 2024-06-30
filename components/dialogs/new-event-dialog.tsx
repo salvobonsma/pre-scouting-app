@@ -190,7 +190,6 @@ function ComboBoxResponsive({
                           <Button
                                 variant="outline"
                                 role="combobox"
-                                className="overflow-clip"
                           >
                               {selected.display}
                               <ChevronsUpDown
@@ -199,7 +198,7 @@ function ComboBoxResponsive({
                       </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-screen sm:w-[40em] p-0">
-                      <StatusList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
+                      <EventList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
                   </PopoverContent>
               </Popover>
         )
@@ -208,20 +207,27 @@ function ComboBoxResponsive({
     return (
           <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger asChild>
-                  <Button variant="outline" className="w-[150px] justify-start">
-                      {selected.display}
-                  </Button>
+                  <FormControl className={"flex justify-between"}>
+                      <Button
+                            variant="outline"
+                            role="combobox"
+                      >
+                          {selected.display}
+                          <ChevronsUpDown
+                                className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                      </Button>
+                  </FormControl>
               </DrawerTrigger>
               <DrawerContent>
                   <div className="mt-4 border-t">
-                      <StatusList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
+                      <EventList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
                   </div>
               </DrawerContent>
           </Drawer>
     );
 }
 
-function StatusList({
+function EventList({
                         setOpen,
                         setSelected,
                         eventList
@@ -234,28 +240,23 @@ function StatusList({
     return (
           <Command>
               <CommandInput placeholder="Search events..."/>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                  <CommandList>
+              <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandGroup>
                       {eventList.map((event) => (
                             <CommandItem
                                   key={event.value}
-                                  value={event.value}
-                                  onSelect={(value) => {
-                                      setSelected(
-                                            eventList.find((event) => event.value === value) ?? ({
-                                                value: "",
-                                                display: "Select Event"
-                                            })
-                                      )
+                                  value={event.display}
+                                  onSelect={() => {
+                                      setSelected(event)
                                       setOpen(false)
                                   }}
                             >
                                 {event.display}
                             </CommandItem>
                       ))}
-                  </CommandList>
-              </CommandGroup>
+                  </CommandGroup>
+              </CommandList>
           </Command>
     )
 }
