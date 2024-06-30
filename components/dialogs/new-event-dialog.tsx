@@ -18,15 +18,20 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import NewEvent from "@/lib/database/new-event";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {ChevronsUpDown} from "lucide-react";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
 import {useEffect, useState} from "react";
+import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
+import {ChevronsUpDown} from "lucide-react";
 
 export default function NewEventDialog() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [eventList, setEventList] = useState<Array<ClientEventSelector>>([]);
     const [selectEventOpen, setSelectEventOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<ClientEventSelector>({
+        value: "",
+        display: "Select Event"
+    });
 
     useEffect(() => {
         const fetchEventList = async () => {
@@ -38,10 +43,6 @@ export default function NewEventDialog() {
         // noinspection JSIgnoredPromiseFromCall
         fetchEventList();
     }, [selectedYear]);
-
-    useEffect(() => {
-        console.log(selectEventOpen)
-    }, [selectEventOpen]);
 
     const newEventSchema = z.object({
         name: z.string()
@@ -65,6 +66,10 @@ export default function NewEventDialog() {
             event: ""
         }
     });
+
+    useEffect(() => {
+        form.setValue("event", selectedEvent.value)
+    }, [form, selectedEvent]);
 
     form.watch((data, {name, type}) => {
         if (!data.year) return;
@@ -91,10 +96,10 @@ export default function NewEventDialog() {
               <DialogContent>
                   <DialogHeader>
                       <DialogTitle>New Event</DialogTitle>
+                      <DialogDescription>
+                          Creates a new event to pre-scout for.
+                      </DialogDescription>
                   </DialogHeader>
-                  <DialogDescription>
-                      Creates a new event to pre-scout for.
-                  </DialogDescription>
                   <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)} className={"mt-2"} autoComplete={"off"}>
                           <CardContent className={"formContent"}>
@@ -127,53 +132,16 @@ export default function NewEventDialog() {
                               <FormField
                                     control={form.control}
                                     name="event"
-                                    render={({field}) => (
-                                          <FormItem className="flex flex-col max-w-[26em]">
+                                    render={() => (
+                                          <FormItem className={"formItem"}>
                                               <FormLabel>Event</FormLabel>
-                                              <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen} modal>
-                                                  <PopoverTrigger asChild>
-                                                      <FormControl className={"flex justify-between"}>
-                                                          <Button
-                                                                variant="outline"
-                                                                role="combobox"
-                                                                className="overflow-clip"
-                                                          >
-                                                              {field.value
-                                                                    ? eventList.find(
-                                                                          (event) => event.value === field.value
-                                                                    )?.display
-                                                                    : "Select event"}
-                                                              <ChevronsUpDown
-                                                                    className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                                          </Button>
-                                                      </FormControl>
-                                                  </PopoverTrigger>
-                                                  <PopoverContent className="p-0"
-                                                                  side={"bottom"}
-                                                                  align={"center"}
-                                                  >
-                                                      <Command>
-                                                          <CommandInput placeholder="Search event..."/>
-                                                          <CommandEmpty>No events found.</CommandEmpty>
-                                                          <CommandGroup className={"max-h-80"}>
-                                                              <CommandList>
-                                                                  {eventList.map((event, index) => {
-                                                                      return (
-                                                                            <CommandItem
-                                                                                  value={event.display}
-                                                                                  key={event.value}
-                                                                                  onSelect={() => {
-                                                                                      form.setValue("event", event.value)
-                                                                                      setSelectEventOpen(false);
-                                                                                  }}
-                                                                            >{event.display}</CommandItem>
-                                                                      )
-                                                                  })}
-                                                              </CommandList>
-                                                          </CommandGroup>
-                                                      </Command>
-                                                  </PopoverContent>
-                                              </Popover>
+                                              <ComboBoxResponsive
+                                                    open={selectEventOpen}
+                                                    setOpen={setSelectEventOpen}
+                                                    selected={selectedEvent}
+                                                    setSelected={setSelectedEvent}
+                                                    eventList={eventList}
+                                              />
                                               <FormMessage/>
                                           </FormItem>
                                     )}
@@ -198,5 +166,96 @@ export default function NewEventDialog() {
                   </Form>
               </DialogContent>
           </Dialog>
+    )
+}
+
+function ComboBoxResponsive({
+                                open,
+                                setOpen,
+                                selected,
+                                setSelected,
+                                eventList
+                            }: {
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    selected: ClientEventSelector,
+    setSelected: (status: ClientEventSelector) => void,
+    eventList: Array<ClientEventSelector>
+}) {
+    if (window.innerWidth > 768) {
+        return (
+              <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                      <FormControl className={"flex justify-between"}>
+                          <Button
+                                variant="outline"
+                                role="combobox"
+                                className="overflow-clip"
+                          >
+                              {selected.display}
+                              <ChevronsUpDown
+                                    className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                          </Button>
+                      </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-screen sm:w-[40em] p-0">
+                      <StatusList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
+                  </PopoverContent>
+              </Popover>
+        )
+    }
+
+    return (
+          <Drawer open={open} onOpenChange={setOpen}>
+              <DrawerTrigger asChild>
+                  <Button variant="outline" className="w-[150px] justify-start">
+                      {selected.display}
+                  </Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                  <div className="mt-4 border-t">
+                      <StatusList open={open} setOpen={setOpen} setSelected={setSelected} eventList={eventList}/>
+                  </div>
+              </DrawerContent>
+          </Drawer>
+    );
+}
+
+function StatusList({
+                        setOpen,
+                        setSelected,
+                        eventList
+                    }: {
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    setSelected: (status: ClientEventSelector) => void,
+    eventList: Array<ClientEventSelector>
+}) {
+    return (
+          <Command>
+              <CommandInput placeholder="Search events..."/>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                  <CommandList>
+                      {eventList.map((event) => (
+                            <CommandItem
+                                  key={event.value}
+                                  value={event.value}
+                                  onSelect={(value) => {
+                                      setSelected(
+                                            eventList.find((event) => event.value === value) ?? ({
+                                                value: "",
+                                                display: "Select Event"
+                                            })
+                                      )
+                                      setOpen(false)
+                                  }}
+                            >
+                                {event.display}
+                            </CommandItem>
+                      ))}
+                  </CommandList>
+              </CommandGroup>
+          </Command>
     )
 }
