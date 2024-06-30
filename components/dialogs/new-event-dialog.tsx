@@ -1,6 +1,13 @@
 'use client'
 
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {CardContent, CardFooter} from "@/components/ui/card";
@@ -12,7 +19,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import NewEvent from "@/lib/database/new-event";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {ChevronsUpDown} from "lucide-react";
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
 import {useEffect, useState} from "react";
 
 export default function NewEventDialog() {
@@ -31,6 +38,10 @@ export default function NewEventDialog() {
         // noinspection JSIgnoredPromiseFromCall
         fetchEventList();
     }, [selectedYear]);
+
+    useEffect(() => {
+        console.log(selectEventOpen)
+    }, [selectEventOpen]);
 
     const newEventSchema = z.object({
         name: z.string()
@@ -78,7 +89,9 @@ export default function NewEventDialog() {
           <Dialog>
               <DialogTrigger asChild><Button className={"m-1.5"}>New Event</Button></DialogTrigger>
               <DialogContent>
-                  <DialogHeader>New Event</DialogHeader>
+                  <DialogHeader>
+                      <DialogTitle>New Event</DialogTitle>
+                  </DialogHeader>
                   <DialogDescription>
                       Creates a new event to pre-scout for.
                   </DialogDescription>
@@ -117,7 +130,7 @@ export default function NewEventDialog() {
                                     render={({field}) => (
                                           <FormItem className="flex flex-col max-w-[26em]">
                                               <FormLabel>Event</FormLabel>
-                                              <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen}>
+                                              <Popover open={selectEventOpen} onOpenChange={setSelectEventOpen} modal>
                                                   <PopoverTrigger asChild>
                                                       <FormControl className={"flex justify-between"}>
                                                           <Button
@@ -143,18 +156,20 @@ export default function NewEventDialog() {
                                                           <CommandInput placeholder="Search event..."/>
                                                           <CommandEmpty>No events found.</CommandEmpty>
                                                           <CommandGroup className={"max-h-80"}>
-                                                              {eventList.map((event, index) => {
-                                                                  return (
-                                                                        <CommandItem
-                                                                              value={event.display}
-                                                                              key={event.value}
-                                                                              onSelect={() => {
-                                                                                  form.setValue("event", event.value)
-                                                                                  setSelectEventOpen(false);
-                                                                              }}
-                                                                        >{event.display}</CommandItem>
-                                                                  )
-                                                              })}
+                                                              <CommandList>
+                                                                  {eventList.map((event, index) => {
+                                                                      return (
+                                                                            <CommandItem
+                                                                                  value={event.display}
+                                                                                  key={event.value}
+                                                                                  onSelect={() => {
+                                                                                      form.setValue("event", event.value)
+                                                                                      setSelectEventOpen(false);
+                                                                                  }}
+                                                                            >{event.display}</CommandItem>
+                                                                      )
+                                                                  })}
+                                                              </CommandList>
                                                           </CommandGroup>
                                                       </Command>
                                                   </PopoverContent>
