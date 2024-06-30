@@ -82,7 +82,7 @@ export default async function Home() {
                   <Table>
                       <TableHeader>
                           <TableRow className={"border-t-0"}>
-                              <TableHead className="font-medium w-[10.6em]">API</TableHead>
+                              <TableHead className="font-medium w-[10.7em]">API</TableHead>
                               <TableHead>Status</TableHead>
                               <TableHead className={"w-5"}></TableHead>
                           </TableRow>
