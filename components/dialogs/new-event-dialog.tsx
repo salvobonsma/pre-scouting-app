@@ -21,7 +21,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
 import {useEffect, useState} from "react";
 import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
-import {ChevronsUpDown} from "lucide-react";
+import {ChevronsUpDown, Loader2} from "lucide-react";
 
 export default function NewEventDialog() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
@@ -158,7 +158,8 @@ export default function NewEventDialog() {
                           </CardContent>
                           <CardFooter className={"flex-col"}>
                               <Button type={"submit"} disabled={loadingNewEvent}>
-                                  {loadingNewEvent ? "Loading..." : "Start Pre-scouting"}
+                                  {loadingNewEvent && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                                  {loadingNewEvent ? "Please Wait" : "Start Pre-scouting"}
                               </Button>
                               <p className={"mt muted"}>May take a while to generate, allow up to a minute.</p>
                           </CardFooter>
