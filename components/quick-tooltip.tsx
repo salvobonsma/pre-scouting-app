@@ -9,7 +9,7 @@ export default function QuickTooltip({trigger, content}: {
 }) {
     return (
           <Tooltip>
-              <TooltipTrigger>{trigger}</TooltipTrigger>
+              <TooltipTrigger type="button">{trigger}</TooltipTrigger>
               <TooltipContent>{content}</TooltipContent>
           </Tooltip>
     );
