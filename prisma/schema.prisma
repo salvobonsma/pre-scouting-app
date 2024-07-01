@@ -75,7 +75,7 @@ model TeamEntry {
   endgameDeviation Float @default(0)
   totalDeviation   Float @default(0)
 
-  notes String @default("[]")
+  notes String @default("[{\"children\":[{\"text\":\"\"}],\"type\":\"p\"}]")
 
   matchEntries MatchEntry[]
 
