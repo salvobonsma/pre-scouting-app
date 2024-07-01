@@ -70,6 +70,7 @@ import {FixedToolbar} from '@/components/plate-ui/fixed-toolbar';
 import {FixedToolbarButtons} from '@/components/plate-ui/fixed-toolbar-buttons';
 import {FloatingToolbar} from '@/components/plate-ui/floating-toolbar';
 import {FloatingToolbarButtons} from '@/components/plate-ui/floating-toolbar-buttons';
+import * as React from "react";
 
 const plugins = createPlugins(
       [
@@ -233,13 +234,14 @@ const plugins = createPlugins(
       }
 );
 
-export default function RichTextarea({initialValue, readOnly, modeDropdown}: {
+export default function RichTextarea({initialValue, readOnly, modeDropdown, onChange}: {
     modeDropdown?: boolean
     readOnly?: boolean,
-    initialValue?: { id: string, type: string, children: { text: string }[] }[]
+    initialValue?: { id: string, type: string, children: { text: string }[] }[],
+    onChange?: ((value: { id: string, type: string, children: { text: string }[] }[]) => void)
 }) {
     return (
-          <Plate plugins={plugins} initialValue={initialValue} readOnly={readOnly}>
+          <Plate plugins={plugins} initialValue={initialValue} readOnly={readOnly} onChange={onChange}>
               <FixedToolbar>
                   <FixedToolbarButtons modeDropdown={modeDropdown ?? false}/>
               </FixedToolbar>

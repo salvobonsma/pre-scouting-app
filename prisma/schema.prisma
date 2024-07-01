@@ -75,6 +75,8 @@ model TeamEntry {
   endgameDeviation Float @default(0)
   totalDeviation   Float @default(0)
 
+  notes String @default("[]")
+
   matchEntries MatchEntry[]
 
   Team       Team?  @relation(fields: [teamNumber], references: [number])
