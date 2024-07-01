@@ -5,7 +5,7 @@ import {Separator} from "@/components/ui/separator";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import StatusBadge from "@/components/status-badge";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
@@ -16,6 +16,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormField, FormItem} from "@/components/ui/form";
 import UpdateTeamEntry from "@/lib/database/update-team-entry";
+import {Loader2} from "lucide-react";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -51,6 +52,10 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
     const [loadingSave, setLoadingSave] = useState(false);
+
+    useEffect(() => {
+        console.log(loadingSave)
+    }, [loadingSave]);
 
     const formSchema = z.object({
         notes: z.string(),
@@ -165,7 +170,10 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   <Separator/>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
-                  <Button type={"submit"}>Submit</Button>
+                  <Button type={"submit"} disabled={loadingSave}>
+                      {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                      Save
+                  </Button>
               </form>
           </Form>
     );
