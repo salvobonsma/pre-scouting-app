@@ -10,7 +10,7 @@ import SetThreatGrade, {ThreatGradeType} from "@/lib/database/set-threat-grade";
 export default function ThreatGradeContainer({event, team, teamEntry}: {
     event: { id: number },
     team: { number: number },
-    teamEntry: { threatGrade: string | null }
+    teamEntry: { threatGrade: string | null, status: string }
 }) {
     const [carousel, setCarousel] = React.useState<CarouselApi>();
     const [upDisabled, setUpDisabled] = useState(false);
@@ -28,12 +28,12 @@ export default function ThreatGradeContainer({event, team, teamEntry}: {
             setUpDisabled(carousel.slidesInView()[0] == 0);
             setDownDisabled(carousel.slidesInView()[0] == 5);
 
-            await SetThreatGrade(event.id, team.number, fromIndex(carousel.slidesInView()[0]));
+            await SetThreatGrade(event.id, team.number, fromIndex(carousel.slidesInView()[0]), teamEntry.status);
         });
 
         carousel.scrollTo(getIndex(teamEntry.threatGrade as ThreatGradeType), true);
         if (getIndex(teamEntry.threatGrade as ThreatGradeType) == 0) setUpDisabled(true);
-    }, [carousel, event.id, team.number, teamEntry.threatGrade]);
+    }, [carousel, event.id, team.number, teamEntry.status, teamEntry.threatGrade]);
 
     return (
           <>

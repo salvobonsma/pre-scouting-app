@@ -50,6 +50,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     statistics: ReactNode
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
+    const [loadingSave, setLoadingSave] = useState(false);
 
     const formSchema = z.object({
         notes: z.string(),
@@ -64,7 +65,10 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        await UpdateTeamEntry(event.id, team.number, {notes: values.notes})
+        setLoadingSave(true);
+        if (status == "notStarted") await setTeamStatus("inProgress");
+        await UpdateTeamEntry(event.id, team.number, {notes: values.notes});
+        setLoadingSave(false);
     }
 
     async function setTeamStatus(status: TeamStatus) {

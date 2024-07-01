@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 
-export default async function SetThreatGrade(eventId: number, teamNumber: number, grade: ThreatGradeType) {
+export default async function SetThreatGrade(eventId: number, teamNumber: number, grade: ThreatGradeType, status: string) {
     await prisma.teamEntry.updateMany(
           {
               where: {
@@ -11,7 +11,8 @@ export default async function SetThreatGrade(eventId: number, teamNumber: number
               },
               data: {
                   threatGrade: grade,
-                  threatGradeModified: true
+                  threatGradeModified: true,
+                  status: status == "notStarted" ? "inProgress" : status
               }
           }
     );
