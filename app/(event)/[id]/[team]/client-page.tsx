@@ -18,6 +18,7 @@ import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import UpdateTeamEntry from "@/lib/database/update-team-entry";
 import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
+import KeyBindListener from "@/components/key-bind-listener";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -99,12 +100,18 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                       <div className={"border rounded-lg bg-background p-2 flex justify-between"}>
                           <div className={"ml-2 self-center"}>
                               <p className={"self-center font-semibold"}>Save Changes</p>
+                              <KeyBindListener targetKey={"s"} callback={form.handleSubmit(onSubmit)}/>
                               <p className={"text-sm text-destructive"}>{error}</p>
                           </div>
-                          <Button type={"submit"} disabled={loadingSave}>
-                              {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
-                              Save
-                          </Button>
+                          <QuickTooltip
+                                trigger={
+                                    <Button type={"submit"} disabled={loadingSave}>
+                                        {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                                        Save
+                                    </Button>
+                                }
+                                content={"⌘+S"}
+                          />
                       </div>
                   </div>
 
