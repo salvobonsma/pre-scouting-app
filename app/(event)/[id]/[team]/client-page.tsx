@@ -106,7 +106,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                           </div>
                           <Tooltip>
                               <TooltipTrigger asChild type="button">
-                                  <Button type={"submit"} disabled={loadingSave}>
+                                  <Button type={"submit"} disabled={loadingSave} className={"self-center"}>
                                       {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                                       Save
                                   </Button>
