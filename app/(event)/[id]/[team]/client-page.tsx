@@ -19,6 +19,7 @@ import UpdateTeamEntry from "@/lib/database/update-team-entry";
 import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -103,15 +104,15 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                               <KeyBindListener targetKey={"s"} callback={form.handleSubmit(onSubmit)}/>
                               <p className={"text-sm text-destructive"}>{error}</p>
                           </div>
-                          <QuickTooltip
-                                trigger={
-                                    <Button type={"submit"} disabled={loadingSave}>
-                                        {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
-                                        Save
-                                    </Button>
-                                }
-                                content={"⌘+S"}
-                          />
+                          <Tooltip>
+                              <TooltipTrigger asChild type="button">
+                                  <Button type={"submit"} disabled={loadingSave}>
+                                      {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                                      Save
+                                  </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>⌘+S</TooltipContent>
+                          </Tooltip>
                       </div>
                   </div>
 
