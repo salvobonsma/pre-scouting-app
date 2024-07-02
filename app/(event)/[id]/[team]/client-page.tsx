@@ -5,7 +5,7 @@ import {Separator} from "@/components/ui/separator";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import StatusBadge from "@/components/status-badge";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useState} from "react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
@@ -17,6 +17,7 @@ import {useForm} from "react-hook-form";
 import {Form, FormField, FormItem} from "@/components/ui/form";
 import UpdateTeamEntry from "@/lib/database/update-team-entry";
 import {Loader2} from "lucide-react";
+import {cn} from "@/lib/utils";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -51,28 +52,30 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     statistics: ReactNode
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
-    const [loadingSave, setLoadingSave] = useState(false);
 
-    useEffect(() => {
-        console.log(loadingSave)
-    }, [loadingSave]);
+    const [loadingSave, setLoadingSave] = useState(false);
+    const [changes, setChanges] = useState(false);
 
     const formSchema = z.object({
         notes: z.string(),
     });
 
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             notes: teamEntry.notes,
-        },
-    })
+        }
+    });
+
+    let lastSave = form.getValues();
+    form.watch(() => setChanges(JSON.stringify(form.getValues()) !== JSON.stringify(lastSave)));
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoadingSave(true);
         if (status == "notStarted") await setTeamStatus("inProgress");
         await UpdateTeamEntry(event.id, team.number, {notes: values.notes});
+        lastSave = form.getValues();
+        setChanges(false);
         setLoadingSave(false);
     }
 
@@ -81,9 +84,23 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
         await SetTeamStatues(event.id, [team.number], status);
     }
 
+
     return (
           <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className={cn(
+                        "z-[100] fixed bottom-0 right-0 p-3 w-full sm:w-96 ease-in-out transition-transform",
+                        changes ? "" : "translate-x-full"
+                  )}>
+                      <div className={"border rounded-lg bg-background p-2 flex justify-between"}>
+                          <p className={"self-center ml-2 font-semibold"}>Save Changes</p>
+                          <Button type={"submit"} disabled={loadingSave}>
+                              {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                              Save
+                          </Button>
+                      </div>
+                  </div>
+
                   <Back link={`/${event.id}`} display={"Event"}/>
                   <h1>{teamEntry.name}</h1>
                   <p className={"muted"}>Team {teamEntry.teamNumber}</p>
@@ -170,10 +187,6 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   <Separator/>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
-                  <Button type={"submit"} disabled={loadingSave}>
-                      {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
-                      Save
-                  </Button>
               </form>
           </Form>
     );
