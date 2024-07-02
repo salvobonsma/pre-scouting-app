@@ -15,11 +15,12 @@ import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
-import UpdateTeamEntry from "@/lib/database/update-team-entry";
+import UpdateTeamData from "@/lib/database/update-team-data";
 import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import YoutubeEmbed from "@/components/youtube-embed";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
     event: { id: number },
@@ -77,7 +78,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
         try {
             setLoadingSave(true);
             if (status == "notStarted") await setTeamStatus("inProgress");
-            await UpdateTeamEntry(event.id, team.number, {notes: values.notes});
+            await UpdateTeamData(event.id, team.number, {notes: values.notes});
             lastSave = form.getValues();
             setChanges(false);
             setLoadingSave(false);
@@ -197,12 +198,12 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   {statistics}
                   <h1 className={"mt"}>Events</h1>
                   <Separator/>
-                  <h1 className={"mt"}>Notes</h1>
-                  <Separator/>
                   <h1 className={"mt"}>Matches</h1>
                   <Separator/>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
+                  <YoutubeEmbed
+                  />
               </form>
           </Form>
     );

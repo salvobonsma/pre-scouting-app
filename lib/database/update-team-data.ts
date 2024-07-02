@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 
-export default async function UpdateTeamEntry(eventId: number, teamNumber: number, data: {
+export default async function UpdateTeamData(eventId: number, teamNumber: number, data: {
     notes: string
 }) {
     await prisma.teamEntry.updateMany(

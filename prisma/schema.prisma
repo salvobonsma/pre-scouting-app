@@ -89,7 +89,7 @@ model HistoricalEntry {
   id   Int @id @default(autoincrement())
   year Int
 
-  notes String?
+  notes String @default("[{\"children\":[{\"text\":\"\"}],\"type\":\"p\"}]")
 
   Team       Team? @relation(fields: [teamNumber], references: [number])
   teamNumber Int?
@@ -98,7 +98,7 @@ model HistoricalEntry {
 model MatchEntry {
   id Int @id @default(autoincrement())
 
-  notes String?
+  notes String @default("[{\"children\":[{\"text\":\"\"}],\"type\":\"p\"}]")
 
   TeamEntry   TeamEntry? @relation(fields: [teamEntryId], references: [id])
   teamEntryId Int?
