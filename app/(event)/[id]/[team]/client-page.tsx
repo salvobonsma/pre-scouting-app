@@ -14,7 +14,7 @@ import QuickTooltip from "@/components/quick-tooltip";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
-import {Form, FormField, FormItem} from "@/components/ui/form";
+import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import UpdateTeamEntry from "@/lib/database/update-team-entry";
 import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
@@ -55,6 +55,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
 
     const [loadingSave, setLoadingSave] = useState(false);
     const [changes, setChanges] = useState(false);
+    const [error, setError] = useState<string | undefined>();
 
     const formSchema = z.object({
         notes: z.string(),
@@ -71,19 +72,22 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     form.watch(() => setChanges(JSON.stringify(form.getValues()) !== JSON.stringify(lastSave)));
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        setLoadingSave(true);
-        if (status == "notStarted") await setTeamStatus("inProgress");
-        await UpdateTeamEntry(event.id, team.number, {notes: values.notes});
-        lastSave = form.getValues();
-        setChanges(false);
-        setLoadingSave(false);
+        try {
+            setLoadingSave(true);
+            if (status == "notStarted") await setTeamStatus("inProgress");
+            await UpdateTeamEntry(event.id, team.number, {notes: values.notes});
+            lastSave = form.getValues();
+            setChanges(false);
+            setLoadingSave(false);
+        } catch (e) {
+            setError("Save error, try refreshing.");
+        }
     }
 
     async function setTeamStatus(status: TeamStatus) {
         setStatus(status);
         await SetTeamStatues(event.id, [team.number], status);
     }
-
 
     return (
           <Form {...form}>
@@ -93,7 +97,10 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                         changes ? "" : "translate-x-full"
                   )}>
                       <div className={"border rounded-lg bg-background p-2 flex justify-between"}>
-                          <p className={"self-center ml-2 font-semibold"}>Save Changes</p>
+                          <div className={"ml-2 self-center"}>
+                              <p className={"self-center font-semibold"}>Save Changes</p>
+                              <p className={"text-sm text-destructive"}>{error}</p>
+                          </div>
                           <Button type={"submit"} disabled={loadingSave}>
                               {loadingSave && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                               Save
@@ -170,6 +177,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                                                         form.setValue("notes", JSON.stringify(value))
                                                     }}
                                               />
+                                              <FormMessage/>
                                           </FormItem>
                                     )}
                               />
