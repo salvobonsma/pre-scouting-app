@@ -23,10 +23,14 @@ model Event {
 
   year      Int
   startDate String
+  endDate   String
 
   city String?
 
-  teams TeamEntry[]
+  updatedAt DateTime @updatedAt
+
+  teams     TeamEntry[]
+  eventTeam EventTeam[]
 }
 
 model Team {
@@ -39,6 +43,7 @@ model Team {
   school     String?
 
   teamEntries       TeamEntry[]
+  eventTeam         EventTeam[]
   historicalEntries HistoricalEntry[]
 }
 
@@ -83,6 +88,32 @@ model TeamEntry {
   teamNumber Int?
   Event      Event? @relation(fields: [eventId], references: [id])
   eventId    Int?
+}
+
+model EventTeam {
+  id Int @id @default(autoincrement())
+
+  name      String
+  location  String
+  eventType String
+
+  rank         Int
+  wins         Int
+  ties         Int
+  losses       Int
+  qualified    Boolean
+  eleminatedAt String?
+
+  captain   Int?
+  pickOne   Int?
+  pickTwo   Int?
+  pickThree Int?
+  backup    Boolean @default(false)
+
+  Event      Event? @relation(fields: [eventId], references: [id])
+  eventId    Int?
+  Team       Team?  @relation(fields: [teamNumber], references: [number])
+  teamNumber Int?
 }
 
 model HistoricalEntry {

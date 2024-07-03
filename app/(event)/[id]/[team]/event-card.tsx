@@ -19,7 +19,7 @@ export default function EventCard() {
                       <h2>Results</h2>
                       <div className={"flex justify-between"}>
                           <p className={"muted"}>Event rank</p>
-                          <p>7th</p>
+                          <p>7th <span className={"muted"}>of 34</span></p>
                       </div>
                       <div className={"flex justify-between"}>
                           <p className={"muted"}>Record</p>
@@ -53,29 +53,6 @@ export default function EventCard() {
                       <div className={"flex justify-between"}>
                           <p className={"muted"}>Eliminated at</p>
                           <p>Round 3</p>
-                      </div>
-                  </div>
-                  <div className={"w-full"}>
-                      <h2>District</h2>
-                      <div className={"flex justify-between"}>
-                          <p className={"muted"}>Qualifications</p>
-                          <p>15 points</p>
-                      </div>
-                      <div className={"flex justify-between"}>
-                          <p className={"muted"}>Alliance</p>
-                          <p>14 points</p>
-                      </div>
-                      <div className={"flex justify-between"}>
-                          <p className={"muted"}>Playoff</p>
-                          <p>0 points</p>
-                      </div>
-                      <div className={"flex justify-between"}>
-                          <p className={"muted"}>Award</p>
-                          <p>8 points</p>
-                      </div>
-                      <div className={"flex justify-between"}>
-                          <p className={"muted"}>Total</p>
-                          <p>37 points</p>
                       </div>
                   </div>
                   <div className={"w-full"}>

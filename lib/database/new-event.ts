@@ -27,6 +27,7 @@ export default async function NewEvent(key: string, year: number, name: string):
             key: key,
             year: year,
             startDate: event.data.start_date,
+            endDate: event.data.end_date,
             name: name,
             eventName: event.data.name,
             district: event.data.district?.display_name,
