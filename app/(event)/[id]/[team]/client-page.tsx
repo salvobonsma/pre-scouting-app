@@ -21,8 +21,9 @@ import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import YoutubeEmbed from "@/components/youtube-embed";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 
-export default function ClientPage({event, team, teamEntry, teamDetails, statistics}: {
+export default function ClientPage({event, team, teamEntry, teamDetails, statistics, events}: {
     event: { id: number },
     team: { rookieYear: number | null, state: string | null, school: string | null, number: number },
     teamEntry: {
@@ -52,7 +53,8 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
         notes: string
     },
     teamDetails: ReactNode,
-    statistics: ReactNode
+    statistics: ReactNode,
+    events: ReactNode
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
 
@@ -198,8 +200,18 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   {statistics}
                   <h1 className={"mt"}>Events</h1>
                   <Separator/>
+                  <div className={"mt-sm flex flex-wrap gap-6"}>{events}</div>
                   <h1 className={"mt"}>Matches</h1>
                   <Separator/>
+                  <Carousel>
+                      <CarouselContent>
+                          <CarouselItem>...</CarouselItem>
+                          <CarouselItem>...</CarouselItem>
+                          <CarouselItem>...</CarouselItem>
+                      </CarouselContent>
+                      <CarouselPrevious/>
+                      <CarouselNext/>
+                  </Carousel>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
                   <YoutubeEmbed

@@ -6,6 +6,7 @@ import React from "react";
 import QuickTooltip from "@/components/quick-tooltip";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
+import EventCard from "@/app/(event)/[id]/[team]/event-card";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
     if (!+params.id || !+params.team) return NotFound();
@@ -196,6 +197,7 @@ export default async function Team({params}: { params: { id: string, team: strin
                           </Card>
                       </div>
                 )}
+                events={<EventCard/>}
           />
     );
 }
