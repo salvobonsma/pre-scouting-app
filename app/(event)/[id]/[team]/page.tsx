@@ -36,6 +36,14 @@ export default async function Team({params}: { params: { id: string, team: strin
     ))[0];
     if (!team || !teamEntry) return NotFound();
 
+    const events = await prisma.teamEvent.findMany(
+          {
+              where: {
+                  teamNumber: team.number
+              }
+          }
+    );
+
     const matches = await prisma.matchEntry.findMany(
           {
               where: {
@@ -197,7 +205,19 @@ export default async function Team({params}: { params: { id: string, team: strin
                           </Card>
                       </div>
                 )}
-                events={<EventCard/>}
+                events={
+                    <>
+                        {
+                            events
+                                  .filter(value => value.eventKey != event.key)
+                                  .sort((a, b) =>
+                                        new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+                                  .map(value => (
+                                        <EventCard key={value.eventKey} event={value}/>
+                                  ))
+                        }
+                    </>
+                }
           />
     );
 }

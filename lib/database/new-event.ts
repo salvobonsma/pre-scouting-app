@@ -146,20 +146,19 @@ export default async function NewEvent(key: string, year: number, name: string):
                 name: teamEvent.name,
                 endDate: teamEvent.end_date,
                 location: `${teamEvent.city}, ${teamEvent.state_prov}`,
-                eventType: teamEvent.event_type_string,
-                rank: status.data.qual?.ranking?.rank ?? -1,
-                wins: (status.data.qual?.ranking?.record?.wins ?? -1) + (status.data.playoff?.record?.wins ?? -1),
-                ties: (status.data.qual?.ranking?.record?.ties ?? -1) + (status.data.playoff?.record?.ties ?? -1),
-                losses: (status.data.qual?.ranking?.record?.losses ?? -1) + (status.data.playoff?.record?.losses ?? -1),
+                eventType: (teamEvent.event_type_string == "District" || teamEvent.event_type_string == "Regional") && teamEvent.week != undefined ?
+                      `Week ${teamEvent.week + 1}` : teamEvent.event_type_string,
+                rank: status.data.qual?.ranking?.rank,
+                totalTeams: status.data.qual?.num_teams,
+                wins: (status.data.qual?.ranking?.record?.wins ?? 0) + (status.data.playoff?.record?.wins ?? 0),
+                ties: (status.data.qual?.ranking?.record?.ties ?? 0) + (status.data.playoff?.record?.ties ?? 0),
+                losses: (status.data.qual?.ranking?.record?.losses ?? 0) + (status.data.playoff?.record?.losses ?? 0),
                 qualified: status.data.playoff != null,
                 eliminatedAt: status.data.playoff?.double_elim_round,
                 status: status.data.playoff?.status,
                 allianceNumber: status.data.alliance?.number,
                 alliancePick: status.data.alliance?.pick,
-                awards: awards.data.map((value) => {
-                    if (value.award_type == 0) return "";
-                    return value.name.split("Award")[0];
-                })
+                awards: awards.data.map((value) => value.name)
             }
 
             if ((await prisma.teamEvent.findFirst({
@@ -180,35 +179,6 @@ export default async function NewEvent(key: string, year: number, name: string):
             } else {
                 await prisma.teamEvent.create({data})
             }
-            // await prisma.teamEvent.updateMany(
-            //       {
-            //           where: {
-            //               teamNumber: tbaTeam.team_number,
-            //               eventKey: teamEvent.key,
-            //           },
-            //           data: {
-            //               teamNumber: tbaTeam.team_number,
-            //               eventKey: teamEvent.key,
-            //               name: teamEvent.name,
-            //               endDate: teamEvent.end_date,
-            //               location: `${teamEvent.city}, ${teamEvent.state_prov}`,
-            //               eventType: teamEvent.event_type_string,
-            //               rank: status.data.qual?.ranking?.rank ?? -1,
-            //               wins: (status.data.qual?.ranking?.record?.wins ?? -1) + (status.data.playoff?.record?.wins ?? -1),
-            //               ties: (status.data.qual?.ranking?.record?.ties ?? -1) + (status.data.playoff?.record?.ties ?? -1),
-            //               losses: (status.data.qual?.ranking?.record?.losses ?? -1) + (status.data.playoff?.record?.losses ?? -1),
-            //               qualified: status.data.playoff != null,
-            //               eliminatedAt: status.data.playoff?.double_elim_round,
-            //               status: status.data.playoff?.status,
-            //               allianceNumber: status.data.alliance?.number,
-            //               alliancePick: status.data.alliance?.pick,
-            //               awards: awards.data.map((value) => {
-            //                   if (value.award_type == 0) return "";
-            //                   return value.name.split("Award")[0];
-            //               })
-            //           }
-            //       }
-            // )
         }
 
         // Matches
@@ -274,7 +244,7 @@ export default async function NewEvent(key: string, year: number, name: string):
           (b.totalEPA ?? 0) - (a.totalEPA ?? 0)
     );
 
-    for (const [index, team] of teamEntries.entries()) {
+    for (const team of teamEntries) {
         const totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
         let threatGrade;
         if (totalDeviation > 1) {

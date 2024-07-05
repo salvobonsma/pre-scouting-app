@@ -98,10 +98,11 @@ model TeamEvent {
   eventType String
   endDate   String
 
-  rank   Int
-  wins   Int
-  ties   Int
-  losses Int
+  rank       Int?
+  totalTeams Int?
+  wins       Int
+  ties       Int
+  losses     Int
 
   qualified      Boolean
   eliminatedAt   String?

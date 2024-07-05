@@ -1,85 +1,133 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import React from "react";
+import QuickTooltip from "@/components/quick-tooltip";
+import {withOrdinalSuffix} from "@/lib/utils";
 
-export default function EventCard() {
+export default function EventCard({event}: {
+    event: {
+        name: string,
+        location: string,
+        eventType: string,
+        endDate: string,
+        rank: number | null,
+        totalTeams: number | null,
+        wins: number,
+        ties: number,
+        losses: number,
+        qualified: boolean,
+        eliminatedAt: string | null,
+        status: string | null,
+        allianceNumber: number | null,
+        alliancePick: number | null,
+        awards: string[]
+    }
+}) {
+    event.awards = event.awards
+          .filter(value => !(value.includes("Winner") || value.includes("Finalist")))
+          .map(value => value.split(" Award")[0]);
+
+    console.log(event.awards)
+
     return (
           <Card className={"w-full sm:w-[35em]"}>
               <CardHeader>
                   <CardTitle className={"flex justify-between w-full"}>
-                      PNW District Auburn Event
-                      <Badge className={"self-center text-center"}>Week 2</Badge>
+                      {event.name}
+                      <Badge className={"self-center text-center"}>{event.eventType}</Badge>
                   </CardTitle>
-                  <CardDescription>Auburn, WA</CardDescription>
+                  <CardDescription>{event.location}</CardDescription>
               </CardHeader>
               <CardContent>
                   <div className={"flex flex-wrap sm:grid sm:grid-cols-2 gap-y-6 gap-x-8"}>
-                      {/*<div className={"w-full"}>*/}
-                      {/*    <h2>Results</h2>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted"}>Event rank</p>*/}
-                      {/*        <p>7th <span className={"muted"}>of 34</span></p>*/}
-                      {/*    </div>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted"}>Record</p>*/}
-                      {/*        <QuickTooltip*/}
-                      {/*              trigger={<p>9-6-0</p>}*/}
-                      {/*              content={*/}
-                      {/*                  <div className={"w-20"}>*/}
-                      {/*                      <div className={"flex justify-between"}>*/}
-                      {/*                          <p className={"muted"}>Wins</p>*/}
-                      {/*                          <p>9</p>*/}
-                      {/*                      </div>*/}
-                      {/*                      <div className={"flex justify-between"}>*/}
-                      {/*                          <p className={"muted"}>Losses</p>*/}
-                      {/*                          <p>6</p>*/}
-                      {/*                      </div>*/}
-                      {/*                      <div className={"flex justify-between"}>*/}
-                      {/*                          <p className={"muted"}>Ties</p>*/}
-                      {/*                          <p>0</p>*/}
-                      {/*                      </div>*/}
-                      {/*                  </div>*/}
-                      {/*              }*/}
-                      {/*        />*/}
-                      {/*    </div>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted text-nowrap mr-1"}>Awards</p>*/}
-                      {/*        <div>*/}
-                      {/*            <p className={"text-right"}>Rookie All Star</p>*/}
-                      {/*            <p className={"text-right"}>Rookie All Star</p>*/}
-                      {/*        </div>*/}
-                      {/*    </div>*/}
-                      {/*</div>*/}
-                      {/*<div className={"w-full"}>*/}
-                      {/*    <h2>Playoffs</h2>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted"}>Alliance</p>*/}
-                      {/*        <p>Alliance 3</p>*/}
-                      {/*    </div>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted"}>Alliance role</p>*/}
-                      {/*        <p>Captain</p>*/}
-                      {/*    </div>*/}
-                      {/*    <div className={"flex justify-between"}>*/}
-                      {/*        <p className={"muted"}>Eliminated at</p>*/}
-                      {/*        <p>Round 3</p>*/}
-                      {/*    </div>*/}
-                      {/*</div>*/}
-                      {/*<div className={"w-full"}>*/}
-                      {/*    <h2>Playoffs</h2>*/}
-                      {/*    <div className={"flex justify-center"}>*/}
-                      {/*        <p className={"muted"}>Did not qualify</p>*/}
-                      {/*    </div>*/}
-                      {/*</div>*/}
+                      <div className={"w-full"}>
+                          <h2>Results</h2>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Event rank</p>
+                              {
+                                  event.rank ?
+                                        <p>{withOrdinalSuffix(event.rank)} <span
+                                              className={"muted"}>of {event.totalTeams}</span></p> :
+                                        <p>N/A</p>
+                              }
+                          </div>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Record</p>
+                              <QuickTooltip
+                                    trigger={<p>{`${event.wins}-${event.losses}-${event.ties}`}</p>}
+                                    content={
+                                        <div className={"w-20"}>
+                                            <div className={"flex justify-between"}>
+                                                <p className={"muted"}>Wins</p>
+                                                <p>{event.wins}</p>
+                                            </div>
+                                            <div className={"flex justify-between"}>
+                                                <p className={"muted"}>Losses</p>
+                                                <p>{event.losses}</p>
+                                            </div>
+                                            <div className={"flex justify-between"}>
+                                                <p className={"muted"}>Ties</p>
+                                                <p>{event.ties}</p>
+                                            </div>
+                                        </div>
+                                    }
+                              />
+                          </div>
+                          {
+                                event.awards.length > 0 && (
+                                      <div className={"flex justify-between"}>
+                                          <p className={"muted text-nowrap mr-1"}>Awards</p>
+                                          <div>
+                                              {
+                                                  event.awards.map((value, index) => (
+                                                        <p key={index} className="text-right">{value}</p>
+                                                  ))
+                                              }
+                                          </div>
+                                      </div>
+                                )
+                          }
+                      </div>
+                      {
+                          event.qualified ? (
+                                <div className={"w-full"}>
+                                    <h2>Playoffs</h2>
+                                    <div className={"flex justify-between"}>
+                                        <p className={"muted"}>Alliance</p>
+                                        <p>Alliance {event.allianceNumber}</p>
+                                    </div>
+                                    <div className={"flex justify-between"}>
+                                        <p className={"muted"}>Alliance role</p>
+                                        <p>
+                                            {event.alliancePick == 0 && "Captain"}
+                                            {event.alliancePick == 1 && "Pick 1"}
+                                            {event.alliancePick == 2 && "Pick 2"}
+                                            {event.alliancePick == 3 && "Backup/Pick 3"}
+                                        </p>
+                                    </div>
+                                    {
+                                        event.status == "won" ? (
+                                              <div className={"flex justify-end"}>
+                                                  <p>Event winner</p>
+                                              </div>
+                                        ) : (
+                                              <div className={"flex justify-between"}>
+                                                  <p className={"muted"}>Eliminated at</p>
+                                                  <p>{event.eliminatedAt}</p>
+                                              </div>
+                                        )
+                                    }
+                                </div>
+                          ) : (
+                                <div className={"w-full"}>
+                                    <h2>Playoffs</h2>
+                                    <div className={"flex justify-center"}>
+                                        <p className={"muted"}>Did not qualify</p>
+                                    </div>
+                                </div>
+                          )
+                      }
                   </div>
-                  {/*<div className={"flex justify-center"}>*/}
-                  {/*    <p className={"muted"}>Event has not concluded, yet.</p>*/}
-                  {/*</div>*/}
-                  {/*<div className={"flex flex-col gap-2 items-center"}>*/}
-                  {/*    /!*<p className={"muted"}>Event has not concluded, yet.</p>*!/*/}
-                  {/*    <p className={"muted"}>No data available.</p>*/}
-                  {/*    <Button>Update Data</Button>*/}
-                  {/*</div>*/}
               </CardContent>
           </Card>
     );
