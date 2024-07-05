@@ -244,6 +244,8 @@ export default async function NewEvent(key: string, year: number, name: string):
           (b.totalEPA ?? 0) - (a.totalEPA ?? 0)
     );
 
+    // test
+
     for (const team of teamEntries) {
         const totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
         let threatGrade;
