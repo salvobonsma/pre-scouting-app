@@ -161,7 +161,7 @@ export default function NewEventDialog() {
                                   {loadingNewEvent && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                                   {loadingNewEvent ? "Please Wait" : "Start Pre-scouting"}
                               </Button>
-                              <p className={"mt muted"}>May take a while to generate, allow up to a minute.</p>
+                              <p className={"mt muted"}>May take a while to generate, allow up to a few minutes.</p>
                           </CardFooter>
                       </form>
                   </Form>

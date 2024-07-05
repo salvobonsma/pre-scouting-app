@@ -556,6 +556,7 @@ export interface components {
             status?: "won" | "eliminated" | "playing";
             /** @description The average match score during playoffs. Year specific. May be null if not relevant for a given year. */
             playoff_average?: number;
+            double_elim_round?: string;
         };
         Event_Ranking: {
             /** @description List of rankings at the event. */

@@ -4421,6 +4421,9 @@
           "playoff_average": {
             "type": "integer",
             "description": "The average match score during playoffs. Year specific. May be null if not relevant for a given year."
+          },
+          "double_elim_round": {
+            "type": "string"
           }
         },
         "description": "Playoff status for this team, may be null if the team did not make playoffs, or playoffs have not begun."

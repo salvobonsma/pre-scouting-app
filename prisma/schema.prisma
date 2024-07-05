@@ -29,8 +29,7 @@ model Event {
 
   updatedAt DateTime @updatedAt
 
-  teams     TeamEntry[]
-  eventTeam EventTeam[]
+  teams TeamEntry[]
 }
 
 model Team {
@@ -43,7 +42,7 @@ model Team {
   school     String?
 
   teamEntries       TeamEntry[]
-  eventTeam         EventTeam[]
+  eventTeam         TeamEvent[]
   historicalEntries HistoricalEntry[]
 }
 
@@ -90,29 +89,29 @@ model TeamEntry {
   eventId    Int?
 }
 
-model EventTeam {
-  id Int @id @default(autoincrement())
+model TeamEvent {
+  id       Int    @id @default(autoincrement())
+  eventKey String
 
   name      String
   location  String
   eventType String
+  endDate   String
 
-  rank         Int
-  wins         Int
-  ties         Int
-  losses       Int
-  qualified    Boolean
-  eleminatedAt String?
+  rank   Int
+  wins   Int
+  ties   Int
+  losses Int
 
-  captain   Int?
-  pickOne   Int?
-  pickTwo   Int?
-  pickThree Int?
-  backup    Boolean @default(false)
+  qualified      Boolean
+  eliminatedAt   String?
+  status         String? // "eleminated" | "won"
+  allianceNumber Int?
+  alliancePick   Int?
 
-  Event      Event? @relation(fields: [eventId], references: [id])
-  eventId    Int?
-  Team       Team?  @relation(fields: [teamNumber], references: [number])
+  awards String[]
+
+  Team       Team? @relation(fields: [teamNumber], references: [number])
   teamNumber Int?
 }
 

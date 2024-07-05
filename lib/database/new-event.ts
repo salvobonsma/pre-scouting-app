@@ -13,7 +13,7 @@ export default async function NewEvent(key: string, year: number, name: string):
         },
     }))
     if (!event.data) {
-        return {success: false, message: "TBA API request error: " + event.response.status}
+        return {success: false, message: "TBA API request error (a): " + event.response.status}
     }
 
     if (await prisma.event.findUnique({
@@ -42,10 +42,11 @@ export default async function NewEvent(key: string, year: number, name: string):
         },
     }));
     if (!tbaTeams.data) {
-        return {success: false, message: "TBA API request error: " + tbaTeams.response.status}
+        return {success: false, message: "TBA API request error (b): " + tbaTeams.response.status}
     }
 
     for (const tbaTeam of tbaTeams.data) {
+        // Team
         let team = await prisma.team.findUnique({
             where: {
                 number: tbaTeam.team_number
@@ -67,6 +68,7 @@ export default async function NewEvent(key: string, year: number, name: string):
             )
         }
 
+        // Team entry
         const stats = await statbotics.GET("/v3/team_year/{team}/{year}", {
             params: {path: {year: year, team: tbaTeam.team_number.toString()}}
         });
@@ -99,6 +101,117 @@ export default async function NewEvent(key: string, year: number, name: string):
               }
         )).id;
 
+        // Events for each team
+        const teamEvents = (await tba.GET("/team/{team_key}/events/{year}", {
+            params: {
+                path: {
+                    team_key: tbaTeam.key,
+                    year: year
+                },
+            },
+        }));
+        if (!teamEvents.data) {
+            return {success: false, message: "TBA API request error (c): " + teamEvents.response.status}
+        }
+
+        for (const teamEvent of teamEvents.data) {
+            const status = (await tba.GET("/team/{team_key}/event/{event_key}/status", {
+                params: {
+                    path: {
+                        team_key: tbaTeam.key,
+                        event_key: teamEvent.key
+                    },
+                },
+            }));
+            if (!status.response.ok) {
+                return {success: false, message: "TBA API request error (d): " + status.response.status}
+            }
+            if (!status.data) continue;
+
+            const awards = (await tba.GET("/team/{team_key}/event/{event_key}/awards", {
+                params: {
+                    path: {
+                        team_key: tbaTeam.key,
+                        event_key: teamEvent.key
+                    },
+                },
+            }));
+            if (!awards.data) {
+                return {success: false, message: "TBA API request error (e): " + awards.response.status}
+            }
+
+            const data = {
+                teamNumber: tbaTeam.team_number,
+                eventKey: teamEvent.key,
+                name: teamEvent.name,
+                endDate: teamEvent.end_date,
+                location: `${teamEvent.city}, ${teamEvent.state_prov}`,
+                eventType: teamEvent.event_type_string,
+                rank: status.data.qual?.ranking?.rank ?? -1,
+                wins: (status.data.qual?.ranking?.record?.wins ?? -1) + (status.data.playoff?.record?.wins ?? -1),
+                ties: (status.data.qual?.ranking?.record?.ties ?? -1) + (status.data.playoff?.record?.ties ?? -1),
+                losses: (status.data.qual?.ranking?.record?.losses ?? -1) + (status.data.playoff?.record?.losses ?? -1),
+                qualified: status.data.playoff != null,
+                eliminatedAt: status.data.playoff?.double_elim_round,
+                status: status.data.playoff?.status,
+                allianceNumber: status.data.alliance?.number,
+                alliancePick: status.data.alliance?.pick,
+                awards: awards.data.map((value) => {
+                    if (value.award_type == 0) return "";
+                    return value.name.split("Award")[0];
+                })
+            }
+
+            if ((await prisma.teamEvent.findFirst({
+                where: {
+                    teamNumber: tbaTeam.team_number,
+                    eventKey: teamEvent.key,
+                }
+            }))) {
+                await prisma.teamEvent.updateMany(
+                      {
+                          where: {
+                              teamNumber: tbaTeam.team_number,
+                              eventKey: teamEvent.key,
+                          },
+                          data
+                      }
+                )
+            } else {
+                await prisma.teamEvent.create({data})
+            }
+            // await prisma.teamEvent.updateMany(
+            //       {
+            //           where: {
+            //               teamNumber: tbaTeam.team_number,
+            //               eventKey: teamEvent.key,
+            //           },
+            //           data: {
+            //               teamNumber: tbaTeam.team_number,
+            //               eventKey: teamEvent.key,
+            //               name: teamEvent.name,
+            //               endDate: teamEvent.end_date,
+            //               location: `${teamEvent.city}, ${teamEvent.state_prov}`,
+            //               eventType: teamEvent.event_type_string,
+            //               rank: status.data.qual?.ranking?.rank ?? -1,
+            //               wins: (status.data.qual?.ranking?.record?.wins ?? -1) + (status.data.playoff?.record?.wins ?? -1),
+            //               ties: (status.data.qual?.ranking?.record?.ties ?? -1) + (status.data.playoff?.record?.ties ?? -1),
+            //               losses: (status.data.qual?.ranking?.record?.losses ?? -1) + (status.data.playoff?.record?.losses ?? -1),
+            //               qualified: status.data.playoff != null,
+            //               eliminatedAt: status.data.playoff?.double_elim_round,
+            //               status: status.data.playoff?.status,
+            //               allianceNumber: status.data.alliance?.number,
+            //               alliancePick: status.data.alliance?.pick,
+            //               awards: awards.data.map((value) => {
+            //                   if (value.award_type == 0) return "";
+            //                   return value.name.split("Award")[0];
+            //               })
+            //           }
+            //       }
+            // )
+        }
+
+        // Matches
         const tbaMatches = (await tba.GET("/team/{team_key}/matches/{year}", {
             params: {
                 path: {
@@ -108,7 +221,7 @@ export default async function NewEvent(key: string, year: number, name: string):
             },
         }))
         if (!tbaMatches.data) {
-            return {success: false, message: "TBA API request error: " + tbaMatches.response.status}
+            return {success: false, message: "TBA API request error (f): " + tbaMatches.response.status}
         }
 
         for (const tbaMatch of tbaMatches.data) {
@@ -144,6 +257,7 @@ export default async function NewEvent(key: string, year: number, name: string):
 
     }
 
+    // Stats
     const teamEntries = await prisma.teamEntry.findMany(
           {
               where: {
