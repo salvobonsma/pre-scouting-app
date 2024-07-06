@@ -76,11 +76,12 @@ export default function EventCard({event}: {
                           {
                                 event.awards.length > 0 && (
                                       <div className={"flex justify-between"}>
-                                          <p className={"muted text-nowrap mr-1"}>Awards</p>
+                                          <p className={"muted text-nowrap mr-2"}>Award{event.awards.length > 1 && "s"}</p>
                                           <div>
                                               {
                                                   event.awards.map((value, index) => (
-                                                        <p key={index} className="text-right">{value}</p>
+                                                        <p key={index}
+                                                           className="sm:w-44 text-right text-nowrap overflow-x-scroll">{value}</p>
                                                   ))
                                               }
                                           </div>
