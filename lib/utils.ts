@@ -1,7 +1,6 @@
 import {type ClassValue, clsx} from "clsx"
 import {twMerge} from "tailwind-merge"
 import dayjs from "dayjs";
-import * as ss from 'simple-statistics';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -26,7 +25,31 @@ export function zScore(set: number[], sample: number) {
 }
 
 export function percentile(z: number): number {
-    return ss.probit(z);
+    const b1 = 0.31938153;
+    const b2 = -0.356563782;
+    const b3 = 1.781477937;
+    const b4 = -1.821255978;
+    const b5 = 1.330274429;
+    const p = 0.2316419;
+    const c2 = 0.3989423;
+
+    if (z > 6.0) {
+        return 1.0;
+    } // this guards against overflow
+    if (z < -6.0) {
+        return 0.0;
+    }
+
+    const a = Math.abs(z);
+    const t = 1.0 / (1.0 + a * p);
+    const b = c2 * Math.exp((-z) * (z / 2.0));
+    let n = ((((b5 * t + b4) * t) + b3) * t + b2) * t + b1;
+    n = 1.0 - b * n;
+
+    if (z < 0.0) {
+        return 1.0 - n;
+    }
+    return n;
 }
 
 export function withOrdinalSuffix(num: number): string {
