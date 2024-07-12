@@ -27,8 +27,6 @@ export default function EventCard({event}: {
           .filter(value => !(value.includes("Winner") || value.includes("Finalist")))
           .map(value => value.split(" Award")[0]);
 
-    console.log(event.awards)
-
     return (
           <Card className={"w-full sm:w-[35em]"}>
               <CardHeader>
