@@ -360,8 +360,12 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         TeamYear: {
+            year: number;
             epa: {
                 breakdown: {
+                    total_points: {
+                        mean?: number;
+                    };
                     auto_points: {
                         mean?: number;
                     };
@@ -375,6 +379,7 @@ export interface components {
                 ranks: {
                     total: {
                         rank?: number;
+                        percentile?: number;
                         team_count: number;
                     };
                     country: {
@@ -392,6 +397,7 @@ export interface components {
                     wins?: number;
                     ties?: number;
                     losses?: number;
+                    winrate?: number;
                 };
             };
         };
@@ -614,7 +620,7 @@ export interface operations {
             /** @description Successful Response */
             200: {
                 content: {
-                    "application/json": Record<string, never>[];
+                    "application/json": components["schemas"]["TeamYear"][];
                 };
             };
             /** @description Validation Error */

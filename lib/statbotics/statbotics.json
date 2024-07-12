@@ -654,7 +654,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "type": "object",
+                    "$ref": "#/components/schemas/TeamYear"
                   },
                   "title": "Response Read Team Years V3 Team Years Get"
                 }
@@ -4636,6 +4637,9 @@
     "schemas": {
       "TeamYear": {
         "properties": {
+          "year": {
+            "type": "number"
+          },
           "epa": {
             "required": [
               "breakdown",
@@ -4645,12 +4649,21 @@
             "properties": {
               "breakdown": {
                 "required": [
+                  "total_points",
                   "auto_points",
                   "teleop_points",
                   "endgame_points"
                 ],
                 "type": "object",
                 "properties": {
+                  "total_points": {
+                    "type": "object",
+                    "properties": {
+                      "mean": {
+                        "type": "number"
+                      }
+                    }
+                  },
                   "auto_points": {
                     "type": "object",
                     "properties": {
@@ -4692,6 +4705,9 @@
                     ],
                     "properties": {
                       "rank": {
+                        "type": "number"
+                      },
+                      "percentile": {
                         "type": "number"
                       },
                       "team_count": {
@@ -4748,6 +4764,9 @@
                   },
                   "losses": {
                     "type": "number"
+                  },
+                  "winrate": {
+                    "type": "number"
                   }
                 }
               }
@@ -4756,6 +4775,7 @@
         },
         "type": "object",
         "required": [
+          "year",
           "record",
           "epa"
         ]

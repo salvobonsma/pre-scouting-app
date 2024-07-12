@@ -72,7 +72,7 @@ export default async function NewEvent(key: string, year: number, name: string):
         const stats = await statbotics.GET("/v3/team_year/{team}/{year}", {
             params: {path: {year: year, team: tbaTeam.team_number.toString()}}
         });
-        if (!stats.data) return {success: false, message: "Statbotics API request error: " + stats.response.status};
+        if (!stats.data) return {success: false, message: "Statbotics API request error (a): " + stats.response.status};
 
         const teamEntryId = (await prisma.teamEntry.create(
               {
@@ -178,6 +178,50 @@ export default async function NewEvent(key: string, year: number, name: string):
                 )
             } else {
                 await prisma.teamEvent.create({data})
+            }
+
+            // Past seasons
+            const pastSeasons = await statbotics.GET("/v3/team_years", {
+                params: {
+                    query: {
+                        team: team.number.toString()
+                    }
+                }
+            });
+            if (!pastSeasons.data) return {
+                success: false,
+                message: "Statbotics API request error (a): " + pastSeasons.response.status
+            };
+
+            for (const season of pastSeasons.data) {
+                const data = {
+                    year: season.year,
+                    winrate: season.record.season.winrate ?? 0,
+                    rank: season.epa.ranks.total.rank ?? 0,
+                    totalTeams: season.epa.ranks.total.team_count ?? 0,
+                    epa: season.epa.breakdown.total_points.mean ?? 0,
+                    percentile: 1 - (season.epa.ranks.total.percentile ?? 0),
+                    teamNumber: team.number
+                }
+
+                if ((await prisma.teamPastSeason.findFirst({
+                    where: {
+                        teamNumber: tbaTeam.team_number,
+                        year: season.year
+                    }
+                }))) {
+                    await prisma.teamPastSeason.updateMany(
+                          {
+                              where: {
+                                  teamNumber: tbaTeam.team_number,
+                                  year: season.year
+                              },
+                              data
+                          }
+                    )
+                } else {
+                    await prisma.teamPastSeason.create({data})
+                }
             }
         }
 
