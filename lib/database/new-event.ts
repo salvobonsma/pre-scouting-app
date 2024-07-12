@@ -239,24 +239,40 @@ export default async function NewEvent(key: string, year: number, name: string):
         }
 
         for (const tbaMatch of tbaMatches.data) {
-            const match = await prisma.match.findUnique({
+            // Skip progress matches
+            if (tbaMatch.actual_time == undefined) continue;
+
+            tbaMatch.winning_alliance
+
+            const data = {
+                key: tbaMatch.key,
+                eventKey: tbaMatch.event_key,
+                matchNumber: tbaMatch.match_number,
+                compLevel: tbaMatch.comp_level,
+                winningAlliance: tbaMatch.winning_alliance ?? "red",
+                scoreBreakdown: JSON.stringify(tbaMatch.score_breakdown),
+                redScore: tbaMatch.alliances?.red?.score ?? 0,
+                redTeamKeys: tbaMatch.alliances?.red?.team_keys ?? [],
+                blueScore: tbaMatch.alliances?.blue?.score ?? 0,
+                blueTeamKeys: tbaMatch.alliances?.blue?.team_keys ?? [],
+                videoId: tbaMatch.videos?.find(x => x.type == "youtube")?.key
+            }
+
+            if ((await prisma.match.findFirst({
                 where: {
                     key: tbaMatch.key
                 }
-            });
-            if (!match) {
-                await prisma.match.create(
+            }))) {
+                await prisma.match.updateMany(
                       {
-                          data: {
-                              key: tbaMatch.key,
-                              matchNumber: tbaMatch.match_number,
-                              redScore: tbaMatch.alliances?.red?.score,
-                              blueScore: tbaMatch.alliances?.blue?.score,
-                              scoreBreakdown: JSON.stringify(tbaMatch.score_breakdown),
-                              videoId: tbaMatch.videos?.find(x => x.type == "youtube")?.key
-                          }
+                          where: {
+                              key: tbaMatch.key
+                          },
+                          data
                       }
                 )
+            } else {
+                await prisma.match.create({data})
             }
 
             await prisma.matchEntry.create(

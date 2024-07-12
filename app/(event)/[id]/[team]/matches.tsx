@@ -20,7 +20,9 @@ export default function Matches() {
               </TabsList>
               <TabsContent value={"table"}>
               </TabsContent>
-              <TabsContent value={"carousel"}>Change your password here.</TabsContent>
+              <TabsContent value={"carousel"}>
+                  Change your password here.
+              </TabsContent>
           </Tabs>
     )
 }

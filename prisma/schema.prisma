@@ -146,10 +146,17 @@ model MatchEntry {
 model Match {
   key String @id
 
-  matchNumber    Int
-  redScore       Int?
-  blueScore      Int?
-  scoreBreakdown String?
+  eventKey    String
+  matchNumber Int
+  compLevel   String // "qm" | "ef" | "qf" | "sf" | "f"
+
+  winningAlliance String // "red" | "blue"
+  scoreBreakdown  String
+
+  redScore     Int
+  redTeamKeys  String[]
+  blueScore    Int
+  blueTeamKeys String[]
 
   videoId String?
 
