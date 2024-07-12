@@ -1,13 +1,6 @@
 'use client'
 
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    SortingState,
-    useReactTable,
-} from "@tanstack/react-table";
+import {ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable,} from "@tanstack/react-table";
 
 import React from "react";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
@@ -100,8 +93,6 @@ export interface DataTableProps<TData, TValue> {
 }
 
 export default function PastEvents<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-
     const table = useReactTable({
         data,
         columns,
@@ -170,6 +161,7 @@ export default function PastEvents<TData, TValue>({columns, data}: DataTableProp
                         size="sm"
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
+                        type={"button"}
                   >
                       Previous
                   </Button>
@@ -178,6 +170,7 @@ export default function PastEvents<TData, TValue>({columns, data}: DataTableProp
                         size="sm"
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
+                        type={"button"}
                   >
                       Next
                   </Button>

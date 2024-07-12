@@ -7,6 +7,7 @@ import QuickTooltip from "@/components/quick-tooltip";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/(event)/[id]/[team]/event-card";
+import PastEvents, {columns} from "@/app/(event)/[id]/[team]/past-events";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
     if (!+params.id || !+params.team) return NotFound();
@@ -51,6 +52,28 @@ export default async function Team({params}: { params: { id: string, team: strin
               }
           }
     );
+
+    const pastSeasons = (await prisma.teamPastSeason.findMany(
+          {
+              where: {
+                  teamNumber: team.number,
+                  year: {
+                      lt: event.year
+                  }
+              }
+          }
+    )).map(value => ({
+        year: value.year,
+        winRate: value.winrate,
+        rank: {
+            rank: value.rank,
+            of: value.totalTeams
+        },
+        epa: {
+            epa: value.epa,
+            percentile: value.percentile
+        }
+    })).sort((a, b) => b.year - a.year)
 
     function epaValue(epa: number, deviation: number) {
         let arrow;
@@ -216,6 +239,13 @@ export default async function Team({params}: { params: { id: string, team: strin
                                         <EventCard key={value.eventKey} event={value}/>
                                   ))
                         }
+                    </>
+                }
+                pastSeasons={
+                    <>
+                        <div className={"mt-sm"}>
+                            <PastEvents columns={columns} data={pastSeasons}/>
+                        </div>
                     </>
                 }
           />

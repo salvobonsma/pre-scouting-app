@@ -20,9 +20,8 @@ import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
-import PastEvents, {columns} from "@/app/(event)/[id]/[team]/past-events";
 
-export default function ClientPage({event, team, teamEntry, teamDetails, statistics, events}: {
+export default function ClientPage({event, team, teamEntry, teamDetails, statistics, events, pastSeasons}: {
     event: { id: number },
     team: { rookieYear: number | null, state: string | null, school: string | null, number: number },
     teamEntry: {
@@ -53,7 +52,8 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     },
     teamDetails: ReactNode,
     statistics: ReactNode,
-    events: ReactNode
+    events: ReactNode,
+    pastSeasons: ReactNode
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
 
@@ -204,52 +204,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   <Separator/>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
-                  <div className={"mt-sm"}>
-                      <PastEvents columns={columns} data={[
-                          {
-                              year: 2024,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.80}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          },
-                          {
-                              year: 2023,
-                              rank: {rank: 200, of: 3000},
-                              winRate: 1,
-                              epa: {epa: 13, percentile: 0.24}
-                          }
-                      ]}/>
-                  </div>
+                  {pastSeasons}
               </form>
           </Form>
     );

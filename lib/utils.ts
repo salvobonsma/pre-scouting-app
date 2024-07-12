@@ -53,6 +53,8 @@ export function percentile(z: number): number {
 }
 
 export function withOrdinalSuffix(num: number): string {
+    num = +num.toFixed();
+
     const j = num % 10;
     const k = num % 100;
 
@@ -65,7 +67,7 @@ export function withOrdinalSuffix(num: number): string {
     if (j == 3 && k != 13) {
         return num + "rd";
     }
-    return num.toFixed() + "th";
+    return num + "th";
 }
 
 export function reload() {
