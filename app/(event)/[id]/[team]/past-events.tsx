@@ -7,7 +7,7 @@ import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import QuickTooltip from "@/components/quick-tooltip";
 import {withOrdinalSuffix} from "@/lib/utils";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
+import DataTablePagination from "@/components/data-table-pagination";
 
 export type Year = {
     year: number,
@@ -156,24 +156,7 @@ export default function PastEvents<TData, TValue>({columns, data}: DataTableProp
                   </TableBody>
               </Table>
               <div className="flex items-center justify-end space-x-2 py-4">
-                  <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                        type={"button"}
-                  >
-                      Previous
-                  </Button>
-                  <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                        type={"button"}
-                  >
-                      Next
-                  </Button>
+                  <DataTablePagination table={table}/>
               </div>
           </div>
     );

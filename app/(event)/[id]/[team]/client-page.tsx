@@ -20,6 +20,7 @@ import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import Matches from "@/app/(event)/[id]/[team]/matches";
 
 export default function ClientPage({event, team, teamEntry, teamDetails, statistics, events, pastSeasons}: {
     event: { id: number },
@@ -200,8 +201,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   <h1 className={"mt"}>Events</h1>
                   <Separator/>
                   <div className={"mt-sm flex flex-wrap gap-6"}>{events}</div>
-                  <h1 className={"mt"}>Matches</h1>
-                  <Separator/>
+                  <Matches/>
                   <h1 className={"mt"}>Past Seasons</h1>
                   <Separator/>
                   {pastSeasons}
