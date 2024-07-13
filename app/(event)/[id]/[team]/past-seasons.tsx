@@ -92,7 +92,7 @@ export interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export default function PastEvents<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export default function PastSeasons<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,

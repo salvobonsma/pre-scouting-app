@@ -7,7 +7,7 @@ import QuickTooltip from "@/components/quick-tooltip";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/(event)/[id]/[team]/event-card";
-import PastEvents, {columns} from "@/app/(event)/[id]/[team]/past-events";
+import PastSeasons, {columns} from "@/app/(event)/[id]/[team]/past-seasons";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
     if (!+params.id || !+params.team) return NotFound();
@@ -244,7 +244,7 @@ export default async function Team({params}: { params: { id: string, team: strin
                 pastSeasons={
                     <>
                         <div className={"mt-sm"}>
-                            <PastEvents columns={columns} data={pastSeasons}/>
+                            <PastSeasons columns={columns} data={pastSeasons}/>
                         </div>
                     </>
                 }
