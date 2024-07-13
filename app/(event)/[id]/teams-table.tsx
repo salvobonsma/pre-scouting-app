@@ -74,9 +74,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <a href={`/${eventId}/${row.getValue("teamNumber")}`}>
-                      <Button variant={"link"}>{row.getValue("teamNumber")}</Button>
-                  </a>
+                  <div className={"ml-4"}>{row.getValue("teamNumber")}</div>
             ),
             enableGlobalFilter: true
         },
@@ -94,9 +92,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <a href={`/${eventId}/${row.getValue("teamNumber")}`}>
-                      <Button variant={"link"}>{row.getValue("teamName")}</Button>
-                  </a>
+                  <div className={"ml-4"}>{row.getValue("teamName")}</div>
             ),
             enableGlobalFilter: true
         },
@@ -116,10 +112,8 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <div className={"flex justify-end mr-4"}>
-                      <StatusBadge status={statusStates.find(
-                            value => value.teamNumber == row.getValue("teamNumber")
-                      )?.status ?? "notStarted"}/>
+                  <div className={"flex justify-end ml-4"}>
+                      <StatusBadge status={row.getValue("status")}/>
                   </div>
             ),
             enableGlobalFilter: true
@@ -127,7 +121,10 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
         {
             id: "actions",
             cell: ({row}) => (
-                  <div className={"flex justify-center"}>
+                  <div className={"flex justify-center gap-4"}>
+                      <a href={`/${eventId}/${row.getValue("teamNumber")}`}>
+                          <Button variant={"outline"}>View team</Button>
+                      </a>
                       <ActionDropdown statusMenu={(
                             <>
                                 <DropdownMenuSubTrigger>

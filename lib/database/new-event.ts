@@ -302,10 +302,9 @@ async function generateTeam(eventId: number, year: number, tbaTeam: any, tbaTeam
         // Skip progress matches
         if (tbaMatch.actual_time == undefined) continue;
 
-        tbaMatch.winning_alliance
-
         const data = {
             key: tbaMatch.key,
+            startTime: tbaMatch.actual_time,
             eventKey: tbaMatch.event_key,
             matchNumber: tbaMatch.match_number,
             compLevel: tbaMatch.comp_level,
@@ -339,6 +338,7 @@ async function generateTeam(eventId: number, year: number, tbaTeam: any, tbaTeam
               {
                   data: {
                       teamEntryId: teamEntryId,
+                      status: "notStarted",
                       matchKey: tbaMatch.key
                   }
               }

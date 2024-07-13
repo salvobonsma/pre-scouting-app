@@ -1,0 +1,1 @@
+export type MatchStatus = "notStarted" | "inProgress" | "completed";

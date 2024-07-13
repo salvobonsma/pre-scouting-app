@@ -8,6 +8,8 @@ import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/(event)/[id]/[team]/event-card";
 import PastSeasons, {columns} from "@/app/(event)/[id]/[team]/past-seasons";
+import Matches from "@/app/(event)/[id]/[team]/matches/matches";
+import {MatchStatus} from "@/lib/database/set-match-status";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
     if (!+params.id || !+params.team) return NotFound();
@@ -45,13 +47,24 @@ export default async function Team({params}: { params: { id: string, team: strin
           }
     );
 
-    const matches = await prisma.matchEntry.findMany(
-          {
-              where: {
-                  teamEntryId: teamEntry.id
-              }
-          }
-    );
+    const matchEntries = await prisma.matchEntry.findMany({
+        where: {
+            teamEntryId: teamEntry.id
+        }
+    });
+
+    const matches = await Promise.all(matchEntries.map(async (value) => {
+        const match = (await prisma.match.findMany({
+            where: {
+                key: value.matchKey == null ? undefined : value.matchKey
+            }
+        }))[0];
+
+        return {
+            ...value,
+            ...match
+        };
+    }));
 
     const pastSeasons = (await prisma.teamPastSeason.findMany(
           {
@@ -240,6 +253,17 @@ export default async function Team({params}: { params: { id: string, team: strin
                                   ))
                         }
                     </>
+                }
+                matches={
+                    <Matches
+                          matches={matches.map(value => ({
+                              ...value,
+                              compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",
+                              winningAlliance: value.winningAlliance as "red" | "blue" | "",
+                              status: value.status as MatchStatus
+                          }))}
+                          teamNumber={team.number}
+                    />
                 }
                 pastSeasons={
                     <>
