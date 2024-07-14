@@ -55,16 +55,6 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     teamNumber: number,
     teamEntryId: number
 }) {
-    if (matches.length == 0) return (
-          <>
-              <h1 className={"mt"}>Matches</h1>
-              <Separator/>
-              <p className={"text-center muted mt-8"}>
-                  This team has not competed in any matches this season, yet.
-              </p>
-          </>
-    );
-
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
         key: false,
         friendlyAlliance: false,
@@ -78,6 +68,15 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     const [orderedMatches, setOrderedMatches] = useState<Match[]>([]);
     const [currentMatch, setCurrentMatch] =
           useState<string | undefined>(undefined);
+    if (matches.length == 0) return (
+          <>
+              <h1 className={"mt"}>Matches</h1>
+              <Separator/>
+              <p className={"text-center muted mt-8"}>
+                  This team has not competed in any matches this season, yet.
+              </p>
+          </>
+    );
 
     let progress = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
