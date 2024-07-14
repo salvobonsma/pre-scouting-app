@@ -64,7 +64,8 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     );
     const [tab, setTab] = useState("table");
     const [orderedMatches, setOrderedMatches] = useState<Match[]>([]);
-    const [currentMatch, setCurrentMatch] = useState<string | undefined>(undefined);
+    const [currentMatch, setCurrentMatch] =
+          useState<string | undefined>(undefined);
 
     let progress = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0

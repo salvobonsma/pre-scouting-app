@@ -74,7 +74,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <div className={"ml-4"}>{row.getValue("teamNumber")}</div>
+                  <p className={"ml-4"}>{row.getValue("teamNumber")}</p>
             ),
             enableGlobalFilter: true
         },
@@ -92,7 +92,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <div className={"ml-4"}>{row.getValue("teamName")}</div>
+                  <p className={"ml-4"}>{row.getValue("teamName")}</p>
             ),
             enableGlobalFilter: true
         },
