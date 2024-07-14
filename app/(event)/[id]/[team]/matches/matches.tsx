@@ -13,6 +13,26 @@ import {Badge} from "@/components/ui/badge";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {VisibilityState} from "@tanstack/react-table";
 import Table from "@/app/(event)/[id]/[team]/matches/table";
+import MatchView from "@/app/(event)/[id]/[team]/matches/match";
+
+export type Match = {
+    key: string,
+    matchNumber: number,
+    winningAlliance: "red" | "blue" | "",
+    compLevel: "qm" | "ef" | "qf" | "sf" | "f",
+    scoreBreakdown: String,
+    startTime: number
+    redScore: number,
+    redTeamKeys: string[],
+    blueScore: number,
+    blueTeamKeys: string[],
+    friendlyScore: number,
+    opponentScore: number,
+    videoId: string | null,
+    friendlyAlliance: boolean,
+    notes: string,
+    status: MatchStatus,
+}
 
 export default function Matches({matches, teamNumber, teamEntryId}: {
     matches: {
@@ -27,6 +47,7 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
         blueTeamKeys: string[],
         videoId: string | null,
         notes: string,
+        scoreBreakdown: string,
         status: MatchStatus,
     }[],
     teamNumber: number,
@@ -41,6 +62,9 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     const [statusStates, setStatusStates] = useState(
           matches.map(match => ({key: match.key ?? 0, status: match.status as MatchStatus}))
     );
+    const [tab, setTab] = useState("table");
+    const [orderedMatches, setOrderedMatches] = useState<Match[]>([]);
+    const [currentMatch, setCurrentMatch] = useState<string | undefined>(undefined);
 
     let progress = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
@@ -114,7 +138,7 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     );
 
     return (
-          <Tabs defaultValue={"table"}>
+          <Tabs value={tab} onValueChange={setTab}>
               <div className={"flex gap-4 items-center mt"}>
                   <h1>Matches</h1>
                   <div className={"flex-1"}/>
@@ -177,11 +201,18 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
                         setColumnVisibility={setColumnVisibility}
                         statusStates={statusStates}
                         setStatusStates={setStatusStates}
+                        setOrderedMatches={setOrderedMatches}
+                        setCurrentMatch={setCurrentMatch}
+                        setTab={setTab}
                         teamEntryId={teamEntryId}
                   />
               </TabsContent>
               <TabsContent value={"match"}>
-                  Match
+                  <MatchView
+                        orderedMatches={orderedMatches}
+                        currentMatch={currentMatch}
+                        setCurrentMatch={setCurrentMatch}
+                  />
               </TabsContent>
           </Tabs>
     );

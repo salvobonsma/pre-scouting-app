@@ -14,7 +14,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 
 import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
 import DataTablePagination from "@/components/data-table-pagination";
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useEffect} from "react";
 import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
 import {
     DropdownMenuItem,
@@ -29,18 +29,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {cn} from "@/lib/utils";
 import DebouncedInput from "@/components/debounced-input";
 import {TeamStatus} from "@/lib/database/set-team-statues";
-
-type Match = {
-    key: string,
-    compLevel: "qm" | "ef" | "qf" | "sf" | "f",
-    startTime: number
-    redScore: number,
-    blueScore: number,
-    friendlyScore: number,
-    opponentScore: number,
-    friendlyAlliance: boolean,
-    status: MatchStatus,
-}
+import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
 
 export default function MatchesTable({
                                          data,
@@ -48,6 +37,9 @@ export default function MatchesTable({
                                          setColumnVisibility,
                                          statusStates,
                                          setStatusStates,
+                                         setOrderedMatches,
+                                         setCurrentMatch,
+                                         setTab,
                                          teamEntryId
                                      }:
                                            {
@@ -59,6 +51,9 @@ export default function MatchesTable({
                                                }[]>>,
                                                columnVisibility: VisibilityState,
                                                setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>,
+                                               setOrderedMatches: Dispatch<SetStateAction<Match[]>>,
+                                               setCurrentMatch: Dispatch<SetStateAction<string | undefined>>,
+                                               setTab: Dispatch<SetStateAction<string>>,
                                                teamEntryId: number
                                            }) {
     const [sorting, setSorting] = React.useState<SortingState>([
@@ -267,7 +262,10 @@ export default function MatchesTable({
             id: "actions",
             cell: ({row}) => (
                   <div className={"flex justify-center gap-4"}>
-                      <Button variant={"outline"}>Match view</Button>
+                      <Button variant={"outline"} onClick={() => {
+                          setCurrentMatch(row.original.key);
+                          setTab("match");
+                      }}>Match view</Button>
                       <ActionDropdown statusMenu={(
                             <>
                                 <DropdownMenuSubTrigger>
@@ -330,6 +328,10 @@ export default function MatchesTable({
             }
         }
     });
+
+    useEffect(() => {
+        setOrderedMatches(table.getSortedRowModel().rows.map(value => value.original))
+    }, [sorting, globalFilter, setOrderedMatches, table]);
 
     async function setStatus(status: MatchStatus, keys: string[]) {
         setStatusStates(await SetMatchStatuses(status, teamEntryId, keys));
