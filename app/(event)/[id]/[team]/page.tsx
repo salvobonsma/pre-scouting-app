@@ -9,7 +9,7 @@ import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/(event)/[id]/[team]/event-card";
 import PastSeasons, {columns} from "@/app/(event)/[id]/[team]/past-seasons";
 import Matches from "@/app/(event)/[id]/[team]/matches/matches";
-import {MatchStatus} from "@/lib/database/set-match-status";
+import {MatchStatus} from "@/lib/database/set-match-statuses";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
     if (!+params.id || !+params.team) return NotFound();
@@ -62,7 +62,8 @@ export default async function Team({params}: { params: { id: string, team: strin
 
         return {
             ...value,
-            ...match
+            ...match,
+            teamEntryId: teamEntry.id
         };
     }));
 

@@ -113,7 +113,9 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
             },
             cell: ({row}) => (
                   <div className={"flex justify-end ml-4"}>
-                      <StatusBadge status={row.getValue("status")}/>
+                      <StatusBadge status={statusStates.find(
+                            value => value.teamNumber == row.getValue("teamNumber")
+                      )?.status ?? "notStarted"}/>
                   </div>
             ),
             enableGlobalFilter: true
@@ -183,13 +185,11 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
               status,
               table.getFilteredSelectedRowModel().rows.map(row => row.getValue("teamNumber"))
         );
-
     }
 
     async function setStatuesByTeam(status: TeamStatus, teams: number[]) {
         // @ts-ignore
         setStatusStates(await SetTeamStatues(eventId, teams, status));
-
     }
 
     return (

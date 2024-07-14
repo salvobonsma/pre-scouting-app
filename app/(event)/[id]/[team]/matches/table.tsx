@@ -2,6 +2,7 @@ import {
     ColumnDef,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     SortingState,
@@ -11,7 +12,7 @@ import {
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 
-import {MatchStatus} from "@/lib/database/set-match-status";
+import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
 import DataTablePagination from "@/components/data-table-pagination";
 import React, {Dispatch, SetStateAction} from "react";
 import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
@@ -26,9 +27,11 @@ import StatusBadge from "@/components/status-badge";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {cn} from "@/lib/utils";
+import DebouncedInput from "@/components/debounced-input";
 
 type Match = {
     key: string,
+    teamEntryId: number,
     compLevel: "qm" | "ef" | "qf" | "sf" | "f",
     startTime: number
     redScore: number,
@@ -40,7 +43,6 @@ type Match = {
 }
 
 export const columns: ColumnDef<Match>[] = [
-    {accessorKey: "friendlyAlliance"},
     {
         id: "select",
         header: ({table}) => (
@@ -59,7 +61,7 @@ export const columns: ColumnDef<Match>[] = [
                     onCheckedChange={(value) => row.toggleSelected(!!value)}
                     aria-label="Select row"
               />
-        ),
+        )
     },
     {
         accessorKey: "compLevel",
@@ -81,21 +83,22 @@ export const columns: ColumnDef<Match>[] = [
                 "qf": "Quarter Finals",
                 "sf": "Semifinals",
                 "f": "Finals"
-            }[row.getValue("compLevel") as "qm" | "ef" | "qf" | "sf" | "f"];
+            }[row.original.compLevel];
 
             return <div className={"ml-4"}>{compLevelText}</div>;
         },
         sortingFn: (rowA, rowB) => {
             const compLevelOrder = ["qm", "ef", "qf", "sf", "f"];
 
-            const compLevelA = rowA.getValue("compLevel") as "qm" | "ef" | "qf" | "sf" | "f";
-            const compLevelB = rowB.getValue("compLevel") as "qm" | "ef" | "qf" | "sf" | "f";
+            const compLevelA = rowA.original.compLevel;
+            const compLevelB = rowB.original.compLevel;
 
             const indexA = compLevelOrder.indexOf(compLevelA);
             const indexB = compLevelOrder.indexOf(compLevelB);
 
             return indexA - indexB;
-        }
+        },
+        enableGlobalFilter: true
     },
     {
         accessorKey: "startTime",
@@ -112,9 +115,10 @@ export const columns: ColumnDef<Match>[] = [
         },
         cell: ({row}) => (
               <div className={"ml-4"}>
-                  {new Date(row.getValue("startTime") as number * 1000).toLocaleDateString()}
+                  {new Date(row.original.startTime as number * 1000).toLocaleDateString()}
               </div>
         ),
+        enableGlobalFilter: true
     },
     {
         accessorKey: "redScore",
@@ -132,12 +136,13 @@ export const columns: ColumnDef<Match>[] = [
         cell: ({row}) => (
               <div className={cn(
                     "ml-4",
-                    row.getValue("redScore") as number > (row.getValue("blueScore") as number) ? "font-bold" : "",
-                    row.getValue("friendlyAlliance") ? "underline" : ""
+                    row.original.redScore > (row.original.blueScore) ? "font-bold" : "",
+                    row.original.friendlyAlliance ? "underline" : ""
               )}>
-                  {row.getValue("redScore")}
+                  {row.original.redScore}
               </div>
         ),
+        enableGlobalFilter: true
     },
     {
         accessorKey: "blueScore",
@@ -155,12 +160,13 @@ export const columns: ColumnDef<Match>[] = [
         cell: ({row}) => (
               <div className={cn(
                     "ml-4",
-                    (row.getValue("redScore") as number) < (row.getValue("blueScore") as number) ? "font-bold" : "",
-                    !row.getValue("friendlyAlliance") ? "underline" : ""
+                    row.original.redScore < row.original.blueScore ? "font-bold" : "",
+                    !row.original.friendlyAlliance ? "underline" : ""
               )}>
-                  {row.getValue("blueScore")}
+                  {row.original.blueScore}
               </div>
         ),
+        enableGlobalFilter: true
     },
     {
         accessorKey: "friendlyScore",
@@ -176,10 +182,11 @@ export const columns: ColumnDef<Match>[] = [
             )
         },
         cell: ({row}) => (
-              <div className={cn("ml-4", (row.getValue("friendlyScore") as number > (row.getValue("opponentScore") as number) ? "font-bold" : ""))}>
-                  {row.getValue("friendlyScore")}
+              <div className={cn("ml-4", row.original.friendlyScore > row.original.opponentScore ? "font-bold" : "")}>
+                  {row.original.friendlyScore}
               </div>
         ),
+        enableGlobalFilter: true
     },
     {
         accessorKey: "opponentScore",
@@ -195,10 +202,11 @@ export const columns: ColumnDef<Match>[] = [
             )
         },
         cell: ({row}) => (
-              <div className={cn("ml-4", ((row.getValue("friendlyScore") as number) < (row.getValue("opponentScore") as number) ? "font-bold" : ""))}>
-                  {row.getValue("opponentScore")}
+              <div className={cn("ml-4", (row.original.friendlyScore < row.original.opponentScore ? "font-bold" : ""))}>
+                  {row.original.opponentScore}
               </div>
         ),
+        enableGlobalFilter: true
     },
     {
         accessorKey: "status",
@@ -217,9 +225,10 @@ export const columns: ColumnDef<Match>[] = [
         },
         cell: ({row}) => (
               <div className={"flex justify-end ml-4"}>
-                  <StatusBadge status={row.getValue("status")}/>
+                  <StatusBadge status={row.original.status}/>
               </div>
-        )
+        ),
+        enableGlobalFilter: true
     },
     {
         id: "actions",
@@ -246,6 +255,9 @@ export const columns: ColumnDef<Match>[] = [
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
                                           className={"justify-center"}
+                                          onClick={async () => {
+                                              await SetMatchStatuses("completed", row.original.teamEntryId, [row.original.key])
+                                          }}
                                     >
                                         <StatusBadge status={"completed"}/>
                                     </DropdownMenuItem>
@@ -278,6 +290,7 @@ export default function PastSeasons<TData, TValue>({columns, data, columnVisibil
             desc: false
         }
     ]);
+    const [globalFilter, setGlobalFilter] = React.useState("");
 
     const table = useReactTable({
         data,
@@ -287,9 +300,12 @@ export default function PastSeasons<TData, TValue>({columns, data, columnVisibil
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
+        getFilteredRowModel: getFilteredRowModel(),
+        onGlobalFilterChange: setGlobalFilter,
         state: {
             sorting,
-            columnVisibility
+            columnVisibility,
+            globalFilter
         },
         initialState: {
             pagination: {
@@ -300,6 +316,42 @@ export default function PastSeasons<TData, TValue>({columns, data, columnVisibil
 
     return (
           <div className={"mt-sm"}>
+              <div className={"flex justify-between mb-6"}>
+                  <DebouncedInput
+                        debounce={0.1}
+                        placeholder="Search..."
+                        value={globalFilter}
+                        onChange={(value) => setGlobalFilter(String(value))}
+                        className={"max-w-md"}
+                  />
+                  <ActionDropdown statusMenu={(
+                        <>
+                            <DropdownMenuSubTrigger>
+                                <TagIcon className="mr-2 h-4 w-4"/>
+                                Set {table.getFilteredSelectedRowModel().rows.length > 1 ? "statues" : "status"}
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                    >
+                                        <StatusBadge status={"notStarted"}/>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                    >
+                                        <StatusBadge status={"inProgress"}/>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                          className={"justify-center"}
+                                    >
+                                        <StatusBadge status={"completed"}/>
+                                    </DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </>
+                  )}/>
+              </div>
               <Table className={"overflow-x-scroll"}>
                   <TableHeader>
                       {table.getHeaderGroups().map((headerGroup) => (

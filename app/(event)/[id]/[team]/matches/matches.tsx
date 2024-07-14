@@ -11,12 +11,13 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/status-badge";
 import {Badge} from "@/components/ui/badge";
-import {MatchStatus} from "@/lib/database/set-match-status";
+import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {VisibilityState} from "@tanstack/react-table";
 
 export default function Matches({matches, teamNumber}: {
     matches: {
-        key: string
+        key: string,
+        teamEntryId: number,
         startTime: number,
         matchNumber: number,
         compLevel: "qm" | "ef" | "qf" | "sf" | "f",
@@ -32,6 +33,7 @@ export default function Matches({matches, teamNumber}: {
     teamNumber: number
 }) {
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+        key: false,
         friendlyAlliance: false,
         redScore: false,
         blueScore: false
@@ -124,6 +126,7 @@ export default function Matches({matches, teamNumber}: {
                                     if (checked) {
                                         setColumnVisibility(
                                               {
+                                                  key: false,
                                                   friendlyAlliance: false,
                                                   redScore: false,
                                                   blueScore: false
@@ -132,6 +135,7 @@ export default function Matches({matches, teamNumber}: {
                                     } else {
                                         setColumnVisibility(
                                               {
+                                                  key: false,
                                                   friendlyAlliance: false,
                                                   friendlyScore: false,
                                                   opponentScore: false
@@ -164,6 +168,7 @@ export default function Matches({matches, teamNumber}: {
                   <Table columns={columns} data={matches.map(value =>
                         ({
                             ...value,
+                            teamEntryId: value.teamEntryId,
                             friendlyScore: value.redScore,
                             opponentScore: value.blueScore,
                             friendlyAlliance: value.redTeamKeys.filter(key => key.includes(teamNumber.toString())).length > 0

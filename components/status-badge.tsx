@@ -1,6 +1,6 @@
 import {Badge} from "@/components/ui/badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
-import {MatchStatus} from "@/lib/database/set-match-status";
+import {MatchStatus} from "@/lib/database/set-match-statuses";
 
 
 export default function StatusBadge({status}: { status: TeamStatus | MatchStatus }) {
