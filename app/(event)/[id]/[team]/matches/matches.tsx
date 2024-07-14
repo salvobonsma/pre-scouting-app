@@ -6,18 +6,17 @@ import {Separator} from "@/components/ui/separator";
 import React, {useState} from "react";
 import {Switch} from "@/components/ui/switch";
 import {Label} from "@/components/ui/label";
-import Table, {columns} from "@/app/(event)/[id]/[team]/matches/table";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/status-badge";
 import {Badge} from "@/components/ui/badge";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {VisibilityState} from "@tanstack/react-table";
+import Table from "@/app/(event)/[id]/[team]/matches/table";
 
-export default function Matches({matches, teamNumber}: {
+export default function Matches({matches, teamNumber, teamEntryId}: {
     matches: {
         key: string,
-        teamEntryId: number,
         startTime: number,
         matchNumber: number,
         compLevel: "qm" | "ef" | "qf" | "sf" | "f",
@@ -30,7 +29,8 @@ export default function Matches({matches, teamNumber}: {
         notes: string,
         status: MatchStatus,
     }[],
-    teamNumber: number
+    teamNumber: number,
+    teamEntryId: number
 }) {
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
         key: false,
@@ -165,15 +165,20 @@ export default function Matches({matches, teamNumber}: {
               </TabsList>
               {progressComponent}
               <TabsContent value={"table"}>
-                  <Table columns={columns} data={matches.map(value =>
+                  <Table
+                        data={matches.map(value =>
                         ({
                             ...value,
-                            teamEntryId: value.teamEntryId,
                             friendlyScore: value.redScore,
                             opponentScore: value.blueScore,
                             friendlyAlliance: value.redTeamKeys.filter(key => key.includes(teamNumber.toString())).length > 0
-                        }))
-                  } columnVisibility={columnVisibility} setColumnVisibility={setColumnVisibility}/>
+                        }))}
+                        columnVisibility={columnVisibility}
+                        setColumnVisibility={setColumnVisibility}
+                        statusStates={statusStates}
+                        setStatusStates={setStatusStates}
+                        teamEntryId={teamEntryId}
+                  />
               </TabsContent>
               <TabsContent value={"match"}>
                   Match

@@ -16,4 +16,15 @@ export default async function SetMatchStatuses(status: MatchStatus, teamEntryId:
               }
           }
     );
+
+    return (await prisma.matchEntry.findMany(
+          {
+              where: {
+                  teamEntryId: teamEntryId
+              }
+          }
+    )).map(value => ({
+        key: value.matchKey == null ? "" : value.matchKey,
+        status: value.status as MatchStatus
+    }));
 }

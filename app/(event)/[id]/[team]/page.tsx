@@ -264,6 +264,7 @@ export default async function Team({params}: { params: { id: string, team: strin
                               status: value.status as MatchStatus
                           }))}
                           teamNumber={team.number}
+                          teamEntryId={teamEntry.id}
                     />
                 }
                 pastSeasons={
