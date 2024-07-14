@@ -200,7 +200,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                   {statistics}
                   <h1 className={"mt"}>Events</h1>
                   <Separator/>
-                  <div className={"mt-sm flex flex-wrap gap-6"}>{events}</div>
+                  {events}
                   {matches}
                   {pastSeasons}
               </form>

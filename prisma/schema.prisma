@@ -145,11 +145,11 @@ model MatchEntry {
 }
 
 model Match {
-  key String @id
+  key      String @id
+  eventKey String
 
   startTime Int
 
-  eventKey    String
   matchNumber Int
   compLevel   String // "qm" | "ef" | "qf" | "sf" | "f"
 

@@ -17,6 +17,7 @@ import MatchView from "@/app/(event)/[id]/[team]/matches/match";
 
 export type Match = {
     key: string,
+    eventKey: string,
     matchNumber: number,
     winningAlliance: "red" | "blue" | "",
     compLevel: "qm" | "ef" | "qf" | "sf" | "f",
@@ -37,6 +38,7 @@ export type Match = {
 export default function Matches({matches, teamNumber, teamEntryId}: {
     matches: {
         key: string,
+        eventKey: string,
         startTime: number,
         matchNumber: number,
         compLevel: "qm" | "ef" | "qf" | "sf" | "f",
@@ -53,6 +55,16 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     teamNumber: number,
     teamEntryId: number
 }) {
+    if (matches.length == 0) return (
+          <>
+              <h1 className={"mt"}>Matches</h1>
+              <Separator/>
+              <p className={"text-center muted mt-8"}>
+                  This team has not competed in any matches this season, yet.
+              </p>
+          </>
+    );
+
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
         key: false,
         friendlyAlliance: false,
@@ -191,13 +203,15 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
               {progressComponent}
               <TabsContent value={"table"}>
                   <Table
-                        data={matches.map(value =>
-                        ({
-                            ...value,
-                            friendlyScore: value.redScore,
-                            opponentScore: value.blueScore,
-                            friendlyAlliance: value.redTeamKeys.filter(key => key.includes(teamNumber.toString())).length > 0
-                        }))}
+                        data={matches.map(value => {
+                            const friendlyAlliance = value.redTeamKeys.filter(key => key.includes(teamNumber.toString())).length > 0;
+                            return {
+                                ...value,
+                                friendlyAlliance: friendlyAlliance,
+                                friendlyScore: friendlyAlliance ? value.redScore : value.blueScore,
+                                opponentScore: friendlyAlliance ? value.blueScore : value.redScore,
+                            }
+                        })}
                         columnVisibility={columnVisibility}
                         setColumnVisibility={setColumnVisibility}
                         statusStates={statusStates}

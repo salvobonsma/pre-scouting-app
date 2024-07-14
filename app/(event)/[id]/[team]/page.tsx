@@ -116,6 +116,14 @@ export default async function Team({params}: { params: { id: string, team: strin
         );
     }
 
+    const eventsFiltered = events
+          .filter(value => value.eventKey != event.key)
+          .sort((a, b) =>
+                new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+          .map(value => (
+                <EventCard key={value.eventKey} event={value}/>
+          ));
+
     return (
           <ClientPage
                 event={event}
@@ -243,17 +251,21 @@ export default async function Team({params}: { params: { id: string, team: strin
                       </div>
                 )}
                 events={
-                    <>
-                        {
-                            events
-                                  .filter(value => value.eventKey != event.key)
-                                  .sort((a, b) =>
-                                        new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
-                                  .map(value => (
-                                        <EventCard key={value.eventKey} event={value}/>
-                                  ))
-                        }
-                    </>
+                    events.length == 0 ? (
+                          <p className={"text-center muted mt-8"}>
+                              This team has not competed at any events this season, yet.
+                          </p>
+                    ) : (
+                          eventsFiltered.length == 0 ? (
+                                <p className={"text-center muted mt-8"}>
+                                    This team has not competed at any events, other than this one, this season.
+                                </p>
+                          ) : (
+                                <div className={"mt-sm flex flex-wrap gap-6"}>
+                                    {eventsFiltered}
+                                </div>
+                          )
+                    )
                 }
                 matches={
                     <Matches

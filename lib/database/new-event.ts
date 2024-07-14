@@ -46,7 +46,7 @@ export default async function NewEvent(key: string, year: number, name: string):
     }
 
     const res = await Promise.all(
-          tbaTeams.data.map((team) => generateTeam(eventId, year, team, tbaTeams))
+          tbaTeams.data.map((team) => generateTeam(eventId, event.data.name, year, team, tbaTeams))
     );
     console.log(res)
 
@@ -105,7 +105,7 @@ export default async function NewEvent(key: string, year: number, name: string):
     return redirect("/" + eventId);
 }
 
-async function generateTeam(eventId: number, year: number, tbaTeam: any, tbaTeams: any) {
+async function generateTeam(eventId: number, eventName: string, year: number, tbaTeam: any, tbaTeams: any) {
     // Team
     let team = await prisma.team.findUnique({
         where: {
