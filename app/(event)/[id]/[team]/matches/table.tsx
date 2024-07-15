@@ -324,8 +324,8 @@ export default function MatchesTable({
     });
 
     useEffect(() => {
-        setOrderedMatches(table.getSortedRowModel().rows.map(value => value.original))
-    }, [sorting, globalFilter, setOrderedMatches, table]);
+        setOrderedMatches(table.getSortedRowModel().rows.map(value => value.original));
+    }, [sorting, globalFilter, setOrderedMatches, table, setCurrentMatch]);
 
     return (
           <div className={"mt-sm"}>

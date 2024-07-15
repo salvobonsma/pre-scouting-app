@@ -78,7 +78,6 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            console.log("test")
             setLoadingSave(true);
             if (status == "notStarted") await setTeamStatus("inProgress");
             await UpdateTeamData(event.id, team.number, {notes: values.notes});
