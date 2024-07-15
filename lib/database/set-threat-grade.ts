@@ -3,6 +3,15 @@
 import prisma from "@/lib/prisma";
 
 export default async function SetThreatGrade(eventId: number, teamNumber: number, grade: ThreatGradeType, status: string) {
+    if ((await prisma.teamEntry.findFirst(
+          {
+              where: {
+                  eventId: eventId,
+                  teamNumber: teamNumber
+              }
+          }
+    ))?.threatGrade == grade) return;
+
     await prisma.teamEntry.updateMany(
           {
               where: {

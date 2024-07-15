@@ -30,7 +30,7 @@ export default function EventCard({event}: {
     return (
           <Card className={"w-full sm:w-[35em]"}>
               <CardHeader>
-                  <CardTitle className={"flex justify-between w-full"}>
+                  <CardTitle className={"flex justify-between w-full gap-2"}>
                       {event.name}
                       <Badge className={"self-center text-center"}>{event.eventType}</Badge>
                   </CardTitle>
