@@ -204,7 +204,7 @@ export default function MatchView({
                         <>
                             {
                                 inView.includes(index) || (inView.length == 1 && (inView[0] + 1 == index || inView[0] - 1 == index))
-                                      ? (item(match, index)) : (<CarouselItem/>)
+                                      ? (item(match)) : (<CarouselItem/>)
                             }
                         </>
                   ))}
