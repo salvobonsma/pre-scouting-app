@@ -13,17 +13,17 @@ export default function YoutubeEmbed({load, id, match, className}: {
     match: Match,
     className?: string
 }) {
-    const [ref, {width}] = useMeasure();
+    const [ref, {width, height}] = useMeasure();
 
     return (
           <>
               {id ? (
                     load ? (
-                          <div ref={ref} className={cn(className, "rounded-lg")}>
+                          <div ref={ref} className={cn(className, "rounded overflow-hidden")}>
                               <YouTube
                                     opts={{
                                         width: width || 0,
-                                        height: (width || 0) / 1.6,
+                                        height: height,
                                         playerVars: {
                                             rel: 0,
                                         }
@@ -33,11 +33,11 @@ export default function YoutubeEmbed({load, id, match, className}: {
                               />
                           </div>
                     ) : (
-                          <div className={cn(className, "aspect-video border rounded-lg")}/>
+                          <div className={cn(className, "border rounded")}/>
                     )
               ) : (
-                    <div className={cn(className, "aspect-video border rounded-lg gap-2 flex flex-col place-content-center place-items-center")}>
-                        <h2>No video provided</h2>
+                    <div className={cn(className, "border rounded gap-2 flex flex-col place-content-center place-items-center")}>
+                        <h2 className={"text-center"}>No video provided</h2>
                         <Button onClick={async () => {
                             const event = await GetEvent(match.eventKey);
                             window.open(`https://www.youtube.com/results?search_query=${match.compLevel.toUpperCase()}${match.matchNumber} ${event?.year} ${event?.name}`, "_blank")

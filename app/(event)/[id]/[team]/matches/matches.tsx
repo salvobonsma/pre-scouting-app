@@ -10,8 +10,8 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/status-badge";
 import {Badge} from "@/components/ui/badge";
-import {MatchStatus} from "@/lib/database/set-match-statuses";
-import {VisibilityState} from "@tanstack/react-table";
+import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
+import {SortingState, VisibilityState} from "@tanstack/react-table";
 import Table from "@/app/(event)/[id]/[team]/matches/table";
 import MatchView from "@/app/(event)/[id]/[team]/matches/match";
 
@@ -61,6 +61,7 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
         redScore: false,
         blueScore: false
     });
+    const [teamsPerspective, setTeamsPerspective] = useState(true);
     const [statusStates, setStatusStates] = useState(
           matches.map(match => ({key: match.key ?? 0, status: match.status as MatchStatus}))
     );
@@ -68,6 +69,17 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     const [orderedMatches, setOrderedMatches] = useState<Match[]>([]);
     const [currentMatch, setCurrentMatch] =
           useState<string | undefined>(undefined);
+    const [sorting, setSorting] = React.useState<SortingState>([
+        {
+            id: "status",
+            desc: true
+        },
+        {
+            id: "startTime",
+            desc: true
+        }
+    ]);
+
     if (matches.length == 0) return (
           <>
               <h1 className={"mt"}>Matches</h1>
@@ -91,6 +103,10 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
     const completed = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
+
+    async function setStatuses(status: MatchStatus, keys: string[]) {
+        setStatusStates(await SetMatchStatuses(status, teamEntryId, keys));
+    }
 
     const progressComponent = (
           <Card className={"mt-4 w-full"}>
@@ -158,7 +174,9 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
                       <div className="flex items-center space-x-2 translate-y-[-3px]">
                           <Label htmlFor="perspective">{"From team's perspective"}</Label>
                           <Switch
+                                checked={teamsPerspective}
                                 onCheckedChange={checked => {
+                                    setTeamsPerspective(checked);
                                     if (checked) {
                                         setColumnVisibility(
                                               {
@@ -179,7 +197,7 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
                                         )
                                     }
                                 }}
-                                defaultChecked id="perspective"
+                                id="perspective"
                           />
                       </div>
                   </div>
@@ -217,15 +235,21 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
                         setStatusStates={setStatusStates}
                         setOrderedMatches={setOrderedMatches}
                         setCurrentMatch={setCurrentMatch}
+                        sorting={sorting}
+                        setSorting={setSorting}
                         setTab={setTab}
+                        setStatuses={setStatuses}
                         teamEntryId={teamEntryId}
                   />
               </TabsContent>
               <TabsContent value={"match"}>
                   <MatchView
+                        teamsPerspective={teamsPerspective}
                         orderedMatches={orderedMatches}
                         currentMatch={currentMatch}
                         setCurrentMatch={setCurrentMatch}
+                        statusStates={statusStates}
+                        setStatuses={setStatuses}
                   />
               </TabsContent>
           </Tabs>

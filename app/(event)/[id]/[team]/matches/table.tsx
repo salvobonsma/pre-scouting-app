@@ -12,7 +12,7 @@ import {
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 
-import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
+import {MatchStatus} from "@/lib/database/set-match-statuses";
 import DataTablePagination from "@/components/data-table-pagination";
 import React, {Dispatch, SetStateAction, useEffect} from "react";
 import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
@@ -35,12 +35,13 @@ export default function MatchesTable({
                                          data,
                                          columnVisibility,
                                          setColumnVisibility,
+                                         sorting,
+                                         setSorting,
                                          statusStates,
-                                         setStatusStates,
                                          setOrderedMatches,
                                          setCurrentMatch,
                                          setTab,
-                                         teamEntryId
+                                         setStatuses
                                      }:
                                            {
                                                data: Match[],
@@ -50,22 +51,15 @@ export default function MatchesTable({
                                                    status: TeamStatus
                                                }[]>>,
                                                columnVisibility: VisibilityState,
+                                               sorting: SortingState,
+                                               setSorting: Dispatch<SetStateAction<SortingState>>
                                                setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>,
                                                setOrderedMatches: Dispatch<SetStateAction<Match[]>>,
                                                setCurrentMatch: Dispatch<SetStateAction<string | undefined>>,
                                                setTab: Dispatch<SetStateAction<string>>,
+                                               setStatuses: (status: MatchStatus, keys: string[]) => void,
                                                teamEntryId: number
                                            }) {
-    const [sorting, setSorting] = React.useState<SortingState>([
-        {
-            id: "status",
-            desc: true
-        },
-        {
-            id: "startTime",
-            desc: false
-        }
-    ]);
     const [globalFilter, setGlobalFilter] = React.useState("");
 
     const columns: ColumnDef<Match>[] = [
@@ -276,24 +270,24 @@ export default function MatchesTable({
                                     <DropdownMenuSubContent>
                                         <DropdownMenuItem
                                               className={"justify-center"}
-                                              onClick={async () => {
-                                                  await setStatus("notStarted", [row.original.key])
+                                              onClick={() => {
+                                                  setStatuses("notStarted", [row.original.key])
                                               }}
                                         >
                                             <StatusBadge status={"notStarted"}/>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                               className={"justify-center"}
-                                              onClick={async () => {
-                                                  await setStatus("inProgress", [row.original.key])
+                                              onClick={() => {
+                                                  setStatuses("inProgress", [row.original.key])
                                               }}
                                         >
                                             <StatusBadge status={"inProgress"}/>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                               className={"justify-center"}
-                                              onClick={async () => {
-                                                  await setStatus("completed", [row.original.key])
+                                              onClick={() => {
+                                                  setStatuses("completed", [row.original.key])
                                               }}
                                         >
                                             <StatusBadge status={"completed"}/>
@@ -333,10 +327,6 @@ export default function MatchesTable({
         setOrderedMatches(table.getSortedRowModel().rows.map(value => value.original))
     }, [sorting, globalFilter, setOrderedMatches, table]);
 
-    async function setStatus(status: MatchStatus, keys: string[]) {
-        setStatusStates(await SetMatchStatuses(status, teamEntryId, keys));
-    }
-
     return (
           <div className={"mt-sm"}>
               <div className={"flex justify-between mb-6"}>
@@ -357,24 +347,24 @@ export default function MatchesTable({
                                 <DropdownMenuSubContent>
                                     <DropdownMenuItem
                                           className={"justify-center"}
-                                          onClick={async () => {
-                                              await setStatus("notStarted", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
+                                          onClick={() => {
+                                              setStatuses("notStarted", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
                                           }}
                                     >
                                         <StatusBadge status={"notStarted"}/>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
                                           className={"justify-center"}
-                                          onClick={async () => {
-                                              await setStatus("inProgress", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
+                                          onClick={() => {
+                                              setStatuses("inProgress", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
                                           }}
                                     >
                                         <StatusBadge status={"inProgress"}/>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
                                           className={"justify-center"}
-                                          onClick={async () => {
-                                              await setStatus("completed", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
+                                          onClick={() => {
+                                              setStatuses("completed", table.getFilteredSelectedRowModel().rows.map(row => row.original.key))
                                           }}
                                     >
                                         <StatusBadge status={"completed"}/>
