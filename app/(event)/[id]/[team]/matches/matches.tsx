@@ -1,5 +1,3 @@
-'use client'
-
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 import {Separator} from "@/components/ui/separator";
@@ -13,7 +11,7 @@ import {Badge} from "@/components/ui/badge";
 import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
 import {SortingState, VisibilityState} from "@tanstack/react-table";
 import Table from "@/app/(event)/[id]/[team]/matches/table";
-import MatchView from "@/app/(event)/[id]/[team]/matches/match";
+import MatchView from "@/app/(event)/[id]/[team]/matches/matchView";
 
 export type Match = {
     key: string,
@@ -35,7 +33,7 @@ export type Match = {
     status: MatchStatus,
 }
 
-export default function Matches({matches, teamNumber, teamEntryId}: {
+export default function Matches({matches, teamNumber, teamEntryId, setChanges, submitted, setSubmitted}: {
     matches: {
         key: string,
         eventKey: string,
@@ -50,10 +48,13 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
         videoId: string | null,
         notes: string,
         scoreBreakdown: string,
-        status: MatchStatus,
+        status: MatchStatus
     }[],
     teamNumber: number,
-    teamEntryId: number
+    teamEntryId: number,
+    setChanges: (changes: boolean) => void,
+    submitted: boolean,
+    setSubmitted: (submitted: boolean) => void
 }) {
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
         key: false,
@@ -250,6 +251,10 @@ export default function Matches({matches, teamNumber, teamEntryId}: {
                         setCurrentMatch={setCurrentMatch}
                         statusStates={statusStates}
                         setStatuses={setStatuses}
+                        setChanges={setChanges}
+                        submitted={submitted}
+                        setSubmitted={setSubmitted}
+                        teamEntryId={teamEntryId}
                   />
               </TabsContent>
           </Tabs>

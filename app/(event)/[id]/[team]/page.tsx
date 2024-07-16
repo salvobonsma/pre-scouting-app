@@ -8,7 +8,6 @@ import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/(event)/[id]/[team]/event-card";
 import PastSeasons, {columns} from "@/app/(event)/[id]/[team]/past-seasons";
-import Matches from "@/app/(event)/[id]/[team]/matches/matches";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 
 export default async function Team({params}: { params: { id: string, team: string } }) {
@@ -267,18 +266,12 @@ export default async function Team({params}: { params: { id: string, team: strin
                           )
                     )
                 }
-                matches={
-                    <Matches
-                          matches={matches.map(value => ({
-                              ...value,
-                              compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",
-                              winningAlliance: value.winningAlliance as "red" | "blue" | "",
-                              status: value.status as MatchStatus
-                          }))}
-                          teamNumber={team.number}
-                          teamEntryId={teamEntry.id}
-                    />
-                }
+                matches={matches.map(value => ({
+                    ...value,
+                    compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",
+                    winningAlliance: value.winningAlliance as "red" | "blue" | "",
+                    status: value.status as MatchStatus
+                }))}
                 pastSeasons={
                     <>
                         <div className={"mt-sm"}>
