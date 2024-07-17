@@ -1,6 +1,6 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import {tba} from "@/lib/tba/tba";
 import prisma from "@/lib/prisma";
 import GenerateTeam from "@/lib/database/generate/segments/generate-team";
@@ -52,7 +52,7 @@ export default async function NewEvent(key: string, year: number, name: string):
     )).find(res => !res.success);
     if (generateTeamsError) return generateTeamsError;
 
-    await GenerateStats(eventId);
+    await GenerateStats(eventId, false);
 
     return redirect("/" + eventId);
 }

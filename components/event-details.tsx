@@ -2,12 +2,12 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {isPast} from "@/lib/utils";
 
+dayjs.extend(relativeTime);
+
 export default async function EventDetails(props: {
     event: { startDate: string, city: string | null, type: string },
     teams: number
 }) {
-    dayjs.extend(relativeTime);
-
     return (
           <>
               <div className={"flex justify-between"}>

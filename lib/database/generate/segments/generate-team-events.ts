@@ -1,6 +1,6 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import {tba} from "@/lib/tba/tba";
 import prisma from "@/lib/prisma";
 

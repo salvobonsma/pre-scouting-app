@@ -1,6 +1,6 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
 import {statbotics} from "@/lib/statbotics/statbotics";
 import {tba} from "@/lib/tba/tba";
@@ -10,7 +10,7 @@ import GenerateMatches from "@/lib/database/generate/segments/generate-matches";
 
 export default async function GenerateTeam(tbaTeam: any, eventId: number, year: number, totalTeams: number, updateMatches: boolean): Promise<ActionResult> {
     // Team
-    const data = {
+    const teamData = {
         number: tbaTeam.team_number,
         key: tbaTeam.key,
         name: tbaTeam.nickname,
@@ -28,10 +28,10 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
             where: {
                 number: tbaTeam.team_number
             },
-            data: data
+            data: teamData
         });
     } else {
-        await prisma.team.create({data: data});
+        await prisma.team.create({data: teamData});
     }
 
     // Team Entry
@@ -40,32 +40,48 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
     });
     if (!stats.data) return {success: false, message: "Statbotics API request error (c): " + stats.response.status};
 
-    const teamEntryId = (await prisma.teamEntry.create(
-          {
-              data: {
-                  key: tbaTeam.key,
-                  eventId: eventId,
-                  name: tbaTeam.nickname,
-                  teamNumber: tbaTeam.team_number,
-                  wins: stats.data.record.season.wins,
-                  ties: stats.data.record.season.ties,
-                  losses: stats.data.record.season.losses,
-                  worldRank: stats.data.epa.ranks.total.rank,
-                  worldTotal: stats.data.epa.ranks.total.team_count,
-                  countyRank: stats.data.epa.ranks.country.rank,
-                  countyTotal: stats.data.epa.ranks.country.team_count,
-                  districtRank: stats.data.epa.ranks.district.rank,
-                  districtTotal: stats.data.epa.ranks.district.team_count,
-                  eventTotal: totalTeams,
-                  autoEPA: stats.data.epa.breakdown.auto_points.mean,
-                  teleopEPA: stats.data.epa.breakdown.teleop_points.mean,
-                  endgameEPA: stats.data.epa.breakdown.endgame_points.mean,
-                  totalEPA: (stats.data.epa.breakdown.auto_points.mean ?? 0) +
-                        (stats.data.epa.breakdown.teleop_points.mean ?? 0) +
-                        (stats.data.epa.breakdown.endgame_points.mean ?? 0)
+    const teamEntryData = {
+        key: tbaTeam.key,
+        eventId: eventId,
+        name: tbaTeam.nickname,
+        teamNumber: tbaTeam.team_number,
+        wins: stats.data.record.season.wins,
+        ties: stats.data.record.season.ties,
+        losses: stats.data.record.season.losses,
+        worldRank: stats.data.epa.ranks.total.rank,
+        worldTotal: stats.data.epa.ranks.total.team_count,
+        countyRank: stats.data.epa.ranks.country.rank,
+        countyTotal: stats.data.epa.ranks.country.team_count,
+        districtRank: stats.data.epa.ranks.district.rank,
+        districtTotal: stats.data.epa.ranks.district.team_count,
+        eventTotal: totalTeams,
+        autoEPA: stats.data.epa.breakdown.auto_points.mean,
+        teleopEPA: stats.data.epa.breakdown.teleop_points.mean,
+        endgameEPA: stats.data.epa.breakdown.endgame_points.mean,
+        totalEPA: (stats.data.epa.breakdown.auto_points.mean ?? 0) +
+              (stats.data.epa.breakdown.teleop_points.mean ?? 0) +
+              (stats.data.epa.breakdown.endgame_points.mean ?? 0)
+    }
+
+    let teamEntry = await prisma.teamEntry.findFirst({
+        where: {
+            eventId: eventId,
+            teamNumber: tbaTeam.team_number
+        }
+    });
+    if (teamEntry) {
+        await prisma.teamEntry.updateMany(
+              {
+                  where: {
+                      eventId: eventId,
+                      teamNumber: tbaTeam.team_number
+                  },
+                  data: teamEntryData
               }
-          }
-    )).id;
+        );
+    } else {
+        teamEntry = await prisma.teamEntry.create({data: teamEntryData});
+    }
 
     // Team Events
     const teamEvents = (await tba.GET("/team/{team_key}/events/{year}", {
@@ -119,7 +135,7 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
         }
 
         const generateMatchesError = (await Promise.all(
-              tbaMatches.data.map((match) => GenerateMatches(match, teamEntryId))
+              tbaMatches.data.map((match) => GenerateMatches(match, teamEntry.id))
         )).find(res => !res.success);
         if (generateMatchesError) return generateMatchesError;
     }

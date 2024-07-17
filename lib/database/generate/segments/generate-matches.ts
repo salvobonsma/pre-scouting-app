@@ -1,6 +1,6 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
 
 export default async function GenerateMatches(tbaMatch: any, teamEntryId: number): Promise<ActionResult> {
@@ -36,9 +36,17 @@ export default async function GenerateMatches(tbaMatch: any, teamEntryId: number
               }
         )
     } else {
-        await prisma.match.create({data})
+        await prisma.match.create({data});
     }
 
+    if ((await prisma.matchEntry.findFirst(
+          {
+              where: {
+                  teamEntryId: teamEntryId,
+                  matchKey: tbaMatch.key
+              }
+          }
+    )) == undefined)
     await prisma.matchEntry.create(
           {
               data: {

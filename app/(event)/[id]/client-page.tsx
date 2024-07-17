@@ -8,20 +8,28 @@ import {Badge} from "@/components/ui/badge";
 import TeamsTable from "@/app/(event)/[id]/teams-table";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {isPast} from "@/lib/utils";
-import {ReactNode, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import Back from "@/components/back";
 import {Button} from "@/components/ui/button";
+import UpdateEvent from "@/lib/database/generate/update-event";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import {Loader2} from "lucide-react";
+
+dayjs.extend(relativeTime);
 
 export default function ClientPage({event, teams, eventDetails, overview}: {
-    event: { id: number, name: string, eventName: string, startDate: string },
+    event: { id: number, name: string, eventName: string, startDate: string, updatedAt: Date },
     teams: { teamNumber: number | null, name: string | null, status: string }[],
     eventDetails: ReactNode,
     overview: ReactNode
 }) {
+    const [lastUpdate, setLastUpdate] = useState(dayjs().to(event.updatedAt));
+    const [loading, setLoading] = useState(false);
+
     const [statusStates, setStatusStates] = useState(
           teams.map(team => ({teamNumber: team.teamNumber ?? 0, status: team.status as TeamStatus}))
     );
-
     let progress = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     ) / teams.length * 100;
@@ -32,9 +40,25 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
     const inProgress = statusStates.map(value => +(value.status == "inProgress" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
+
     const completed = statusStates.map(value => +(value.status == "completed" ? +1 : +0)).reduce(
           (previousValue, currentValue) => previousValue + currentValue, 0
     );
+
+    useEffect(() => {
+        const update = () => setLastUpdate(dayjs().to(event.updatedAt));
+        update();
+
+        const intervalId = setInterval(update, 10000);
+        return () => clearInterval(intervalId);
+    }, [event.updatedAt]);
+
+    async function updateEvent() {
+        setLoading(true);
+        await UpdateEvent(event.id);
+        setLoading(false);
+        event.updatedAt = new Date();
+    }
 
     return (
           <>
@@ -51,11 +75,14 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
                       <CardContent className={"sm:h-20"}>
                           <div className={"flex justify-between"}>
                               <p className={"muted"}>Last update</p>
-                              <p>2 days ago</p>
+                              <p>{lastUpdate}</p>
                           </div>
                       </CardContent>
                       <CardFooter className={"flex justify-end"}>
-                          <Button>Update Event Data</Button>
+                          <Button disabled={loading} onClick={updateEvent}>
+                              {loading && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                              Update Event Data
+                          </Button>
                       </CardFooter>
                   </Card>
                   <Card className={"w-full sm:w-fit max-w-[32em]"}>

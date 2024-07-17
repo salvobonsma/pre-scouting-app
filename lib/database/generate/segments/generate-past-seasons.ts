@@ -1,6 +1,6 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
 
 export default async function GeneratePastSeasons(season: any, tbaTeam: any, teamNumber: number): Promise<ActionResult> {

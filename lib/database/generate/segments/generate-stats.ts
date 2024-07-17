@@ -1,10 +1,10 @@
 'use server'
 
-import {ActionResult} from "@/lib/database/generate/action-result";
+import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
 import {zScore} from "@/lib/utils";
 
-export default async function GenerateStats(eventId: number): Promise<ActionResult> {
+export default async function GenerateStats(eventId: number, update: boolean): Promise<ActionResult> {
     const teamEntries = await prisma.teamEntry.findMany(
           {
               where: {
@@ -21,7 +21,7 @@ export default async function GenerateStats(eventId: number): Promise<ActionResu
           (b.totalEPA ?? 0) - (a.totalEPA ?? 0)
     );
 
-    await Promise.all(teamEntries.map(async team => {
+    for (const team of teamEntries) {
         const totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
         let threatGrade;
         if (totalDeviation > 1) {
@@ -49,12 +49,12 @@ export default async function GenerateStats(eventId: number): Promise<ActionResu
                       teleopDeviation: zScore(teleopEPAs, team.teleopEPA ?? 0),
                       endgameDeviation: zScore(endgameEPAs, team.endgameEPA ?? 0),
                       totalDeviation: totalDeviation,
-                      threatGrade: threatGrade,
+                      threatGrade: update ? undefined : threatGrade,
                       eventRank: teamEntries.findIndex(value => value.teamNumber == team.teamNumber) + 1
                   }
               }
         );
-    }));
+    }
 
     return {success: true};
 }
