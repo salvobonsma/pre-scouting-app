@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import NotFound from "@/app/not-found";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import EventDetails from "@/components/event-details";
-import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import ClientPage from "@/app/(event)/[id]/client-page";
 
@@ -47,11 +46,11 @@ export default async function Event({params}: { params: { id: string } }) {
                               </div>
                               <div className={"flex justify-between"}>
                                   <p className={"muted"}>Average EPA</p>
-                                  <p>10.2 points</p>
+                                  <p>42.2 points</p>
                               </div>
                           </CardContent>
                           <CardFooter className={"flex justify-end"}>
-                              <Link href={`/${params.id}/overview`}><Button>View Full Overview</Button></Link>
+                              <a href={`/${params.id}/overview`}><Button>View Full Overview</Button></a>
                           </CardFooter>
                       </Card>
                 ) : (

@@ -24,7 +24,7 @@ export default function EventDropdown(props: { id: number, name: string }) {
                   <DropdownMenuContent side={"bottom"}>
                       <DropdownMenuItem onClick={() => setEditDialog(true)}>
                           <Edit className="mr-2 h-4 w-4"/>
-                          Edit Name
+                          Rename
                       </DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600" onClick={() => setDeleteDialog(true)}>
                           <Trash className="mr-2 h-4 w-4"/>

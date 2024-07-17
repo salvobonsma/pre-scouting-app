@@ -1,6 +1,6 @@
 'use client'
 
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/status-badge";
 import {Separator} from "@/components/ui/separator";
@@ -10,6 +10,7 @@ import {TeamStatus} from "@/lib/database/set-team-statues";
 import {isPast} from "@/lib/utils";
 import {ReactNode, useState} from "react";
 import Back from "@/components/back";
+import {Button} from "@/components/ui/button";
 
 export default function ClientPage({event, teams, eventDetails, overview}: {
     event: { id: number, name: string, eventName: string, startDate: string },
@@ -43,6 +44,20 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
               <Separator/>
               <div className={"mt-sm flex flex-wrap gap-6"}>
                   {eventDetails}
+                  <Card className={"w-full sm:w-80"}>
+                      <CardHeader>
+                          <CardTitle>Update</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"sm:h-20"}>
+                          <div className={"flex justify-between"}>
+                              <p className={"muted"}>Last update</p>
+                              <p>2 days ago</p>
+                          </div>
+                      </CardContent>
+                      <CardFooter className={"flex justify-end"}>
+                          <Button>Update Event Data</Button>
+                      </CardFooter>
+                  </Card>
                   <Card className={"w-full sm:w-fit max-w-[32em]"}>
                       <CardHeader><CardTitle>Progress</CardTitle></CardHeader>
                       <CardContent>

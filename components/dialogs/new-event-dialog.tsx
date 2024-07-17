@@ -16,12 +16,12 @@ import GetEventsByYear, {ClientEventSelector} from "@/lib/database/get-events-by
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import NewEvent from "@/lib/database/new-event";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
 import {useEffect, useState} from "react";
 import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
 import {ChevronsUpDown, Loader2} from "lucide-react";
+import NewEvent from "@/lib/database/generate/new-event";
 
 export default function NewEventDialog() {
     const [loadingNewEvent, setLoadingNewEvent] = useState(false);
@@ -85,7 +85,7 @@ export default function NewEventDialog() {
         );
         if (!response) return;
 
-        form.setError("backendError", {message: response.message});
+        if (!response.success) form.setError("backendError", {message: response.message});
 
         setLoadingNewEvent(false);
     }
