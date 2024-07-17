@@ -2,7 +2,7 @@
 
 import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
-import {zScore} from "@/lib/utils";
+import {percentile, zScore} from "@/lib/utils";
 
 export default async function GenerateStats(eventId: number, update: boolean): Promise<ActionResult> {
     const teamEntries = await prisma.teamEntry.findMany(
@@ -23,16 +23,17 @@ export default async function GenerateStats(eventId: number, update: boolean): P
 
     for (const team of teamEntries) {
         const totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
+        const totalPercentile = percentile(totalDeviation);
         let threatGrade;
-        if (totalDeviation > 1) {
+        if (totalPercentile > 5 / 6) {
             threatGrade = "A";
-        } else if (totalDeviation > 2 / 3) {
+        } else if (totalPercentile > 4 / 6) {
             threatGrade = "B";
-        } else if (totalDeviation > 1 / 3) {
+        } else if (totalPercentile > 3 / 6) {
             threatGrade = "C";
-        } else if (totalDeviation > -1 / 3) {
+        } else if (totalPercentile > 2 / 6) {
             threatGrade = "D";
-        } else if (totalDeviation > -2 / 3) {
+        } else if (totalPercentile > 1 / 6) {
             threatGrade = "E";
         } else {
             threatGrade = "F";
