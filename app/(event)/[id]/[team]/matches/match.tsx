@@ -16,9 +16,13 @@ import {TeamStatus} from "@/lib/database/set-team-statues";
 import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
 import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import UpdateMatchData from "@/lib/database/update-match-data";
+import {Label} from "@/components/ui/label";
+import {Switch} from "@/components/ui/switch";
 
 export const matchDataSchema = z.object({
     notes: z.string(),
+    startedScouting: z.boolean(),
+    record: z.boolean()
 });
 
 export default function MatchItem({
@@ -29,7 +33,8 @@ export default function MatchItem({
                                       setChanges,
                                       submitted,
                                       setSubmitted,
-                                      teamEntryId
+                                      teamEntryId,
+                                      load
                                   }: {
     match: Match,
     teamsPerspective: boolean,
@@ -38,7 +43,8 @@ export default function MatchItem({
     setChanges: (changes: boolean) => void,
     submitted: boolean,
     setSubmitted: (submitted: boolean) => void,
-    teamEntryId: number
+    teamEntryId: number,
+    load: boolean
 }) {
     const [localChanges, setLocalChanges] = useState(false);
 
@@ -47,9 +53,7 @@ export default function MatchItem({
 
     const form = useForm<z.infer<typeof matchDataSchema>>({
         resolver: zodResolver(matchDataSchema),
-        defaultValues: {
-            notes: match.notes,
-        }
+        defaultValues: match
     });
 
     const formRef = useRef<HTMLFormElement>(null);
@@ -67,7 +71,7 @@ export default function MatchItem({
 
         lastSubmitStatus.current = submitted;
         setLocalChanges(false);
-    }, [form, localChanges, match.key, setStatuses, setSubmitted, statusStates, submitted, teamEntryId]);
+    }, [form, localChanges, match, match.key, setStatuses, setSubmitted, statusStates, submitted, teamEntryId]);
 
     let lastSave = form.getValues();
     form.watch(() => {
@@ -76,24 +80,53 @@ export default function MatchItem({
         setLocalChanges(changes);
     });
 
+    if (!load) return (<CarouselItem/>);
+
+    const scouting = (
+          <>
+              <FormField
+                    control={form.control}
+                    name="record"
+                    render={() => (
+                          <div className={"flex justify-end my-1"}>
+                              <div className="flex items-center space-x-2">
+                                  <Label htmlFor="record">Record scouting data</Label>
+                                  <Switch
+                                        checked={form.getValues().record}
+                                        onCheckedChange={checked => form.setValue("record", checked)}
+                                        id="record"
+                                  />
+                              </div>
+                          </div>
+                    )}
+              />
+              <div className={"grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"}>
+                  <Card className={"border rounded-lg h-36"}></Card>
+                  <Card className={"border rounded-lg h-36"}></Card>
+                  <Card className={"border rounded-lg h-36"}></Card>
+                  <Card className={"border rounded-lg h-36"}></Card>
+              </div>
+          </>
+    );
+
     return (
           <CarouselItem key={match.key}>
               <Form {...form}>
                   <form ref={formRef} onSubmit={form.handleSubmit(async values => {
-                      await UpdateMatchData(match.key, teamEntryId, values)
-                  })}>
-                      <div className={"border rounded-lg p-4 gap-4 flex flex-col xl:flex-row"}>
+                      const res = await UpdateMatchData(match.key, teamEntryId, values);
+                      if (!res) return;
+                  })} className={"border rounded-lg p-4 flex flex-col gap-4"}>
+                      <div className={"gap-4 flex flex-col xl:flex-row"}>
                           <div className={"flex-1"}>
                               <YoutubeEmbed
                                     id={match.videoId}
-                                    // id={null}
                                     match={match}
-                                    className={"w-full aspect-video xl:h-full"}
+                                    className={"w-full aspect-video xl:h-full border shadow-sm"}
                               />
                           </div>
                           <div className={"flex flex-col gap-4"}>
                               <div className={"flex flex-wrap gap-4 justify-center"}>
-                                  <div className={"w-full sm:flex-1 h-fit"}>
+                                  <div className={"w-full sm:flex-1 h-fit shadow-sm"}>
                                       <Table className={"w-full text-center"}>
                                           <TableHeader>
                                               <TableRow>
@@ -213,6 +246,35 @@ export default function MatchItem({
                               </Card>
                           </div>
                       </div>
+                      <FormField
+                            control={form.control}
+                            name="startedScouting"
+                            render={() => (
+                                  <>
+                                      {!form.getValues().startedScouting ? (
+                                            <div className={"flex flex-col justify-center items-center gap-3 m-6"}>
+                                                <p className={"muted text-center"}>
+                                                    Once you start scouting for a match, that data will be recorded and
+                                                    used to calculate the event overview. If you do not complete your
+                                                    scouting or do not want this data to be recorded, you will have to
+                                                    option to not record the scouting data for this match.
+                                                </p>
+                                                <Button
+                                                      onClick={() => {
+                                                          form.setValue("record", true);
+                                                          form.setValue("startedScouting", true);
+                                                      }}
+                                                >Start Scouting</Button>
+                                            </div>
+                                      ) : (<></>)}
+                                  </>
+                            )}
+                      />
+                      {
+                          form.getValues().startedScouting ? (
+                                scouting
+                          ) : (<></>)
+                      }
                   </form>
               </Form>
           </CarouselItem>

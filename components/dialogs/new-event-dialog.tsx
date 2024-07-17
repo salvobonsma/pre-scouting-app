@@ -162,7 +162,7 @@ export default function NewEventDialog() {
                                   {loadingNewEvent ? "Please Wait" : "Start Pre-scouting"}
                               </Button>
                               <p className={"mt muted text-center"}>May take a while to generate, allow up to a
-                                  minutes.</p>
+                                  minute.</p>
                           </CardFooter>
                       </form>
                   </Form>

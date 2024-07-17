@@ -20,8 +20,7 @@ import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
-import {MatchStatus} from "@/lib/database/set-match-statuses";
-import Matches from "@/app/(event)/[id]/[team]/matches/matches";
+import Matches, {Match} from "@/app/(event)/[id]/[team]/matches/matches";
 
 export const teamDataSchema = z.object({
     notes: z.string(),
@@ -57,22 +56,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
         totalDeviation: number | null,
         notes: string
     },
-    matches: {
-        key: string,
-        eventKey: string,
-        startTime: number,
-        matchNumber: number,
-        compLevel: "qm" | "ef" | "qf" | "sf" | "f",
-        winningAlliance: "red" | "blue" | "",
-        redScore: number,
-        redTeamKeys: string[],
-        blueScore: number,
-        blueTeamKeys: string[],
-        videoId: string | null,
-        notes: string,
-        scoreBreakdown: string,
-        status: MatchStatus,
-    }[],
+    matches: Match[],
     teamDetails: ReactNode,
     statistics: ReactNode,
     events: ReactNode,
@@ -226,7 +210,6 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
               </Form>
               <Matches
                     matches={matches}
-                    teamNumber={team.number}
                     teamEntryId={teamEntry.id}
                     setChanges={setChanges}
                     submitted={submitted}

@@ -30,27 +30,13 @@ export type Match = {
     videoId: string | null,
     friendlyAlliance: boolean,
     notes: string,
+    startedScouting: boolean,
+    record: boolean,
     status: MatchStatus,
 }
 
-export default function Matches({matches, teamNumber, teamEntryId, setChanges, submitted, setSubmitted}: {
-    matches: {
-        key: string,
-        eventKey: string,
-        startTime: number,
-        matchNumber: number,
-        compLevel: "qm" | "ef" | "qf" | "sf" | "f",
-        winningAlliance: "red" | "blue" | "",
-        redScore: number,
-        redTeamKeys: string[],
-        blueScore: number,
-        blueTeamKeys: string[],
-        videoId: string | null,
-        notes: string,
-        scoreBreakdown: string,
-        status: MatchStatus
-    }[],
-    teamNumber: number,
+export default function Matches({matches, teamEntryId, setChanges, submitted, setSubmitted}: {
+    matches: Match[],
     teamEntryId: number,
     setChanges: (changes: boolean) => void,
     submitted: boolean,
@@ -221,15 +207,7 @@ export default function Matches({matches, teamNumber, teamEntryId, setChanges, s
               {progressComponent}
               <TabsContent value={"table"}>
                   <Table
-                        data={matches.map(value => {
-                            const friendlyAlliance = value.redTeamKeys.filter(key => key.includes(teamNumber.toString())).length > 0;
-                            return {
-                                ...value,
-                                friendlyAlliance: friendlyAlliance,
-                                friendlyScore: friendlyAlliance ? value.redScore : value.blueScore,
-                                opponentScore: friendlyAlliance ? value.blueScore : value.redScore,
-                            }
-                        })}
+                        data={matches}
                         columnVisibility={columnVisibility}
                         setColumnVisibility={setColumnVisibility}
                         statusStates={statusStates}

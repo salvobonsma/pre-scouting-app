@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
-import {Carousel, CarouselApi, CarouselContent, CarouselItem} from "@/components/ui/carousel";
+import {Carousel, CarouselApi, CarouselContent} from "@/components/ui/carousel";
 import {Button} from "@/components/ui/button";
 import {ArrowLeft, ArrowRight} from "lucide-react";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
@@ -81,22 +81,18 @@ export default function MatchView({
               </div>
               <CarouselContent>
                   {orderedMatches.map((match, index) => (
-                        <>
-                            {
-                                inView.includes(index) || (inView.length == 1 && (inView[0] + 1 == index || inView[0] - 1 == index)) ? (
-                                      <MatchItem
-                                            match={match}
-                                            teamsPerspective={teamsPerspective}
-                                            statusStates={statusStates}
-                                            setStatuses={setStatuses}
-                                            setChanges={setChanges}
-                                            submitted={submitted}
-                                            setSubmitted={setSubmitted}
-                                            teamEntryId={teamEntryId}
-                                      />
-                                ) : (<CarouselItem/>)
-                            }
-                        </>
+                        <MatchItem
+                              key={match.key}
+                              match={match}
+                              teamsPerspective={teamsPerspective}
+                              statusStates={statusStates}
+                              setStatuses={setStatuses}
+                              setChanges={setChanges}
+                              submitted={submitted}
+                              setSubmitted={setSubmitted}
+                              teamEntryId={teamEntryId}
+                              load={inView.includes(index) || (inView.length == 1 && (inView[0] + 1 == index || inView[0] - 1 == index))}
+                        />
                   ))}
               </CarouselContent>
           </Carousel>

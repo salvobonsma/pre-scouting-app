@@ -271,7 +271,15 @@ export default async function Team({params}: { params: { id: string, team: strin
                     compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",
                     winningAlliance: value.winningAlliance as "red" | "blue" | "",
                     status: value.status as MatchStatus
-                }))}
+                })).map(value => {
+                    const friendlyAlliance = value.redTeamKeys.filter(key => key.includes(team.number.toString())).length > 0;
+                    return {
+                        ...value,
+                        friendlyAlliance: friendlyAlliance,
+                        friendlyScore: friendlyAlliance ? value.redScore : value.blueScore,
+                        opponentScore: friendlyAlliance ? value.blueScore : value.redScore,
+                    }
+                })}
                 pastSeasons={
                     <>
                         <div className={"mt-sm"}>

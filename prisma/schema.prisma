@@ -138,6 +138,9 @@ model MatchEntry {
   status String
   notes  String @default("[{\"children\":[{\"text\":\"\"}],\"type\":\"p\"}]")
 
+  startedScouting Boolean @default(false)
+  record          Boolean @default(false)
+
   TeamEntry   TeamEntry? @relation(fields: [teamEntryId], references: [id])
   teamEntryId Int?
   Match       Match?     @relation(fields: [matchKey], references: [key])

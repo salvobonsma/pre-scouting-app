@@ -5,7 +5,6 @@ import {matchDataSchema} from "@/app/(event)/[id]/[team]/matches/match";
 import {z} from "zod";
 
 export default async function UpdateMatchData(key: string, teamEntryId: number, data: z.infer<typeof matchDataSchema>) {
-    console.log(key);
     await prisma.matchEntry.updateMany(
           {
               where: {
@@ -14,5 +13,14 @@ export default async function UpdateMatchData(key: string, teamEntryId: number, 
               },
               data: data
           }
-    )
+    );
+
+    return prisma.matchEntry.findFirst(
+          {
+              where: {
+                  matchKey: key,
+                  teamEntryId: teamEntryId
+              }
+          }
+    );
 }
