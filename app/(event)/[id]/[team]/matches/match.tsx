@@ -10,7 +10,7 @@ import StatusBadge from "@/components/status-badge";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import RichTextarea from "@/components/rich-textarea";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
@@ -40,6 +40,8 @@ export default function MatchItem({
     setSubmitted: (submitted: boolean) => void,
     teamEntryId: number
 }) {
+    const [localChanges, setLocalChanges] = useState(false);
+
     const leftCol = (teamsPerspective && !match.friendlyAlliance ? match.blueTeamKeys : match.redTeamKeys).map(value => value.replace("frc", ""));
     const rightCol = (teamsPerspective && !match.friendlyAlliance ? match.redTeamKeys : match.blueTeamKeys).map(value => value.replace("frc", ""));
 
@@ -54,6 +56,7 @@ export default function MatchItem({
 
     let lastSubmitStatus = useRef(submitted);
     useEffect(() => {
+        if (!localChanges) return;
         if (submitted == lastSubmitStatus.current) return;
 
         if (statusStates.find(
@@ -63,10 +66,15 @@ export default function MatchItem({
         setSubmitted(false);
 
         lastSubmitStatus.current = submitted;
-    }, [form, match.key, setStatuses, setSubmitted, statusStates, submitted, teamEntryId]);
+        setLocalChanges(false);
+    }, [form, localChanges, match.key, setStatuses, setSubmitted, statusStates, submitted, teamEntryId]);
 
     let lastSave = form.getValues();
-    form.watch(() => setChanges(JSON.stringify(form.getValues()) !== JSON.stringify(lastSave)));
+    form.watch(() => {
+        const changes = JSON.stringify(form.getValues()) !== JSON.stringify(lastSave);
+        setChanges(changes);
+        setLocalChanges(changes);
+    });
 
     return (
           <CarouselItem key={match.key}>
