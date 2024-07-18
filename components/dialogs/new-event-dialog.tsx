@@ -123,7 +123,7 @@ export default function NewEventDialog() {
                                           <FormItem className={"formItem"}>
                                               <FormLabel>Year</FormLabel>
                                               <FormControl>
-                                                  <Input type={"number"} {...field} />
+                                                  <Input disabled type={"number"} {...field} />
                                               </FormControl>
                                               <FormMessage/>
                                           </FormItem>

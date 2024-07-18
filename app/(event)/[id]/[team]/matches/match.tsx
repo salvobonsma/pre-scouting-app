@@ -371,12 +371,12 @@ export default function MatchItem({
                                                       </Button>
                                                   </DropdownMenuTrigger>
                                                   <DropdownMenuContent align={"start"}>
-                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
-                                                      >Effective</DropdownMenuItem>
-                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
-                                                      >Average</DropdownMenuItem>
                                                       <DropdownMenuItem onClick={() => field.onChange("notEffective")}
                                                       >Not Effective</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
+                                                      >Effective</DropdownMenuItem>
                                                   </DropdownMenuContent>
                                               </DropdownMenu>
                                           </FormControl>
@@ -401,12 +401,12 @@ export default function MatchItem({
                                                       </Button>
                                                   </DropdownMenuTrigger>
                                                   <DropdownMenuContent align={"start"}>
-                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
-                                                      >Effective</DropdownMenuItem>
-                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
-                                                      >Average</DropdownMenuItem>
                                                       <DropdownMenuItem onClick={() => field.onChange("notEffective")}
                                                       >Not Effective</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
+                                                      >Effective</DropdownMenuItem>
                                                   </DropdownMenuContent>
                                               </DropdownMenu>
                                           </FormControl>
@@ -431,12 +431,12 @@ export default function MatchItem({
                                                       </Button>
                                                   </DropdownMenuTrigger>
                                                   <DropdownMenuContent align={"start"}>
-                                                      <DropdownMenuItem onClick={() => field.onChange("fast")}
-                                                      >Fast</DropdownMenuItem>
-                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
-                                                      >Average</DropdownMenuItem>
                                                       <DropdownMenuItem onClick={() => field.onChange("slow")}
                                                       >Slow</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("fast")}
+                                                      >Fast</DropdownMenuItem>
                                                   </DropdownMenuContent>
                                               </DropdownMenu>
                                           </FormControl>
