@@ -171,3 +171,21 @@ table tr:nth-child(even) {
 table tr:nth-child(odd) {
     @apply bg-background
 }
+
+/* Remove arrows in WebKit browsers */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove arrows in Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Remove arrows in Internet Explorer and Edge */
+input[type=number]::-ms-clear,
+input[type=number]::-ms-reveal {
+    display: none;
+}

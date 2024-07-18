@@ -7,22 +7,55 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {cn} from "@/lib/utils";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import StatusBadge from "@/components/status-badge";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import RichTextarea from "@/components/rich-textarea";
 import React, {useEffect, useRef, useState} from "react";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
-import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import UpdateMatchData from "@/lib/database/update-match-data";
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
+import NumberInput from "@/components/number-input";
+import {ChevronsUpDown} from "lucide-react";
 
 export const matchDataSchema = z.object({
     notes: z.string(),
     startedScouting: z.boolean(),
-    record: z.boolean()
+    record: z.boolean(),
+    autoAmpScores: z.number()
+          .min(0),
+    autoSpeakerScores: z.number()
+          .min(0),
+    leftStartingZone: z.boolean(),
+    centerLineNote: z.boolean(),
+
+    teleopAmpScores: z.number()
+          .min(0),
+    teleopSpeakerScores: z.number()
+          .min(0),
+    pickupFrom: z.array(z.enum(["source", "ground"])),
+
+    finalStatus: z.enum(["parked", "onstage", "attemptedAndFailed", "notAttempted"]),
+    trap: z.boolean(),
+
+    driverSkill: z.enum(["effective", "average", "notEffective"]),
+    defenceSkill: z.enum(["effective", "average", "notEffective"]),
+    speed: z.enum(["fast", "average", "slow"]),
+
+    noteStuck: z.boolean(),
+    noteDrop: z.boolean(),
+    breakage: z.boolean(),
+    immobilized: z.boolean(),
+    tippy: z.boolean(),
 });
 
 export default function MatchItem({
@@ -67,6 +100,7 @@ export default function MatchItem({
               value => value.key == match.key
         )?.status ?? "notStarted" == "notStarted") setStatuses("inProgress", [match.key]);
         formRef.current?.dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));
+
         setSubmitted(false);
 
         lastSubmitStatus.current = submitted;
@@ -101,10 +135,397 @@ export default function MatchItem({
                     )}
               />
               <div className={"grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"}>
-                  <Card className={"border rounded-lg h-36"}></Card>
-                  <Card className={"border rounded-lg h-36"}></Card>
-                  <Card className={"border rounded-lg h-36"}></Card>
-                  <Card className={"border rounded-lg h-36"}></Card>
+                  <Card className={"border rounded-lg"}>
+                      <CardHeader>
+                          <CardTitle>Auto</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"space-y-3"}>
+                          <FormField
+                                control={form.control}
+                                name="autoAmpScores"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Amp Scores</FormLabel>
+                                          <FormControl>
+                                              <NumberInput
+                                                    initialValue={field.value}
+                                                    min={0}
+                                                    onChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="autoSpeakerScores"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Speaker Scores</FormLabel>
+                                          <FormControl>
+                                              <NumberInput
+                                                    initialValue={field.value}
+                                                    min={0}
+                                                    onChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="leftStartingZone"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Left Starting Zone</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="centerLineNote"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Picked up Center Line Note</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                      </CardContent>
+                  </Card>
+                  <Card className={"border rounded-lg"}>
+                      <CardHeader>
+                          <CardTitle>Teleop</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"space-y-3"}>
+                          <FormField
+                                control={form.control}
+                                name="teleopAmpScores"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Amp Scores</FormLabel>
+                                          <FormControl>
+                                              <NumberInput
+                                                    initialValue={field.value}
+                                                    min={0}
+                                                    onChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="teleopSpeakerScores"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Speaker Scores</FormLabel>
+                                          <FormControl>
+                                              <NumberInput
+                                                    initialValue={field.value}
+                                                    min={0}
+                                                    onChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="pickupFrom"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Picks Up From</FormLabel>
+                                          <FormControl>
+                                              <DropdownMenu>
+                                                  <DropdownMenuTrigger className={"w-full"} asChild>
+                                                      <Button className={"flex justify-between"} variant={"outline"}>
+                                                          {field.value.length == 0 && "Neither"}
+                                                          {field.value.map(value => value == "source" ? "Source" : "Ground").join(" & ")}
+                                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                      </Button>
+                                                  </DropdownMenuTrigger>
+                                                  <DropdownMenuContent className={"w-full"} align={"start"}>
+                                                      <DropdownMenuCheckboxItem
+                                                            checked={field.value.find(value => value == "source") != undefined}
+                                                            onCheckedChange={checked => {
+                                                                if (checked) {
+                                                                    field.onChange([...field.value, "source"]);
+                                                                } else {
+                                                                    field.onChange(field.value.filter(value => value !== "source"));
+                                                                }
+                                                            }}
+                                                      >Source</DropdownMenuCheckboxItem>
+                                                      <DropdownMenuCheckboxItem
+                                                            checked={field.value.find(value => value == "ground") != undefined}
+                                                            onCheckedChange={checked => {
+                                                                if (checked) {
+                                                                    field.onChange([...field.value, "ground"]);
+                                                                } else {
+                                                                    field.onChange(field.value.filter(value => value !== "ground"));
+                                                                }
+                                                            }}
+                                                      >Ground</DropdownMenuCheckboxItem>
+                                                  </DropdownMenuContent>
+                                              </DropdownMenu>
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                      </CardContent>
+                  </Card>
+                  <Card className={"border rounded-lg"}>
+                      <CardHeader>
+                          <CardTitle>Endgame</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"space-y-3"}>
+                          <FormField
+                                control={form.control}
+                                name="finalStatus"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Final Status</FormLabel>
+                                          <FormControl>
+                                              <DropdownMenu>
+                                                  <DropdownMenuTrigger className={"w-full"} asChild>
+                                                      <Button className={"flex justify-between"} variant={"outline"}>
+                                                          {field.value == "parked" && "Parked"}
+                                                          {field.value == "onstage" && "Onstage"}
+                                                          {field.value == "attemptedAndFailed" && "Attempted and failed"}
+                                                          {field.value == "notAttempted" && "Not Attempted"}
+                                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                      </Button>
+                                                  </DropdownMenuTrigger>
+                                                  <DropdownMenuContent align={"start"}>
+                                                      <DropdownMenuItem onClick={() => field.onChange("parked")}
+                                                      >Parked</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("onstage")}
+                                                      >Onstage</DropdownMenuItem>
+                                                      <DropdownMenuItem
+                                                            onClick={() => field.onChange("attemptedAndFailed")}
+                                                      >Attempted and failed</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("notAttempted")}
+                                                      >Not Attempted</DropdownMenuItem>
+                                                  </DropdownMenuContent>
+                                              </DropdownMenu>
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="trap"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Scored in Trap</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                      </CardContent>
+                  </Card>
+                  <Card className={"border rounded-lg"}>
+                      <CardHeader>
+                          <CardTitle>Miscellaneous</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"space-y-3"}>
+                          <FormField
+                                control={form.control}
+                                name="driverSkill"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Driver Skill</FormLabel>
+                                          <FormControl>
+                                              <DropdownMenu>
+                                                  <DropdownMenuTrigger className={"w-full"} asChild>
+                                                      <Button className={"flex justify-between"} variant={"outline"}>
+                                                          {field.value == "effective" && "Effective"}
+                                                          {field.value == "average" && "Average"}
+                                                          {field.value == "notEffective" && "Not Effective"}
+                                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                      </Button>
+                                                  </DropdownMenuTrigger>
+                                                  <DropdownMenuContent align={"start"}>
+                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
+                                                      >Effective</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("notEffective")}
+                                                      >Not Effective</DropdownMenuItem>
+                                                  </DropdownMenuContent>
+                                              </DropdownMenu>
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="defenceSkill"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Defence Skill</FormLabel>
+                                          <FormControl>
+                                              <DropdownMenu>
+                                                  <DropdownMenuTrigger className={"w-full"} asChild>
+                                                      <Button className={"flex justify-between"} variant={"outline"}>
+                                                          {field.value == "effective" && "Effective"}
+                                                          {field.value == "average" && "Average"}
+                                                          {field.value == "notEffective" && "Not Effective"}
+                                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                      </Button>
+                                                  </DropdownMenuTrigger>
+                                                  <DropdownMenuContent align={"start"}>
+                                                      <DropdownMenuItem onClick={() => field.onChange("effective")}
+                                                      >Effective</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("notEffective")}
+                                                      >Not Effective</DropdownMenuItem>
+                                                  </DropdownMenuContent>
+                                              </DropdownMenu>
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="speed"
+                                render={({field}) => (
+                                      <FormItem>
+                                          <FormLabel>Speed</FormLabel>
+                                          <FormControl>
+                                              <DropdownMenu>
+                                                  <DropdownMenuTrigger className={"w-full"} asChild>
+                                                      <Button className={"flex justify-between"} variant={"outline"}>
+                                                          {field.value == "fast" && "Fast"}
+                                                          {field.value == "average" && "Average"}
+                                                          {field.value == "slow" && "Slow"}
+                                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                      </Button>
+                                                  </DropdownMenuTrigger>
+                                                  <DropdownMenuContent align={"start"}>
+                                                      <DropdownMenuItem onClick={() => field.onChange("fast")}
+                                                      >Fast</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("average")}
+                                                      >Average</DropdownMenuItem>
+                                                      <DropdownMenuItem onClick={() => field.onChange("slow")}
+                                                      >Slow</DropdownMenuItem>
+                                                  </DropdownMenuContent>
+                                              </DropdownMenu>
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="noteStuck"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Note Stuck</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="noteDrop"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Note Dropped</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="breakage"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Breakage</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="immobilized"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Immobilized</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                          <FormField
+                                control={form.control}
+                                name="tippy"
+                                render={({field}) => (
+                                      <FormItem className={"flex justify-between items-center"}>
+                                          <FormLabel>Tippy</FormLabel>
+                                          <FormControl>
+                                              <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                              />
+                                          </FormControl>
+                                          <FormMessage/>
+                                      </FormItem>
+                                )}
+                          />
+                      </CardContent>
+                  </Card>
               </div>
           </>
     );
@@ -112,10 +533,9 @@ export default function MatchItem({
     return (
           <CarouselItem key={match.key}>
               <Form {...form}>
-                  <form ref={formRef} onSubmit={form.handleSubmit(async values => {
-                      const res = await UpdateMatchData(match.key, teamEntryId, values);
-                      if (!res) return;
-                  })} className={"border rounded-lg p-4 flex flex-col gap-4"}>
+                  <form ref={formRef} onSubmit={form.handleSubmit(async values =>
+                        await UpdateMatchData(match.key, teamEntryId, values)
+                  )} className={"border rounded-lg p-4 flex flex-col gap-4"}>
                       <div className={"gap-4 flex flex-col xl:flex-row"}>
                           <div className={"flex-1"}>
                               <YoutubeEmbed

@@ -141,6 +141,27 @@ model MatchEntry {
   startedScouting Boolean @default(false)
   record          Boolean @default(false)
 
+  autoAmpScores     Int     @default(0)
+  autoSpeakerScores Int     @default(0)
+  leftStartingZone  Boolean @default(false)
+  centerLineNote    Boolean @default(false)
+
+  teleopAmpScores     Int      @default(0)
+  teleopSpeakerScores Int      @default(0)
+  pickupFrom          String[] @default([]) // ("source" | "ground")[]
+
+  finalStatus String  @default("notAttempted") // "parked" | "onstage" | "attemptedAndFailed" | "notAttempted"
+  trap        Boolean @default(false)
+
+  driverSkill  String  @default("average") // "effective" | "average" | "notEffective"
+  defenceSkill String  @default("average") // "effective" | "average" | "notEffective"
+  speed        String  @default("average") // "fast" | "average" | "slow"
+  noteStuck    Boolean @default(false)
+  noteDrop     Boolean @default(false)
+  breakage     Boolean @default(false)
+  immobilized  Boolean @default(false)
+  tippy        Boolean @default(false)
+
   TeamEntry   TeamEntry? @relation(fields: [teamEntryId], references: [id])
   teamEntryId Int?
   Match       Match?     @relation(fields: [matchKey], references: [key])
