@@ -1,0 +1,26 @@
+services:
+  nextapp:
+    container_name: pre-scouting-app
+    image: pre-scouting-app
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
+    depends_on:
+      - db
+    command: "npx prisma generate --schema ./schema.prisma"
+
+  db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
