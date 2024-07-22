@@ -24,6 +24,8 @@ export default async function Event({params}: { params: { id: string } }) {
     );
     if (!eventData || !teamData) return NotFound();
 
+    const greatestThreat = teamData.sort((a, b) => (b.totalEPA ?? 0) - (a.totalEPA ?? 0))[0];
+
     return (
           <ClientPage
                 event={eventData}
@@ -41,12 +43,12 @@ export default async function Event({params}: { params: { id: string } }) {
                           <CardHeader><CardTitle>Overview</CardTitle></CardHeader>
                           <CardContent>
                               <div className={"flex justify-between"}>
-                                  <p className={"muted"}>Greatest threat level</p>
-                                  <p>9442</p>
+                                  <p className={"muted"}>Greatest threat</p>
+                                  <p>{greatestThreat.teamNumber}</p>
                               </div>
                               <div className={"flex justify-between"}>
-                                  <p className={"muted"}>Average EPA</p>
-                                  <p>42.2 points</p>
+                                  <p className={"muted"}>Total EPA</p>
+                                  <p>{greatestThreat.totalEPA?.toFixed(1)}</p>
                               </div>
                           </CardContent>
                           <CardFooter className={"flex justify-end"}>

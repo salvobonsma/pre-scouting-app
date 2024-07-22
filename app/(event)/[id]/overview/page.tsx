@@ -35,11 +35,10 @@ export default async function Overview({params}: { params: { id: string } }) {
               </div>
               <Separator/>
               <OverviewCharts teamEntries={teamEntries}/>
-
               <h1 className={"mt"}>Team Abilities</h1>
               <Separator/>
               <p className={"mt-sm muted text-center"}>
-                  To view team abilities you must scout for at least 5 matches.
+                  To view team abilities you must scout at least 5 matches.
               </p>
               <h1 className={"mt"}>Overview by Team</h1>
               <Separator/>

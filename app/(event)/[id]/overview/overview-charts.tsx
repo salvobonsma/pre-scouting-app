@@ -208,7 +208,7 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                   </Card>
                   <Card className={"w-full sm:w-96"}>
                       <CardHeader>
-                          <CardTitle>Winrate EPA</CardTitle>
+                          <CardTitle>Winrate</CardTitle>
                       </CardHeader>
                       <CardContent>
                           {chart({
