@@ -8,7 +8,7 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import StatusBadge from "@/components/status-badge";
+import StatusBadge, {toLabel} from "@/components/status-badge";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import React, {Dispatch, SetStateAction} from "react";
@@ -111,6 +111,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                       </div>
                 );
             },
+            accessorFn: originalRow => toLabel(originalRow.status),
             cell: ({row}) => (
                   <div className={"flex justify-end ml-4"}>
                       <StatusBadge status={statusStates.find(

@@ -23,7 +23,7 @@ import {
     DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import {ArrowUpDown, TagIcon} from "lucide-react";
-import StatusBadge from "@/components/status-badge";
+import StatusBadge, {toLabel} from "@/components/status-badge";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {cn} from "@/lib/utils";
@@ -107,6 +107,13 @@ export default function MatchesTable({
 
                 return <div className={"ml-4"}>{compLevelText}</div>;
             },
+            accessorFn: originalRow => ({
+                "qm": "Qualifications",
+                "ef": "Elimination Finals",
+                "qf": "Quarter Finals",
+                "sf": "Semifinals",
+                "f": "Finals"
+            }[originalRow.compLevel]),
             sortingFn: (rowA, rowB) => {
                 const compLevelOrder = ["qm", "ef", "qf", "sf", "f"];
 
@@ -133,6 +140,7 @@ export default function MatchesTable({
                       </Button>
                 )
             },
+            accessorFn: originalRow => new Date(originalRow.startTime as number * 1000).toLocaleDateString(),
             cell: ({row}) => (
                   <div className={"ml-4"}>
                       {new Date(row.original.startTime as number * 1000).toLocaleDateString()}
@@ -243,6 +251,7 @@ export default function MatchesTable({
                       </div>
                 );
             },
+            accessorFn: originalRow => toLabel(originalRow.status),
             cell: ({row}) => (
                   <div className={"ml-4"}>
                       <StatusBadge status={statusStates.find(

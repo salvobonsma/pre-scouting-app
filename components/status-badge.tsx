@@ -25,3 +25,14 @@ export default function StatusBadge({status}: { status: TeamStatus | MatchStatus
           <Badge variant={variant ?? "default"} className={"whitespace-nowrap"}>{(display)}</Badge>
     )
 }
+
+export function toLabel(status: TeamStatus | MatchStatus) {
+    switch (status) {
+        case "notStarted":
+            return "Not Started";
+        case "inProgress":
+            return "In progress";
+        case "completed":
+            return "Completed";
+    }
+}
