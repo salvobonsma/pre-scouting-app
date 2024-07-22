@@ -33,6 +33,13 @@
         --ring: 0 0% 3.9%;
 
         --radius: 0.5rem;
+
+        --chart-1: #4ade80;
+        --chart-2: #34d399;
+        --chart-3: #facc15;
+        --chart-4: #f59e0b;
+        --chart-5: #fb923c;
+        --chart-6: #ef4444;
     }
 
     .dark {
@@ -63,6 +70,13 @@
         --border: 0 0% 14.9%;
         --input: 0 0% 14.9%;
         --ring: 0 0% 83.1%;
+
+        --chart-1: #16a34a;
+        --chart-2: #0d9488;
+        --chart-3: #facc15;
+        --chart-4: #d97706;
+        --chart-5: #ea580c;
+        --chart-6: #dc2626;
     }
 }
 
