@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import {Bar, BarChart, CartesianGrid} from "recharts"
+import {Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
 
-import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart"
+import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
 import {TeamEntry} from "@prisma/client";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {useEffect, useState} from "react";
@@ -12,7 +12,6 @@ import {Label} from "@/components/ui/label";
 export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[] }) {
     const [sortedTeamEntries, setSortedTeamEntries] = useState<TeamEntry[] | undefined>();
     const [sorting, setSorting] = useState("default");
-    const [order, setOrder] = useState("ascending");
 
     useEffect(() => {
         const sortedEntries = [...teamEntries]; // Create a copy of the teamEntries array
@@ -22,48 +21,48 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                 break;
             case "autoEPA":
                 sortedEntries.sort((a, b) =>
-                      (a.autoEPA ?? 0) - ((b.autoEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                      (a.autoEPA ?? 0) - (b.autoEPA ?? 0)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "teleopEPA":
                 sortedEntries.sort((a, b) =>
-                      (a.teleopEPA ?? 0) - ((b.teleopEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                      (a.teleopEPA ?? 0) - (b.teleopEPA ?? 0)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "endgameEPA":
                 sortedEntries.sort((a, b) =>
-                      (a.endgameEPA ?? 0) - ((b.endgameEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                      (a.endgameEPA ?? 0) - (b.endgameEPA ?? 0)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "totalEPA":
                 sortedEntries.sort((a, b) =>
-                      (a.totalEPA ?? 0) - ((b.totalEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                      (a.totalEPA ?? 0) - (b.totalEPA ?? 0)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "threatGrade":
                 sortedEntries.sort((a, b) =>
-                      (threadGradeIndex(a.threatGrade ?? "") - (threadGradeIndex(b.threatGrade ?? "")) * (order === "ascending" ? -1 : 1))
+                      threadGradeIndex(b.threatGrade ?? "") - threadGradeIndex(a.threatGrade ?? "")
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "winrate":
                 sortedEntries.sort((a, b) =>
-                      winrate(a) - (winrate(b) * (order === "ascending" ? 1 : -1))
+                      winrate(a) - winrate(b)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "worldRank":
                 sortedEntries.sort((a, b) =>
-                      (a.worldRank ?? 0) - ((b.worldRank ?? 0) * (order === "ascending" ? -1 : 1))
+                      (b.worldRank ?? 0) - (a.worldRank ?? 0)
                 );
                 setSortedTeamEntries(sortedEntries);
                 break;
         }
-    }, [order, sorting, teamEntries]);
+    }, [sorting, teamEntries]);
 
     function threadGradeIndex(grade: string) {
         switch (grade) {
@@ -88,12 +87,42 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
         return (teamEntry.wins ?? 0) / ((teamEntry.losses ?? 0) + (teamEntry.wins ?? 0));
     }
 
+    const threatGradeConfig = {
+        total: {
+            label: "Total"
+        },
+        a: {
+            label: "A"
+        },
+        b: {
+            label: "B"
+        },
+        c: {
+            label: "C"
+        },
+        d: {
+            label: "D"
+        },
+        e: {
+            label: "E"
+        },
+        f: {
+            label: "F"
+        }
+    } satisfies ChartConfig
+
     function chart(config: ChartConfig, data: any[], dataKey: string) {
+        data = data.map(value => ({
+            ...value,
+            winrate: winrate(value)
+        }));
+
         return (
               <ChartContainer config={config} className="h-48 w-full">
                   <BarChart accessibilityLayer data={data}>
                       <CartesianGrid vertical={false}/>
-                      <ChartTooltip content={<ChartTooltipContent labelKey={"teamNumber"} indicator={"line"}/>}/>
+                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} labelKey={"teamNumber"}
+                                                                  indicator={"line"}/>}/>
                       <Bar dataKey={dataKey} fill={`var(--chart-1)`} radius={2}/>
                   </BarChart>
               </ChartContainer>
@@ -114,18 +143,9 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                           <SelectItem value="teleopEPA">Teleop EPA</SelectItem>
                           <SelectItem value="endgameEPA">Endgame EPA</SelectItem>
                           <SelectItem value="totalEPA">Total EPA</SelectItem>
-                          <SelectItem value="threatGrade">Threat Grade</SelectItem>
                           <SelectItem value="winrate">Winrate</SelectItem>
                           <SelectItem value="worldRank">World Rank</SelectItem>
-                      </SelectContent>
-                  </Select>
-                  <Select value={order} onValueChange={setOrder}>
-                      <SelectTrigger className="w-32">
-                          <SelectValue/>
-                      </SelectTrigger>
-                      <SelectContent>
-                          <SelectItem value="ascending">Ascending</SelectItem>
-                          <SelectItem value="descending">Descending</SelectItem>
+                          <SelectItem value="threatGrade">Threat Grade</SelectItem>
                       </SelectContent>
                   </Select>
               </div>
@@ -140,7 +160,7 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                                   label: "Auto EPA"
                               }
                           }, sortedTeamEntries ?? [...teamEntries].sort((a, b) =>
-                                (a.autoEPA ?? 0) - ((b.autoEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                                (a.autoEPA ?? 0) - (b.autoEPA ?? 0)
                           ), "autoEPA")}
                       </CardContent>
                   </Card>
@@ -154,7 +174,7 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                                   label: "Teleop EPA"
                               }
                           }, sortedTeamEntries ?? [...teamEntries].sort((a, b) =>
-                                (a.teleopEPA ?? 0) - ((b.teleopEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                                (a.teleopEPA ?? 0) - (b.teleopEPA ?? 0)
                           ), "teleopEPA")}
                       </CardContent>
                   </Card>
@@ -168,8 +188,109 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                                   label: "Endgame EPA"
                               }
                           }, sortedTeamEntries ?? [...teamEntries].sort((a, b) =>
-                                (a.endgameEPA ?? 0) - ((b.endgameEPA ?? 0) * (order === "ascending" ? 1 : -1))
+                                (a.endgameEPA ?? 0) - (b.endgameEPA ?? 0)
                           ), "endgameEPA")}
+                      </CardContent>
+                  </Card>
+                  <Card className={"w-full sm:w-96"}>
+                      <CardHeader>
+                          <CardTitle>Total EPA</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                          {chart({
+                              totalEPA: {
+                                  label: "Total EPA"
+                              }
+                          }, sortedTeamEntries ?? [...teamEntries].sort((a, b) =>
+                                (a.totalEPA ?? 0) - (b.totalEPA ?? 0)
+                          ), "totalEPA")}
+                      </CardContent>
+                  </Card>
+                  <Card className={"w-full sm:w-96"}>
+                      <CardHeader>
+                          <CardTitle>Winrate EPA</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                          {chart({
+                              winrate: {
+                                  label: "Winrate"
+                              }
+                          }, sortedTeamEntries ?? [...teamEntries].sort((a, b) =>
+                                winrate(a) - winrate(b)
+                          ), "winrate")}
+                      </CardContent>
+                  </Card>
+                  <Card className={"w-full sm:w-96"}>
+                      <CardHeader>
+                          <CardTitle>World Rank</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                          {chart({
+                              worldRank: {
+                                  label: "World Rank"
+                              }
+                          }, sortedTeamEntries ? [...sortedTeamEntries].reverse() : undefined ?? [...teamEntries].sort((a, b) =>
+                                (a.worldRank ?? 0) - (b.worldRank ?? 0)
+                          ), "worldRank")}
+                      </CardContent>
+                  </Card>
+                  <Card className={"w-full sm:w-96"}>
+                      <CardHeader>
+                          <CardTitle>Threat Levels</CardTitle>
+                      </CardHeader>
+                      <CardContent className={"flex justify-center"}>
+                          <ChartContainer
+                                config={threatGradeConfig}
+                                className="m-[-2em] aspect-square h-60"
+                          >
+                              <PieChart>
+                                  <ChartTooltip
+                                        content={<ChartTooltipContent indicator={"line"} nameKey="threatGrade"/>}
+                                  />
+                                  <Pie data={[
+                                      {
+                                          threatGrade: "a",
+                                          total: teamEntries.filter(value => value.threatGrade == "A").length,
+                                          fill: "var(--chart-1)"
+                                      },
+                                      {
+                                          threatGrade: "b",
+                                          total: teamEntries.filter(value => value.threatGrade == "B").length,
+                                          fill: "var(--chart-2)"
+                                      },
+                                      {
+                                          threatGrade: "c",
+                                          total: teamEntries.filter(value => value.threatGrade == "C").length,
+                                          fill: "var(--chart-3)"
+                                      },
+                                      {
+                                          threatGrade: "d",
+                                          total: teamEntries.filter(value => value.threatGrade == "D").length,
+                                          fill: "var(--chart-4)"
+                                      },
+                                      {
+                                          threatGrade: "e",
+                                          total: teamEntries.filter(value => value.threatGrade == "E").length,
+                                          fill: "var(--chart-5)"
+                                      },
+                                      {
+                                          threatGrade: "f",
+                                          total: teamEntries.filter(value => value.threatGrade == "F").length,
+                                          fill: "var(--chart-6)"
+                                      }
+                                  ]} dataKey="total">
+                                      <LabelList
+                                            dataKey="threatGrade"
+                                            className="fill-foreground"
+                                            stroke="none"
+                                            fontSize={14}
+                                            formatter={(value: keyof typeof threatGradeConfig) =>
+                                                  threatGradeConfig[value]?.label
+                                            }
+                                      />
+                                  </Pie>
+                              </PieChart>
+                          </ChartContainer>
                       </CardContent>
                   </Card>
               </div>
