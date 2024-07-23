@@ -10,8 +10,8 @@ import StatusBadge from "@/components/status-badge";
 import {Badge} from "@/components/ui/badge";
 import SetMatchStatuses, {MatchStatus} from "@/lib/database/set-match-statuses";
 import {SortingState, VisibilityState} from "@tanstack/react-table";
-import Table from "@/app/(event)/[id]/[team]/matches/table";
-import MatchView from "@/app/(event)/[id]/[team]/matches/matchView";
+import Table from "@/app/[eventId]/[teamNumber]/matches/table";
+import MatchView from "@/app/[eventId]/[teamNumber]/matches/matchView";
 
 export type Match = {
     key: string,

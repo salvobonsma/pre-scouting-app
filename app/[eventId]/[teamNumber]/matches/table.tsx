@@ -15,7 +15,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import DataTablePagination from "@/components/data-table-pagination";
 import React, {Dispatch, SetStateAction, useEffect} from "react";
-import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
+import ActionDropdown from "@/app/[eventId]/action-dropdown";
 import {
     DropdownMenuItem,
     DropdownMenuPortal,
@@ -29,7 +29,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {cn} from "@/lib/utils";
 import DebouncedInput from "@/components/debounced-input";
 import {TeamStatus} from "@/lib/database/set-team-statues";
-import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
+import {Match} from "@/app/[eventId]/[teamNumber]/matches/matches";
 
 export default function MatchesTable({
                                          data,

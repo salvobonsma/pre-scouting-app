@@ -1,12 +1,12 @@
 import React, {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
-import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
+import {Match} from "@/app/[eventId]/[teamNumber]/matches/matches";
 import {Carousel, CarouselApi, CarouselContent} from "@/components/ui/carousel";
 import {Button} from "@/components/ui/button";
 import {ArrowLeft, ArrowRight} from "lucide-react";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {z} from "zod";
-import MatchItem from "@/app/(event)/[id]/[team]/matches/match";
+import MatchItem from "@/app/[eventId]/[teamNumber]/matches/match";
 
 export const matchDataSchema = z.object({
     notes: z.string(),

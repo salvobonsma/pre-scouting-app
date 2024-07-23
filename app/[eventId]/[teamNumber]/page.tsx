@@ -1,22 +1,22 @@
 import NotFound from "@/app/not-found";
 import prisma from "@/lib/prisma";
-import ClientPage from "@/app/(event)/[id]/[team]/client-page";
+import ClientPage from "@/app/[eventId]/[teamNumber]/client-page";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import React from "react";
 import QuickTooltip from "@/components/quick-tooltip";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
-import EventCard from "@/app/(event)/[id]/[team]/event-card";
-import PastSeasons, {columns} from "@/app/(event)/[id]/[team]/past-seasons";
+import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
+import PastSeasons, {columns} from "@/app/[eventId]/[teamNumber]/past-seasons";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 
-export default async function Team({params}: { params: { id: string, team: string } }) {
-    if (!+params.id || !+params.team) return NotFound();
+export default async function Team({params}: { params: { eventId: string, teamNumber: string } }) {
+    if (!+params.eventId || !+params.teamNumber) return NotFound();
 
     const event = await prisma.event.findUnique(
           {
               where: {
-                  id: +params.id
+                  id: +params.eventId
               }
           }
     );
@@ -24,7 +24,7 @@ export default async function Team({params}: { params: { id: string, team: strin
     const team = await prisma.team.findUnique(
           {
               where: {
-                  number: +params.team
+                  number: +params.teamNumber
               }
           }
     )
@@ -32,7 +32,7 @@ export default async function Team({params}: { params: { id: string, team: strin
           {
               where: {
                   eventId: event.id,
-                  teamNumber: +params.team
+                  teamNumber: +params.teamNumber
               }
           }
     ))[0];

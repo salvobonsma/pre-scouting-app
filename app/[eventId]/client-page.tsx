@@ -5,7 +5,7 @@ import {Progress} from "@/components/ui/progress";
 import StatusBadge from "@/components/status-badge";
 import {Separator} from "@/components/ui/separator";
 import {Badge} from "@/components/ui/badge";
-import TeamsTable from "@/app/(event)/[id]/teams-table";
+import TeamsTable from "@/app/[eventId]/teams-table";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import {isPast} from "@/lib/utils";
 import {ReactNode, useEffect, useState} from "react";

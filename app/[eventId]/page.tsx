@@ -3,22 +3,22 @@ import NotFound from "@/app/not-found";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import EventDetails from "@/components/event-details";
 import {Button} from "@/components/ui/button";
-import ClientPage from "@/app/(event)/[id]/client-page";
+import ClientPage from "@/app/[eventId]/client-page";
 
-export default async function Event({params}: { params: { id: string } }) {
-    if (!+params.id) return NotFound();
+export default async function Event({params}: { params: { eventId: string } }) {
+    if (!+params.eventId) return NotFound();
 
     const eventData = await prisma.event.findUnique(
           {
               where: {
-                  id: +params.id
+                  id: +params.eventId
               }
           }
     );
     const teamData = await prisma.teamEntry.findMany(
           {
               where: {
-                  eventId: +params.id
+                  eventId: +params.eventId
               }
           }
     );
@@ -52,7 +52,7 @@ export default async function Event({params}: { params: { id: string } }) {
                               </div>
                           </CardContent>
                           <CardFooter className={"flex justify-end"}>
-                              <a href={`/${params.id}/overview`}><Button>View Full Overview</Button></a>
+                              <a href={`/${params.eventId}/overview`}><Button>View Full Overview</Button></a>
                           </CardFooter>
                       </Card>
                 ) : (

@@ -20,7 +20,7 @@ import {Loader2} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
-import Matches, {Match} from "@/app/(event)/[id]/[team]/matches/matches";
+import Matches, {Match} from "@/app/[eventId]/[teamNumber]/matches/matches";
 
 export const teamDataSchema = z.object({
     notes: z.string(),

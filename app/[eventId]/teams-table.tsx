@@ -20,7 +20,7 @@ import {
     DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
-import ActionDropdown from "@/app/(event)/[id]/action-dropdown";
+import ActionDropdown from "@/app/(event)/[eventId]/action-dropdown";
 import DebouncedInput from "@/components/debounced-input";
 
 export type Team = {

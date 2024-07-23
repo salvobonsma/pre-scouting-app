@@ -4,8 +4,9 @@ import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
 import Back from "@/components/back";
 import React from "react";
-import OverviewCharts from "@/app/(event)/[id]/overview/overview-charts";
-import ScoutingCharts from "@/app/(event)/[id]/overview/scouting-charts";
+import OverviewCharts from "@/app/[eventId]/overview/overview-charts";
+import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
+import OverviewByTeam from "@/app/[eventId]/overview/overview-by-team";
 
 export default async function Overview({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -60,6 +61,7 @@ export default async function Overview({params}: { params: { id: string } }) {
               <ScoutingCharts matches={matches}/>
               <h1 className={"mt"}>Overview by Team</h1>
               <Separator/>
+              <OverviewByTeam/>
           </>
     )
 }

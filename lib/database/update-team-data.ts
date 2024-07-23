@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import {z} from "zod";
-import {teamDataSchema} from "@/app/(event)/[id]/[team]/client-page";
+import {teamDataSchema} from "@/app/[eventId]/[teamNumber]/client-page";
 
 export default async function UpdateTeamData(eventId: number, teamNumber: number, data: z.infer<typeof teamDataSchema>) {
     await prisma.teamEntry.updateMany(

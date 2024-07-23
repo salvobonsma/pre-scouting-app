@@ -2,7 +2,7 @@
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
-import {Match} from "@/app/(event)/[id]/[team]/matches/matches";
+import {Match} from "@/app/(event)/[eventId]/[teamNumber]/matches/matches";
 import {GetEvent} from "@/lib/database/get-event";
 
 export default function YoutubeEmbed({id, match, className}: {
