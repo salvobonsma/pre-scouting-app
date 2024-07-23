@@ -44,9 +44,11 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "threatGrade":
-                sortedEntries.sort((a, b) =>
-                      threadGradeIndex(b.threatGrade ?? "") - threadGradeIndex(a.threatGrade ?? "")
-                );
+                sortedEntries.sort((a, b) => {
+                    const grade = threadGradeIndex(b.threatGrade ?? "") - threadGradeIndex(a.threatGrade ?? "");
+                    if (grade == 0) return (a.totalEPA ?? 0) - (b.totalEPA ?? 0);
+                    return grade;
+                });
                 setSortedTeamEntries(sortedEntries);
                 break;
             case "winrate":

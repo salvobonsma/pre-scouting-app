@@ -29,7 +29,8 @@ model Event {
 
   updatedAt DateTime @updatedAt
 
-  teams TeamEntry[]
+  teams   TeamEntry[]
+  matches MatchEntry[]
 }
 
 model Team {
@@ -166,6 +167,8 @@ model MatchEntry {
   teamEntryId Int?
   Match       Match?     @relation(fields: [matchKey], references: [key])
   matchKey    String?
+  Event       Event?     @relation(fields: [eventId], references: [id])
+  eventId     Int?
 }
 
 model Match {

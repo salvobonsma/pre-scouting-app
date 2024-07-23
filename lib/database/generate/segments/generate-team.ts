@@ -135,7 +135,7 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
         }
 
         const generateMatchesError = (await Promise.all(
-              tbaMatches.data.map((match) => GenerateMatches(match, teamEntry.id))
+              tbaMatches.data.map((match) => GenerateMatches(match, eventId, teamEntry.id))
         )).find(res => !res.success);
         if (generateMatchesError) return generateMatchesError;
     }
