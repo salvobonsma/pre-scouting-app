@@ -147,6 +147,7 @@ const ChartTooltipContent = React.forwardRef<
                           : itemConfig?.label
 
               if (labelKey == "teamNumber") value = item.payload.teamNumber;
+              if (labelKey == "score") value = `${item.payload.score} Scores`;
 
               if (labelFormatter) {
                   return (

@@ -5,6 +5,7 @@ import {Button} from "@/components/ui/button";
 import Back from "@/components/back";
 import React from "react";
 import OverviewCharts from "@/app/(event)/[id]/overview/overview-charts";
+import ScoutingCharts from "@/app/(event)/[id]/overview/scouting-charts";
 
 export default async function Overview({params}: { params: { id: string } }) {
     if (!+params.id) return NotFound();
@@ -26,6 +27,25 @@ export default async function Overview({params}: { params: { id: string } }) {
           }
     );
 
+    const matchEntries = await prisma.matchEntry.findMany(
+          {
+              where: {
+                  eventId: event.id,
+                  record: true
+              }
+          }
+    );
+    const matches = await Promise.all(matchEntries.map(async value => ({
+        ...value,
+        teamNumber: (await prisma.teamEntry.findUnique(
+              {
+                  where: {
+                      id: value.teamEntryId ?? undefined
+                  }
+              }
+        ))?.teamNumber ?? 0
+    })));
+
     return (
           <>
               <Back link={`/${event.id}`} display={"Event"}/>
@@ -35,11 +55,9 @@ export default async function Overview({params}: { params: { id: string } }) {
               </div>
               <Separator/>
               <OverviewCharts teamEntries={teamEntries}/>
-              <h1 className={"mt"}>Team Abilities</h1>
+              <h1 className={"mt"}>Scouting</h1>
               <Separator/>
-              <p className={"mt-sm muted text-center"}>
-                  To view team abilities you must scout at least 5 matches.
-              </p>
+              <ScoutingCharts matches={matches}/>
               <h1 className={"mt"}>Overview by Team</h1>
               <Separator/>
           </>
