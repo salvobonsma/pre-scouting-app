@@ -20,7 +20,7 @@ import {
     DropdownMenuSubTrigger
 } from "@/components/ui/dropdown-menu";
 import SetTeamStatues, {TeamStatus} from "@/lib/database/set-team-statues";
-import ActionDropdown from "@/app/(event)/[eventId]/action-dropdown";
+import ActionDropdown from "@/app/[eventId]/action-dropdown";
 import DebouncedInput from "@/components/debounced-input";
 
 export type Team = {
@@ -92,7 +92,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
                 );
             },
             cell: ({row}) => (
-                  <p className={"ml-4"}>{row.getValue("teamName")}</p>
+                  <p className={"ml-4 w-44"}>{row.getValue("teamName")}</p>
             ),
             enableGlobalFilter: true
         },
@@ -198,7 +198,7 @@ export default function TeamsTable({data, eventId, statusStates, setStatusStates
               <div className={"flex justify-between mb-6"}>
                   <DebouncedInput
                         debounce={0.1}
-                        placeholder="Search..."
+                        placeholder="Fillter..."
                         value={globalFilter}
                         onChange={(value) => setGlobalFilter(String(value))}
                         className={"max-w-md"}

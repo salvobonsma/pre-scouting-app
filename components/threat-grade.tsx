@@ -11,7 +11,7 @@ export default function ThreatGrade({grade, size}: { grade: ThreatGradeType, siz
             color = "bg-teal-400 dark:bg-teal-600";
             break;
         case "C":
-            color = "bg-yellow-400 dark:bg-yellow-400";
+            color = "bg-yellow-400 dark:bg-yellow-500";
             break;
         case "D":
             color = "bg-amber-500 dark:bg-amber-600";

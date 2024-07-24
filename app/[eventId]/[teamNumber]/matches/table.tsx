@@ -341,7 +341,7 @@ export default function MatchesTable({
               <div className={"flex justify-between mb-6"}>
                   <DebouncedInput
                         debounce={0.1}
-                        placeholder="Search..."
+                        placeholder="Fillter..."
                         value={globalFilter}
                         onChange={(value) => setGlobalFilter(String(value))}
                         className={"max-w-md"}
