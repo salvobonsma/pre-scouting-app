@@ -6,10 +6,17 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/
 import {Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
-export default function ScoutingCharts({matches}: { matches: (MatchEntry & { teamNumber: number })[] }) {
-    if (matches.length <= 5) return (
+export default function ScoutingCharts({matches, forTeam}: {
+    matches: (MatchEntry & { teamNumber: number })[],
+    forTeam: boolean
+}) {
+    if (matches.length < 5) return (
           <p className={"mt-sm muted text-center"}>
-              To view team abilities you must scout at least 5 matches.
+              {forTeam ? (
+                    "To view these charts you must scout at least 5 matches on this team."
+              ) : (
+                    "To view these charts you must scout at least 5 matches."
+              )}
           </p>
     );
     matches.sort((a, b) => a.teamNumber - b.teamNumber)
@@ -126,20 +133,24 @@ export default function ScoutingCharts({matches}: { matches: (MatchEntry & { tea
 
     return (
           <>
-              <div className={"flex flex-wrap gap-6 mt-sm"}>
-                  <Card className={"w-full sm:w-96"}>
-                      <CardHeader>
-                          <CardTitle>Teams Recorded</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                          {barChart({
-                              records: {
-                                  label: "Records"
-                              }
-                          }, teamRecords, "records", "teamNumber")}
-                      </CardContent>
-                  </Card>
-              </div>
+              {
+                    !forTeam && (
+                          <div className={"flex flex-wrap gap-6 mt-sm"}>
+                              <Card className={"w-full sm:w-96"}>
+                                  <CardHeader>
+                                      <CardTitle>Teams Recorded</CardTitle>
+                                  </CardHeader>
+                                  <CardContent>
+                                      {barChart({
+                                          records: {
+                                              label: "Records"
+                                          }
+                                      }, teamRecords, "records", "teamNumber")}
+                                  </CardContent>
+                              </Card>
+                          </div>
+                    )
+              }
               <h2 className={"mt-sm"}>Autonomous</h2>
               <div className={"flex flex-wrap gap-6 mt-2"}>
                   <Card className={"w-full sm:w-96"}>

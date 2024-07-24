@@ -16,7 +16,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import UpdateTeamData from "@/lib/database/update-team-data";
-import {Loader2} from "lucide-react";
+import {Loader2, MoreVertical, ScanEye} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
@@ -125,8 +125,27 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                       </div>
 
                       <Back link={`/${event.id}`} display={"Event"}/>
-                      <h1>{teamEntry.name}</h1>
-                      <p className={"muted"}>Team {teamEntry.teamNumber}</p>
+                      <div className={"flex justify-between items-center gap-1"}>
+                          <div>
+                              <h1>{teamEntry.name}</h1>
+                              <p className={"muted"}>Team {teamEntry.teamNumber}</p>
+                          </div>
+                          <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size={"icon"} className={"mx-2"}>
+                                      <MoreVertical/>
+                                  </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align={"end"}>
+                                  <a href={`/${event.id}/overview/${team.number}`}>
+                                      <DropdownMenuItem>
+                                          <ScanEye className="mr-2 h-4 w-4"/>
+                                          View Overview
+                                      </DropdownMenuItem>
+                                  </a>
+                              </DropdownMenuContent>
+                          </DropdownMenu>
+                      </div>
                       <Separator/>
                       <div className={"mt-sm flex flex-wrap gap-6"}>
                           {teamDetails}

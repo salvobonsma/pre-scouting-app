@@ -58,8 +58,8 @@ export default async function Overview({params}: { params: { eventId: string } }
               <OverviewCharts teamEntries={teamEntries}/>
               <h1 className={"mt"}>Scouting</h1>
               <Separator/>
-              <ScoutingCharts matches={matches}/>
-              <h1 className={"mt"}>Teams</h1>
+              <ScoutingCharts matches={matches} forTeam={false}/>
+              <h1 className={"mt"} id={"teams"}>Teams</h1>
               <Separator/>
               <Teams eventId={event.id} data={teamEntries}/>
           </>
