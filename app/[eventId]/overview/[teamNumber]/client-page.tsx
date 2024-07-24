@@ -17,12 +17,14 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Button} from "@/components/ui/button";
 import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
 import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
+import Matches, {Match} from "@/app/[eventId]/overview/[teamNumber]/matches/matches";
 
-export default function ClientPage({event, team, teamEntry, matches, scoutedMatches, events}: {
+export default function ClientPage({event, team, teamEntry, matches, matchEntries, scoutedMatches, events}: {
     event: Event,
     team: Team,
     teamEntry: TeamEntry,
-    matches: MatchEntry[],
+    matches: Match[],
+    matchEntries: MatchEntry[],
     scoutedMatches: (MatchEntry & { teamNumber: number })[],
     events: TeamEvent[]
 }) {
@@ -146,7 +148,7 @@ export default function ClientPage({event, team, teamEntry, matches, scoutedMatc
               </div>
               <h1 className={"mt"}>Statistics</h1>
               <Separator/>
-              {matches.length == 0 ? (
+              {matchEntries.length == 0 ? (
                     <p className={"text-center muted mt-8"}>
                         This team has not competed in any matches this season, yet.
                     </p>
@@ -268,6 +270,7 @@ export default function ClientPage({event, team, teamEntry, matches, scoutedMatc
               <ScoutingCharts matches={scoutedMatches} forTeam/>
               <h1 className={"mt"}>Matches</h1>
               <Separator/>
+              <Matches matches={matches}/>
           </>
     );
 }
