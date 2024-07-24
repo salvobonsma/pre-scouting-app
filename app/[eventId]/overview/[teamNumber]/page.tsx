@@ -80,6 +80,11 @@ export default async function TeamOverview({params}: { params: { eventId: string
                     ...value,
                     compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",
                     winningAlliance: value.winningAlliance as "red" | "blue" | "",
+                    pickupFrom: value.pickupFrom as ("source" | "ground")[],
+                    finalStatus: value.finalStatus as "parked" | "onstage" | "attemptedAndFailed" | "notAttempted",
+                    driverSkill: value.driverSkill as "effective" | "average" | "notEffective",
+                    defenceSkill: value.defenceSkill as "effective" | "average" | "notEffective",
+                    speed: value.speed as "fast" | "average" | "slow",
                     status: value.status as MatchStatus
                 })).map(value => {
                     const friendlyAlliance = value.redTeamKeys.filter(key => key.includes(team.number.toString())).length > 0;
