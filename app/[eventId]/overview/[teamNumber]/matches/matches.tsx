@@ -52,10 +52,26 @@ export default function Matches({matches}: {
     matches: Match[]
 }) {
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
-        key: false,
-        friendlyAlliance: false,
         redScore: false,
-        blueScore: false
+        blueScore: false,
+        record: false,
+        autoAmpScores: false,
+        autoSpeakerScores: false,
+        leftStartingZone: false,
+        centerLineNote: false,
+        teleopAmpScores: false,
+        teleopSpeakerScores: false,
+        pickupFrom: false,
+        finalStatus: false,
+        trap: false,
+        driverSkill: false,
+        defenceSkill: false,
+        speed: false,
+        noteStuck: false,
+        noteDrop: false,
+        breakage: false,
+        immobilized: false,
+        tippy: false
     });
     const [teamsPerspective, setTeamsPerspective] = useState(true);
     const [tab, setTab] = useState("table");
@@ -98,17 +114,19 @@ export default function Matches({matches}: {
                                     if (checked) {
                                         setColumnVisibility(
                                               {
-                                                  key: false,
-                                                  friendlyAlliance: false,
+                                                  ...columnVisibility,
                                                   redScore: false,
-                                                  blueScore: false
+                                                  blueScore: false,
+                                                  friendlyScore: true,
+                                                  opponentScore: true
                                               }
                                         );
                                     } else {
                                         setColumnVisibility(
                                               {
-                                                  key: false,
-                                                  friendlyAlliance: false,
+                                                  ...columnVisibility,
+                                                  redScore: true,
+                                                  blueScore: true,
                                                   friendlyScore: false,
                                                   opponentScore: false
                                               }
@@ -145,6 +163,7 @@ export default function Matches({matches}: {
                         sorting={sorting}
                         setSorting={setSorting}
                         setTab={setTab}
+                        teamsPerspective={teamsPerspective}
                   />
               </TabsContent>
               <TabsContent value={"match"}>

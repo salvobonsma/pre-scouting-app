@@ -131,7 +131,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                       <ThreatGrade grade={row.original.threatGrade as ThreatGradeType} size={"small"}/>
                   </div>
             ),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "autoEPA",
@@ -150,7 +150,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                   epaValue(row.original.autoEPA ?? 0, row.original.autoDeviation ?? 0)
             ),
             accessorFn: originalRow => originalRow.autoEPA?.toFixed(1),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "teleopEPA",
@@ -169,7 +169,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                   epaValue(row.original.teleopEPA ?? 0, row.original.teleopDeviation ?? 0)
             ),
             accessorFn: originalRow => originalRow.teleopEPA?.toFixed(1),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "endgameEPA",
@@ -188,7 +188,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                   epaValue(row.original.endgameEPA ?? 0, row.original.endgameDeviation ?? 0)
             ),
             accessorFn: originalRow => originalRow.endgameEPA?.toFixed(1),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "totalEPA",
@@ -207,7 +207,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                   epaValue(row.original.teleopEPA ?? 0, row.original.teleopDeviation ?? 0)
             ),
             accessorFn: originalRow => originalRow.totalEPA?.toFixed(1),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "winrate",
@@ -237,7 +237,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                       />
                   </p>
             ),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "worldRank",
@@ -255,7 +255,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
             cell: ({row}) => (
                   <p className={"ml-4"}>{withOrdinalSuffix(row.original.worldRank ?? 0)}</p>
             ),
-            enableGlobalFilter: true
+            enableGlobalFilter: false
         },
         {
             accessorKey: "status",
@@ -326,7 +326,7 @@ export default function Teams({eventId, data}: { eventId: number, data: TeamEntr
                   <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                           <Button variant="outline" className="ml-auto">
-                              Column Visibility <ChevronDown className="ml-2 h-4 w-4"/>
+                              Visible Columns <ChevronDown className="ml-2 h-4 w-4"/>
                           </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

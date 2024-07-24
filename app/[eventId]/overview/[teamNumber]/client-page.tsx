@@ -268,8 +268,6 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
               <h1 className={"mt"}>Scouting</h1>
               <Separator/>
               <ScoutingCharts matches={scoutedMatches} forTeam/>
-              <h1 className={"mt"}>Matches</h1>
-              <Separator/>
               <Matches matches={matches}/>
           </>
     );
