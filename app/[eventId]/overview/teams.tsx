@@ -32,11 +32,11 @@ import QuickTooltip from "@/components/quick-tooltip";
 export default function Teams({eventId, data}: { eventId: number, data: TeamEntry[] }) {
     const [sorting, setSorting] = React.useState<SortingState>([
         {
-            id: "totalEPA",
-            desc: true
+            id: "threatGrade",
+            desc: false
         },
         {
-            id: "threatGrade",
+            id: "totalEPA",
             desc: true
         }
     ]);

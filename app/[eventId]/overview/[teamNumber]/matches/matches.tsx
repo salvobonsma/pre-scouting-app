@@ -80,10 +80,6 @@ export default function Matches({matches}: {
           useState<string | undefined>(undefined);
     const [sorting, setSorting] = React.useState<SortingState>([
         {
-            id: "status",
-            desc: true
-        },
-        {
             id: "startTime",
             desc: true
         }
