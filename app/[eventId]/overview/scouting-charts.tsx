@@ -3,7 +3,7 @@
 import {MatchEntry} from "@prisma/client";
 import React from "react";
 import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
+import {Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function ScoutingCharts({matches, forTeam}: {
@@ -58,6 +58,25 @@ export default function ScoutingCharts({matches, forTeam}: {
                                                                   indicator={"line"}/>}/>
                       <Bar dataKey={dataKey} fill={`var(--chart-1)`} radius={2}/>
                   </BarChart>
+              </ChartContainer>
+        );
+    }
+
+    function areaChart(config: ChartConfig, data: any[], dataKey: string, labelKey: string) {
+        return (
+              <ChartContainer config={config} className="h-48 w-full">
+                  <AreaChart accessibilityLayer data={data}>
+                      <CartesianGrid vertical={false}/>
+                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} labelKey={labelKey}
+                                                                  indicator={"line"}/>}/>
+                      <Area
+                            dataKey={dataKey}
+                            type="natural"
+                            fill="var(--chart-1)"
+                            fillOpacity={0.4}
+                            stroke="var(--chart-1)"
+                      />
+                  </AreaChart>
               </ChartContainer>
         );
     }
@@ -159,7 +178,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                           <CardDescription>In autonomous</CardDescription>
                       </CardHeader>
                       <CardContent>
-                          {barChart({
+                          {areaChart({
                               total: {
                                   label: "Count"
                               }
@@ -172,7 +191,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                           <CardDescription>In autonomous</CardDescription>
                       </CardHeader>
                       <CardContent>
-                          {barChart({
+                          {areaChart({
                               total: {
                                   label: "Count"
                               }
@@ -216,7 +235,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                           <CardDescription>In teleop</CardDescription>
                       </CardHeader>
                       <CardContent>
-                          {barChart({
+                          {areaChart({
                               total: {
                                   label: "Count"
                               }
@@ -229,7 +248,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                           <CardDescription>In teleop</CardDescription>
                       </CardHeader>
                       <CardContent>
-                          {barChart({
+                          {areaChart({
                               total: {
                                   label: "Count"
                               }
