@@ -19,7 +19,7 @@ import RichTextarea from "@/components/rich-textarea";
 import React, {useEffect, useRef, useState} from "react";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 import {TeamStatus} from "@/lib/database/set-team-statues";
-import {Match} from "@/app/(event)/[eventId]/[teamNumber]/matches/matches";
+import {Match} from "@/app/[eventId]/[teamNumber]/matches/matches";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import UpdateMatchData from "@/lib/database/update-match-data";
 import {Label} from "@/components/ui/label";
