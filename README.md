@@ -6,7 +6,7 @@
 Pre-scouting app is a way to pre-scout for FRC (_**FIRST**_ Robotics Competition) events. It uses pre compiled data from
 APIs like The Blue Alliance and Statbotics, and you and your team's your own, team-specific, data, all in one app.
 
-**Try the demo out:**
+**Try the demo out: [pre-scouting-app demo](https://pre-scouting-app-demo.up.railway.app)**
 
 # Features
 
