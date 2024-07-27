@@ -238,7 +238,7 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
                   </Card>
                   <Card className={"w-full sm:w-96"}>
                       <CardHeader>
-                          <CardTitle>Threat Levels</CardTitle>
+                          <CardTitle>Threat Grades</CardTitle>
                       </CardHeader>
                       <CardContent className={"flex justify-center"}>
                           <ChartContainer
