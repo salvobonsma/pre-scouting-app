@@ -1,13 +1,6 @@
 'use client'
 
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {CardContent, CardFooter} from "@/components/ui/card";
@@ -96,9 +89,6 @@ export default function NewEventDialog() {
               <DialogContent>
                   <DialogHeader>
                       <DialogTitle>New Event</DialogTitle>
-                      <DialogDescription>
-                          Creates a new event to pre-scout for.
-                      </DialogDescription>
                   </DialogHeader>
                   <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)} className={"mt-2"} autoComplete={"off"}>
