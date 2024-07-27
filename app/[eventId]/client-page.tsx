@@ -11,7 +11,6 @@ import {isPast} from "@/lib/utils";
 import {ReactNode, useEffect, useState} from "react";
 import Back from "@/components/back";
 import {Button} from "@/components/ui/button";
-import UpdateEvent from "@/lib/database/generate/update-event";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {Loader2} from "lucide-react";
@@ -53,13 +52,6 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
         return () => clearInterval(intervalId);
     }, [event.updatedAt]);
 
-    async function updateEvent() {
-        setLoading(true);
-        await UpdateEvent(event.id);
-        setLoading(false);
-        event.updatedAt = new Date();
-    }
-
     return (
           <>
               <Back link={"/"} display={"Events"}/>
@@ -79,7 +71,7 @@ export default function ClientPage({event, teams, eventDetails, overview}: {
                           </div>
                       </CardContent>
                       <CardFooter className={"flex justify-end"}>
-                          <Button disabled={loading} onClick={updateEvent}>
+                          <Button disabled>
                               {loading && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                               Update Event Data
                           </Button>

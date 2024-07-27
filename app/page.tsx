@@ -1,5 +1,4 @@
 import {Separator} from "@/components/ui/separator";
-import NewEventDialog from "@/components/dialogs/new-event-dialog";
 import prisma from "@/lib/prisma";
 import {cn} from "@/lib/utils";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
@@ -12,6 +11,7 @@ import {LinkIcon, MoreVertical} from "lucide-react";
 import {tba} from "@/lib/tba/tba";
 import {statbotics} from "@/lib/statbotics/statbotics";
 import EventDetails from "@/components/event-details";
+import DemoDialog from "@/app/demo-dialog";
 
 export const dynamic = "force-dynamic";
 
@@ -43,9 +43,10 @@ export default async function Home() {
 
     return (
           <>
+              <DemoDialog/>
               <div className={"flex justify-between mt"}>
                   <h1 className={"self-center"}>Events</h1>
-                  <NewEventDialog/>
+                  <Button disabled>New Event</Button>
               </div>
               <Separator/>
               <p className={cn("text-center muted mt-8", events.length > 0 ? "hidden" : "")}>

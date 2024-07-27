@@ -246,7 +246,7 @@ export default function RichTextarea({initialValue, readOnly, modeDropdown, onCh
               <FixedToolbar>
                   <FixedToolbarButtons modeDropdown={modeDropdown ?? false}/>
               </FixedToolbar>
-              <Editor className={className} focusRing={false}/>
+              <Editor className={className} focusRing={false} disabled/>
               <FloatingToolbar>
                   <FloatingToolbarButtons/>
               </FloatingToolbar>
