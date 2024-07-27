@@ -41,6 +41,8 @@ export default async function Home() {
         statboticsStatus = statusBadge("offline");
     }
 
+    // test
+
     return (
           <>
               <DemoDialog/>
