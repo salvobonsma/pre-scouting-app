@@ -17,5 +17,8 @@ jobs:
       - name: Install dependencies without running postinstall
         run: npm install --ignore-scripts
 
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
       - name: Build with npm
         run: npm run build

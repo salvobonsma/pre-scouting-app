@@ -9,7 +9,6 @@ import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
 import PastSeasons, {columns} from "@/app/[eventId]/[teamNumber]/past-seasons";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
-import {MatchEntry} from "@prisma/client";
 
 export default async function Team({params}: { params: { eventId: string, teamNumber: string } }) {
     if (!+params.eventId || !+params.teamNumber) return NotFound();
@@ -53,7 +52,7 @@ export default async function Team({params}: { params: { eventId: string, teamNu
         }
     });
 
-    const matches = await Promise.all(matchEntries.map(async (value: MatchEntry) => {
+    const matches = await Promise.all(matchEntries.map(async (value) => {
         const match = (await prisma.match.findMany({
             where: {
                 key: value.matchKey == null ? undefined : value.matchKey
