@@ -27,4 +27,3 @@ APIs like The Blue Alliance and Statbotics, and you and your team's your own, te
 <img width="1792" alt="Event Overview" src="https://github.com/user-attachments/assets/7c0ff4b2-3bd6-45a6-b03f-e4c178f35a91">
 <img width="1792" alt="Scouting Overview" src="https://github.com/user-attachments/assets/e381d537-c3c9-4cfd-b55f-f7eb1bc4d4f1">
 <img width="1792" alt="Scouting Overview" src="https://github.com/user-attachments/assets/0708d889-0633-4454-b6b4-9ec4f046071f">
-<img width="1792" alt="Scouting Overview" src="https://github.com/user-attachments/assets/72dff055-1441-493e-a3e0-29b527ad8608">
