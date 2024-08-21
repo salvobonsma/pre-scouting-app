@@ -134,8 +134,26 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
             return {success: false, message: "TBA API request error (h): " + tbaMatches.response.status}
         }
 
+        const statboticsMatches = await statbotics.GET("/v3/team_matches", {
+            params: {
+                query: {
+                    team: tbaTeam.team_number.toString(),
+                    year: year
+                }
+            }
+        });
+        if (!statboticsMatches.data) return {
+            success: false,
+            message: "Statbotics API request error (i): " + pastSeasons.response.status
+        };
+
         const generateMatchesError = (await Promise.all(
-              tbaMatches.data.map((match) => GenerateMatches(match, eventId, teamEntry.id))
+              tbaMatches.data.map((match) => GenerateMatches(
+                    match,
+                    statboticsMatches.data.find(statboticsMatch => statboticsMatch.match === match.key)?.epa?.breakdown,
+                    eventId,
+                    teamEntry.id
+              ))
         )).find(res => !res.success);
         if (generateMatchesError) return generateMatchesError;
     }
