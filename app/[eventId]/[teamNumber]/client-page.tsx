@@ -10,7 +10,6 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Button} from "@/components/ui/button";
 import ThreatGradeContainer from "@/components/threat-grade-container";
 import RichTextarea from "@/components/rich-textarea";
-import QuickTooltip from "@/components/quick-tooltip";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
@@ -163,8 +162,7 @@ export default function ClientPage({
                           {teamDetails}
                           <Card className={"w-full sm:w-fit"}>
                               <CardHeader>
-                                  <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/>
-                                  </CardTitle>
+                                  <CardTitle>Threat Grade</CardTitle>
                               </CardHeader>
                               <CardContent className={"flex gap-4"}>
                                   <ThreatGradeContainer event={event} team={team} teamEntry={teamEntry}/>

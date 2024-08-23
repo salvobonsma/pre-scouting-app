@@ -123,8 +123,7 @@ export default function ClientPage({
                   </Card>
                   <Card className={"w-full sm:w-fit"}>
                       <CardHeader>
-                          <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/>
-                          </CardTitle>
+                          <CardTitle>Threat Grade</CardTitle>
                       </CardHeader>
                       <CardContent className={"flex justify-start sm:justify-center"}>
                           <ThreatGrade grade={teamEntry.threatGrade as ThreatGradeType} size={"large"}/>
