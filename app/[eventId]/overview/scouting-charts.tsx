@@ -49,7 +49,7 @@ export default function ScoutingCharts({matches, forTeam}: {
         return scoring.sort((a, b) => a.score - b.score);
     }
 
-    function barChart(config: ChartConfig, data: any[], dataKey: string, labelKey: string) {
+    function barChart(config: ChartConfig, data: any[], dataKey: string) {
         return (
               <ChartContainer config={config} className="h-48 w-full">
                   <BarChart accessibilityLayer data={data}>
@@ -164,7 +164,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                                           records: {
                                               label: "Records"
                                           }
-                                      }, teamRecords, "records", "teamNumber")}
+                                      }, teamRecords, "records")}
                                   </CardContent>
                               </Card>
                           </div>
