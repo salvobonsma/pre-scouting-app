@@ -266,6 +266,11 @@ export default async function Team({params}: { params: { eventId: string, teamNu
                           )
                     )
                 }
+                eventsList={await prisma.teamEvent.findMany({
+                    where: {
+                        teamNumber: teamEntry.teamNumber
+                    }
+                })}
                 matches={matches.map(value => ({
                     ...value,
                     compLevel: value.compLevel as "qm" | "ef" | "qf" | "sf" | "f",

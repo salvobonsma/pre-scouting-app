@@ -1,6 +1,6 @@
 "use client";
 
-import {Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
+import {Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart, XAxis} from "recharts";
 
 import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
 import {TeamEntry} from "@prisma/client";
@@ -123,8 +123,8 @@ export default function OverviewCharts({teamEntries}: { teamEntries: TeamEntry[]
               <ChartContainer config={config} className="h-48 w-full">
                   <BarChart accessibilityLayer data={data}>
                       <CartesianGrid vertical={false}/>
-                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} labelKey={"teamNumber"}
-                                                                  indicator={"line"}/>}/>
+                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} indicator={"line"}/>}/>
+                      <XAxis hide dataKey={"teamNumber"}/>
                       <Bar dataKey={dataKey} fill={`var(--chart-1)`} radius={2}/>
                   </BarChart>
               </ChartContainer>

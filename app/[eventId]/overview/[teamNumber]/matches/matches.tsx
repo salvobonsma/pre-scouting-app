@@ -11,6 +11,10 @@ import MatchView from "./matchView";
 
 export type Match = {
     key: string,
+    totalEPA: number,
+    autoEPA: number,
+    teleopEPA: number,
+    endgameEPA: number,
     eventKey: string,
     matchNumber: number,
     winningAlliance: "red" | "blue" | "",

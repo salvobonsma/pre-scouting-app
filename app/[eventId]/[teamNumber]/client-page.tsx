@@ -21,12 +21,23 @@ import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import Matches, {Match} from "@/app/[eventId]/[teamNumber]/matches/matches";
+import EPAOverTime from "@/components/epa-over-time";
 
 export const teamDataSchema = z.object({
     notes: z.string(),
 });
 
-export default function ClientPage({event, team, teamEntry, teamDetails, statistics, events, pastSeasons, matches}: {
+export default function ClientPage({
+                                       event,
+                                       team,
+                                       teamEntry,
+                                       teamDetails,
+                                       statistics,
+                                       events,
+                                       eventsList,
+                                       pastSeasons,
+                                       matches
+                                   }: {
     event: { id: number },
     team: { rookieYear: number | null, state: string | null, school: string | null, number: number },
     teamEntry: {
@@ -60,6 +71,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
     teamDetails: ReactNode,
     statistics: ReactNode,
     events: ReactNode,
+    eventsList: { eventKey: string, name: string }[]
     pastSeasons: ReactNode
 }) {
     const [status, setStatus] = useState(teamEntry.status as TeamStatus);
@@ -222,6 +234,7 @@ export default function ClientPage({event, team, teamEntry, teamDetails, statist
                       <h1 className={"mt"}>Statistics</h1>
                       <Separator/>
                       {statistics}
+                      <EPAOverTime matches={matches} events={eventsList}/>
                       <h1 className={"mt"}>Events</h1>
                       <Separator/>
                       {events}

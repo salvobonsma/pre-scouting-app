@@ -18,6 +18,7 @@ import {Button} from "@/components/ui/button";
 import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
 import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
 import Matches, {Match} from "@/app/[eventId]/overview/[teamNumber]/matches/matches";
+import EPAOverTime from "@/components/epa-over-time";
 
 export default function ClientPage({event, team, teamEntry, matches, matchEntries, scoutedMatches, events}: {
     event: Event,
@@ -246,6 +247,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
                         </Card>
                     </div>
               )}
+              <EPAOverTime matches={matches} events={events}/>
               <h1 className={"mt"}>Events</h1>
               <Separator/>
               {
