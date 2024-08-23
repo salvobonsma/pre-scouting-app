@@ -908,7 +908,17 @@ export interface operations {
             /** @description Successful Response */
             200: {
                 content: {
-                    "application/json": Record<string, never>[];
+                    "application/json": {
+                        match?: string;
+                        epa?: {
+                            breakdown?: {
+                                total_points?: number;
+                                auto_points?: number;
+                                teleop_points?: number;
+                                endgame_points?: number;
+                            };
+                        };
+                    }[];
                 };
             };
             /** @description Validation Error */

@@ -3,7 +3,7 @@
 import {ActionResult} from "@/lib/database/action-result";
 import prisma from "@/lib/prisma";
 
-export default async function GenerateMatches(tbaMatch: any, eventId: number, teamEntryId: number): Promise<ActionResult> {
+export default async function GenerateMatches(tbaMatch: any, statboticsMatch: any, eventId: number, teamEntryId: number): Promise<ActionResult> {
     // Skip in progress matches
     if (tbaMatch.actual_time == undefined) return {success: true};
 
@@ -51,6 +51,10 @@ export default async function GenerateMatches(tbaMatch: any, eventId: number, te
           {
               data: {
                   teamEntryId: teamEntryId,
+                  totalEPA: statboticsMatch?.total_points ?? -1,
+                  autoEPA: statboticsMatch?.auto_points ?? -1,
+                  teleopEPA: statboticsMatch?.teleop_points ?? -1,
+                  endgameEPA: statboticsMatch?.endgame_points ?? -1,
                   status: "notStarted",
                   eventId: eventId,
                   matchKey: tbaMatch.key
