@@ -10,7 +10,7 @@ import {ThreatGradeType} from "@/lib/database/set-threat-grade";
 import StatusBadge from "@/components/status-badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import RichTextarea from "@/components/rich-textarea";
-import React from "react";
+import React, {ReactNode} from "react";
 import {ArrowDown, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
@@ -20,7 +20,16 @@ import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
 import Matches, {Match} from "@/app/[eventId]/overview/[teamNumber]/matches/matches";
 import EPAOverTime from "@/components/epa-over-time";
 
-export default function ClientPage({event, team, teamEntry, matches, matchEntries, scoutedMatches, events}: {
+export default function ClientPage({
+                                       event,
+                                       team,
+                                       teamEntry,
+                                       matches,
+                                       matchEntries,
+                                       scoutedMatches,
+                                       events,
+                                       previousSeasons
+                                   }: {
     event: Event,
     team: Team,
     teamEntry: TeamEntry,
@@ -28,6 +37,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
     matchEntries: MatchEntry[],
     scoutedMatches: (MatchEntry & { teamNumber: number })[],
     events: TeamEvent[]
+    previousSeasons: ReactNode
 }) {
     const eventsFiltered = events
           .filter(value => value.eventKey != event.key)
@@ -271,6 +281,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
               <Separator/>
               <ScoutingCharts matches={scoutedMatches} forTeam/>
               <Matches matches={matches}/>
+              {previousSeasons}
           </>
     );
 }

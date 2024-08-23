@@ -7,7 +7,7 @@ import QuickTooltip from "@/components/quick-tooltip";
 import {ArrowDown, ArrowUp, Minus} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
-import PastSeasons, {columns} from "@/app/[eventId]/[teamNumber]/past-seasons";
+import PreviousSeasons, {columns} from "@/components/previous-seasons";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
 
 export default async function Team({params}: { params: { eventId: string, teamNumber: string } }) {
@@ -286,11 +286,9 @@ export default async function Team({params}: { params: { eventId: string, teamNu
                     }
                 })}
                 pastSeasons={
-                    <>
-                        <div className={"mt-sm"}>
-                            <PastSeasons columns={columns} data={pastSeasons}/>
-                        </div>
-                    </>
+                    <div className={"mt-sm"}>
+                        <PreviousSeasons columns={columns} data={pastSeasons}/>
+                    </div>
                 }
           />
     );

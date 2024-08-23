@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import NotFound from "@/app/not-found";
 import ClientPage from "@/app/[eventId]/overview/[teamNumber]/client-page";
 import {MatchStatus} from "@/lib/database/set-match-statuses";
+import PreviousSeasons, {columns} from "@/components/previous-seasons";
 
 export default async function TeamOverview({params}: { params: { eventId: string, teamNumber: string } }) {
     if (!+params.eventId || !+params.teamNumber) return NotFound();
@@ -71,6 +72,28 @@ export default async function TeamOverview({params}: { params: { eventId: string
         ))?.teamNumber ?? 0
     })))).filter(value => value.record);
 
+    const pastSeasons = (await prisma.teamPastSeason.findMany(
+          {
+              where: {
+                  teamNumber: team.number,
+                  year: {
+                      lt: event.year
+                  }
+              }
+          }
+    )).map(value => ({
+        year: value.year,
+        winRate: value.winrate,
+        rank: {
+            rank: value.rank,
+            of: value.totalTeams
+        },
+        epa: {
+            epa: value.epa,
+            percentile: value.percentile
+        }
+    })).sort((a, b) => b.year - a.year);
+
     return (
           <ClientPage
                 event={event}
@@ -98,6 +121,11 @@ export default async function TeamOverview({params}: { params: { eventId: string
                 matchEntries={matchesEntries}
                 scoutedMatches={scoutedMatches}
                 events={events}
+                previousSeasons={
+                    <div className={"mt-sm"}>
+                        <PreviousSeasons columns={columns} data={pastSeasons}/>
+                    </div>
+                }
           />
     );
 }
