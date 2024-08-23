@@ -43,5 +43,23 @@ export default async function Compare({params, searchParams}: {
     );
     if (!aEntry || !bEntry) return <NotFound/>;
 
-    return <ClientPage eventId={+params.eventId} a={{team: a, entry: aEntry[0]}} b={{team: b, entry: bEntry[0]}}/>;
+    const aMatchEntries = await prisma.matchEntry.count(
+          {
+              where: {
+                  eventId: aEntry[0].eventId,
+                  teamEntryId: aEntry[0].id
+              }
+          }
+    );
+    const bMatchEntries = await prisma.matchEntry.count(
+          {
+              where: {
+                  eventId: bEntry[0].eventId,
+                  teamEntryId: bEntry[0].id
+              }
+          }
+    );
+
+    return <ClientPage eventId={+params.eventId} a={{team: a, entry: aEntry[0], matches: {count: aMatchEntries}}}
+                       b={{team: b, entry: bEntry[0], matches: {count: bMatchEntries}}}/>;
 }

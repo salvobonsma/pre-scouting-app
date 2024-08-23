@@ -47,33 +47,6 @@ export default function ClientPage({
                 <EventCard key={value.eventKey} event={value}/>
           ));
 
-    function epaValue(epa: number, deviation: number) {
-        let arrow;
-        let placement;
-        if (deviation > 0.2) {
-            arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
-            placement = "Above";
-        } else if (deviation > -0.2) {
-            arrow = (<Minus className={"w-5 h-5 self-center"}/>);
-            placement = "Around";
-        } else {
-            arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
-            placement = "Below";
-        }
-
-        return (
-              <QuickTooltip
-                    trigger={
-                        <div className={"flex gap-0.5"}>
-                            <p>{epa.toFixed(1)}</p>
-                            {arrow}
-                        </div>
-                    }
-                    content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
-              />
-        );
-    }
-
     return (
           <>
               <Back link={`/${event.id}/overview#teams`} display={"Event Overview"}/>
@@ -282,5 +255,32 @@ export default function ClientPage({
               <Matches matches={matches}/>
               {previousSeasons}
           </>
+    );
+}
+
+export function epaValue(epa: number, deviation: number) {
+    let arrow;
+    let placement;
+    if (deviation > 0.2) {
+        arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
+        placement = "Above";
+    } else if (deviation > -0.2) {
+        arrow = (<Minus className={"w-5 h-5 self-center"}/>);
+        placement = "Around";
+    } else {
+        arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
+        placement = "Below";
+    }
+
+    return (
+          <QuickTooltip
+                trigger={
+                    <div className={"flex gap-0.5"}>
+                        <p>{epa.toFixed(1)}</p>
+                        {arrow}
+                    </div>
+                }
+                content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
+          />
     );
 }
