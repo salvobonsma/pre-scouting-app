@@ -1,6 +1,6 @@
 'use client'
 
-import {Team, TeamEntry} from "@prisma/client";
+import {Team, TeamEntry, TeamEvent} from "@prisma/client";
 import Back from "@/components/back";
 import React from "react";
 import {Separator} from "@/components/ui/separator";
@@ -15,18 +15,21 @@ import {TeamStatus} from "@/lib/database/set-team-statues";
 import RichTextarea from "@/components/rich-textarea";
 import QuickTooltip from "@/components/quick-tooltip";
 import {epaValue} from "@/app/[eventId]/overview/[teamNumber]/client-page";
+import EPAOverTime from "@/app/[eventId]/overview/compare/epa-over-time";
 
 export default function ClientPage({eventId, a, b}: {
     eventId: number,
     a: {
         team: Team,
         entry: TeamEntry
-        matches: { count: number }
+        matches: any[],
+        events: TeamEvent[]
     },
     b: {
         team: Team,
         entry: TeamEntry
-        matches: { count: number }
+        matches: any[],
+        events: TeamEvent[]
     }
 }) {
     function teamHeader(teamData: typeof a | typeof b) {
@@ -130,7 +133,7 @@ export default function ClientPage({eventId, a, b}: {
         return (
               <div className={"mt-sm"}>
                   <h2>Statistics</h2>
-                  {teamData.matches.count == 0 ? (
+                  {teamData.matches.length == 0 ? (
                         <p className={"text-center muted mt-8"}>
                             This team has not competed in any matches this season, yet.
                         </p>
@@ -259,6 +262,7 @@ export default function ClientPage({eventId, a, b}: {
                       {statistics(b)}
                   </div>
               </div>
+              <EPAOverTime a={a} b={b}/>
           </>
     );
 }

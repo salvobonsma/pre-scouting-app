@@ -43,23 +43,75 @@ export default async function Compare({params, searchParams}: {
     );
     if (!aEntry || !bEntry) return <NotFound/>;
 
-    const aMatchEntries = await prisma.matchEntry.count(
-          {
+    const aMatches = await Promise.all(
+          (await prisma.matchEntry.findMany({
               where: {
                   eventId: aEntry[0].eventId,
-                  teamEntryId: aEntry[0].id
+                  teamEntryId: aEntry[0].id,
+              },
+          })).map(async (value) => {
+              const match = await prisma.match.findUnique({
+                  where: {
+                      key: value.matchKey ?? undefined,
+                  },
+              });
+              return {
+                  ...value,
+                  ...(match ?? {}), // Safely spread the match object if it exists, otherwise spread an empty object
+              };
+          })
+    );
+    const bMatches = await Promise.all(
+          (await prisma.matchEntry.findMany({
+              where: {
+                  eventId: bEntry[0].eventId,
+                  teamEntryId: bEntry[0].id,
+              },
+          })).map(async (value) => {
+              const match = await prisma.match.findUnique({
+                  where: {
+                      key: value.matchKey ?? undefined,
+                  },
+              });
+              return {
+                  ...value,
+                  ...(match ?? {}), // Safely spread the match object if it exists, otherwise spread an empty object
+              };
+          })
+    );
+
+    const aEvents = await prisma.teamEvent.findMany(
+          {
+              where: {
+                  teamNumber: a.number
               }
           }
     );
-    const bMatchEntries = await prisma.matchEntry.count(
+    const bEvents = await prisma.teamEvent.findMany(
           {
               where: {
-                  eventId: bEntry[0].eventId,
-                  teamEntryId: bEntry[0].id
+                  teamNumber: b.number
               }
           }
     );
 
-    return <ClientPage eventId={+params.eventId} a={{team: a, entry: aEntry[0], matches: {count: aMatchEntries}}}
-                       b={{team: b, entry: bEntry[0], matches: {count: bMatchEntries}}}/>;
+    console.log(JSON.stringify(aMatches))
+
+    return (
+          <ClientPage
+                eventId={+params.eventId}
+                a={{
+                    team: a,
+                    entry: aEntry[0],
+                    matches: aMatches,
+                    events: aEvents
+                }}
+                b={{
+                    team: b,
+                    entry: bEntry[0],
+                    matches: bMatches,
+                    events: bEvents
+                }}
+          />
+    );
 }

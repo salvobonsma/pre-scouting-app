@@ -227,9 +227,9 @@ export default function ClientPage({
                                 </div>
                             </CardContent>
                         </Card>
+                        <EPAOverTime matches={matches} events={events}/>
                     </div>
               )}
-              <EPAOverTime matches={matches} events={events}/>
               <h1 className={"mt"}>Events</h1>
               <Separator/>
               {

@@ -232,7 +232,11 @@ export default function ClientPage({
                       <h1 className={"mt"}>Statistics</h1>
                       <Separator/>
                       {statistics}
-                      <EPAOverTime matches={matches} events={eventsList}/>
+                      {
+                            matches.length != 0 && (
+                                  <div className={"mt-sm"}><EPAOverTime matches={matches} events={eventsList}/></div>
+                            )
+                      }
                       <h1 className={"mt"}>Events</h1>
                       <Separator/>
                       {events}
