@@ -16,6 +16,7 @@ import RichTextarea from "@/components/rich-textarea";
 import QuickTooltip from "@/components/quick-tooltip";
 import {epaValue} from "@/app/[eventId]/overview/[teamNumber]/client-page";
 import EPAOverTime from "@/app/[eventId]/overview/compare/epa-over-time";
+import PreviousSeasons, {columns, Year} from "@/components/previous-seasons";
 
 export default function ClientPage({eventId, a, b}: {
     eventId: number,
@@ -23,13 +24,15 @@ export default function ClientPage({eventId, a, b}: {
         team: Team,
         entry: TeamEntry
         matches: any[],
-        events: TeamEvent[]
+        events: TeamEvent[],
+        previousYears: Year[]
     },
     b: {
         team: Team,
         entry: TeamEntry
         matches: any[],
-        events: TeamEvent[]
+        events: TeamEvent[],
+        previousYears: Year[]
     }
 }) {
     function teamHeader(teamData: typeof a | typeof b) {
@@ -132,7 +135,8 @@ export default function ClientPage({eventId, a, b}: {
     function statistics(teamData: typeof a | typeof b) {
         return (
               <div className={"mt-sm"}>
-                  <h2>Statistics</h2>
+                  <h1>Statistics</h1>
+                  <Separator/>
                   {teamData.matches.length == 0 ? (
                         <p className={"text-center muted mt-8"}>
                             This team has not competed in any matches this season, yet.
@@ -241,12 +245,30 @@ export default function ClientPage({eventId, a, b}: {
               <div className={"lg:hidden"}>
                   {teamHeader(a)}
                   {teamData(a)}
+                  {statistics(a)}
+                  {
+                      a.previousYears.length == 0 ? (
+                            <p className={"text-center muted mt-16"}>
+                                This team has not competed in any previous seasons, yet.
+                            </p>
+                      ) : (
+                            <PreviousSeasons columns={columns} data={a.previousYears}/>
+                      )
+                  }
                   <div className={"mt"}>
                       {teamHeader(b)}
                   </div>
-                  {statistics(b)}
                   {teamData(b)}
-                  {statistics(a)}
+                  {statistics(b)}
+                  {
+                      b.previousYears.length == 0 ? (
+                            <p className={"text-center muted mt-16"}>
+                                This team has not competed in any previous seasons, yet.
+                            </p>
+                      ) : (
+                            <PreviousSeasons columns={columns} data={b.previousYears}/>
+                      )
+                  }
               </div>
               <div className={"hidden lg:block"}>
                   <div className={"grid grid-cols-2 gap-8"}>
@@ -263,6 +285,28 @@ export default function ClientPage({eventId, a, b}: {
                   </div>
               </div>
               <EPAOverTime a={a} b={b}/>
+              <div className={"hidden lg:block"}>
+                  <div className={"grid grid-cols-2 gap-8"}>
+                      {
+                          a.previousYears.length == 0 ? (
+                                <p className={"text-center muted mt-16"}>
+                                    This team has not competed in any previous seasons, yet.
+                                </p>
+                          ) : (
+                                <PreviousSeasons columns={columns} data={a.previousYears}/>
+                          )
+                      }
+                      {
+                          b.previousYears.length == 0 ? (
+                                <p className={"text-center muted mt-16"}>
+                                    This team has not competed in any previous seasons, yet.
+                                </p>
+                          ) : (
+                                <PreviousSeasons columns={columns} data={b.previousYears}/>
+                          )
+                      }
+                  </div>
+              </div>
           </>
     );
 }

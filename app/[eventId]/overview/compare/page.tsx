@@ -9,6 +9,15 @@ export default async function Compare({params, searchParams}: {
     params: { eventId: string }
     searchParams: { a?: string, b?: string }
 }) {
+    const event = await prisma.event.findUnique(
+          {
+              where: {
+                  id: +params.eventId
+              }
+          }
+    );
+    if (!event) return <NotFound/>;
+
     const a = await prisma.team.findUnique(
           {
               where: {
@@ -95,7 +104,48 @@ export default async function Compare({params, searchParams}: {
           }
     );
 
-    console.log(JSON.stringify(aMatches))
+    const aPastSeasons = (await prisma.teamPastSeason.findMany(
+          {
+              where: {
+                  teamNumber: a.number,
+                  year: {
+                      lt: event.year
+                  }
+              }
+          }
+    )).map(value => ({
+        year: value.year,
+        winRate: value.winrate,
+        rank: {
+            rank: value.rank,
+            of: value.totalTeams
+        },
+        epa: {
+            epa: value.epa,
+            percentile: value.percentile
+        }
+    })).sort((a, b) => b.year - a.year);
+    const bPastSeasons = (await prisma.teamPastSeason.findMany(
+          {
+              where: {
+                  teamNumber: b.number,
+                  year: {
+                      lt: event.year
+                  }
+              }
+          }
+    )).map(value => ({
+        year: value.year,
+        winRate: value.winrate,
+        rank: {
+            rank: value.rank,
+            of: value.totalTeams
+        },
+        epa: {
+            epa: value.epa,
+            percentile: value.percentile
+        }
+    })).sort((a, b) => b.year - a.year);
 
     return (
           <ClientPage
@@ -104,13 +154,15 @@ export default async function Compare({params, searchParams}: {
                     team: a,
                     entry: aEntry[0],
                     matches: aMatches,
-                    events: aEvents
+                    events: aEvents,
+                    previousYears: aPastSeasons
                 }}
                 b={{
                     team: b,
                     entry: bEntry[0],
                     matches: bMatches,
-                    events: bEvents
+                    events: bEvents,
+                    previousYears: bPastSeasons
                 }}
           />
     );
