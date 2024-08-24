@@ -52,7 +52,14 @@ export default async function Compare({params, searchParams}: {
     }
 
     if (!searchParams.a || !searchParams.b) {
-        return teamSelector(searchParams.a, searchParams.b);
+        return (
+              <>
+                  {teamSelector(searchParams.a, searchParams.b)}
+                  <p className={"text-center muted mt-8"}>
+                      Select two teams to continue.
+                  </p>
+              </>
+        );
     }
 
     const a = await prisma.team.findUnique(

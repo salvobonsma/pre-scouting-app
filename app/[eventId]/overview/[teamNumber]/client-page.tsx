@@ -11,7 +11,7 @@ import StatusBadge from "@/components/status-badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import RichTextarea from "@/components/rich-textarea";
 import React, {ReactNode} from "react";
-import {ArrowDown, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
+import {ArrowDown, ArrowLeftRight, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
@@ -66,6 +66,12 @@ export default function ClientPage({
                               <DropdownMenuItem>
                                   <Edit className="mr-2 h-4 w-4"/>
                                   Make Changes
+                              </DropdownMenuItem>
+                          </a>
+                          <a href={`/${event.id}/overview/compare?a=${team.number}`}>
+                              <DropdownMenuItem>
+                                  <ArrowLeftRight className="mr-2 h-4 w-4"/>
+                                  Compare
                               </DropdownMenuItem>
                           </a>
                       </DropdownMenuContent>
