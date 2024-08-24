@@ -1,7 +1,6 @@
 'use client'
 
 import {Team, TeamEntry, TeamEvent} from "@prisma/client";
-import Back from "@/components/back";
 import React from "react";
 import {Separator} from "@/components/ui/separator";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
@@ -37,7 +36,7 @@ export default function ClientPage({eventId, a, b}: {
 }) {
     function teamHeader(teamData: typeof a | typeof b) {
         return (
-              <div>
+              <div className={"mt"}>
                   <div className={"flex justify-between items-center gap-1"}>
                       <div>
                           <h1>{teamData.entry.name}</h1>
@@ -241,7 +240,6 @@ export default function ClientPage({eventId, a, b}: {
 
     return (
           <>
-              <Back link={`/${eventId}/overview`} display={"Event Overview"}/>
               <div className={"lg:hidden"}>
                   {teamHeader(a)}
                   {teamData(a)}
@@ -255,9 +253,7 @@ export default function ClientPage({eventId, a, b}: {
                             <PreviousSeasons columns={columns} data={a.previousYears}/>
                       )
                   }
-                  <div className={"mt"}>
-                      {teamHeader(b)}
-                  </div>
+                  {teamHeader(b)}
                   {teamData(b)}
                   {statistics(b)}
                   {

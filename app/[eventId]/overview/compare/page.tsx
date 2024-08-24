@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import NotFound from "@/app/not-found";
 import React from "react";
 import ClientPage from "@/app/[eventId]/overview/compare/client-page";
+import {TeamDropdown} from "@/app/[eventId]/overview/compare/team-dropdown";
+import Back from "@/components/back";
 
 export default async function Compare({params, searchParams}: {
     params: { eventId: string }
@@ -18,17 +20,52 @@ export default async function Compare({params, searchParams}: {
     );
     if (!event) return <NotFound/>;
 
+    const eventTeams = await Promise.all(
+          (await prisma.teamEntry.findMany(
+                {
+                    where: {
+                        eventId: event.id
+                    }
+                }
+          )).map(async value => (await prisma.team.findMany(
+                {
+                    where: {
+                        number: value.teamNumber ?? undefined
+                    }
+                }
+          ))[0])
+    );
+
+    function teamSelector(a: string | undefined, b: string | undefined) {
+        if (!event) return;
+
+        return (
+              <>
+                  <Back link={`/${event.id}/overview`} display={"Event Overview"}/>
+                  <div className={"flex flex-col md:flex-row justify-center gap-3 md:gap-10 items-center"}>
+                      <TeamDropdown eventId={event.id} teams={eventTeams} a={a} b={b} side={"a"}/>
+                      <p className={"muted"}>vs</p>
+                      <TeamDropdown eventId={event.id} teams={eventTeams} a={a} b={b} side={"b"}/>
+                  </div>
+              </>
+        );
+    }
+
+    if (!searchParams.a || !searchParams.b) {
+        return teamSelector(searchParams.a, searchParams.b);
+    }
+
     const a = await prisma.team.findUnique(
           {
               where: {
-                  number: +(searchParams.a ?? -1)
+                  number: +searchParams.a
               }
           }
     );
     const b = await prisma.team.findUnique(
           {
               where: {
-                  number: +(searchParams.b ?? -1)
+                  number: +searchParams.b
               }
           }
     );
@@ -148,22 +185,25 @@ export default async function Compare({params, searchParams}: {
     })).sort((a, b) => b.year - a.year);
 
     return (
-          <ClientPage
-                eventId={+params.eventId}
-                a={{
-                    team: a,
-                    entry: aEntry[0],
-                    matches: aMatches,
-                    events: aEvents,
-                    previousYears: aPastSeasons
-                }}
-                b={{
-                    team: b,
-                    entry: bEntry[0],
-                    matches: bMatches,
-                    events: bEvents,
-                    previousYears: bPastSeasons
-                }}
-          />
+          <>
+              {teamSelector(searchParams.a, searchParams.b)}
+              <ClientPage
+                    eventId={+params.eventId}
+                    a={{
+                        team: a,
+                        entry: aEntry[0],
+                        matches: aMatches,
+                        events: aEvents,
+                        previousYears: aPastSeasons
+                    }}
+                    b={{
+                        team: b,
+                        entry: bEntry[0],
+                        matches: bMatches,
+                        events: bEvents,
+                        previousYears: bPastSeasons
+                    }}
+              />
+          </>
     );
 }
