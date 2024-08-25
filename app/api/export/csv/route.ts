@@ -46,10 +46,24 @@ export async function GET(request: NextRequest) {
         red3: (redTeamKeys ?? [])[2]
     }));
 
-    const archive = archiver("zip", {zlib: {level: 9}});
+    const teamPreviousSeasons = (await prisma.teamPastSeason.findMany({
+        where: {
+            Team: {
+                teamEntries: {
+                    some: {
+                        eventId: event.id,
+                    },
+                },
+            },
+        },
+    })).map(value => ({
+        ...value,
+        percentile: value.percentile.toFixed(4)
+    }));
 
+    const archive = archiver("zip", {zlib: {level: 9}});
     archive.append(arrayToCsv(matchScouting), {name: "match-scouting.csv"});
-    archive.append(arrayToCsv(matchScouting), {name: "test2.txt"});
+    archive.append(arrayToCsv(teamPreviousSeasons), {name: "team-previous-seasons.csv"});
 
     await archive.finalize();
 
