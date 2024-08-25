@@ -7,6 +7,8 @@ import OverviewCharts from "@/app/[eventId]/overview/overview-charts";
 import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
 import Teams from "@/app/[eventId]/overview/teams";
 import ExportDialog from "@/app/[eventId]/overview/export-dialog";
+import {ArrowLeftRight} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 export default async function Overview({params}: { params: { eventId: string } }) {
     if (!+params.eventId) return NotFound();
@@ -59,7 +61,12 @@ export default async function Overview({params}: { params: { eventId: string } }
               <h1 className={"mt"}>Scouting Overview</h1>
               <Separator/>
               <ScoutingCharts matches={matches} forTeam={false}/>
-              <h1 className={"mt"} id={"teams"}>Team Overviews</h1>
+              <div className={"mt flex justify-between items-center gap-2"}>
+                  <h1 id={"teams"}>Team Overviews</h1>
+                  <a href={`/${event.id}/overview/compare`}>
+                      <Button><ArrowLeftRight className="mr-2 h-4 w-4"/>Compare Teams</Button>
+                  </a>
+              </div>
               <Separator/>
               <Teams eventId={event.id} data={teamEntries}/>
           </>
