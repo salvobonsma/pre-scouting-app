@@ -23,7 +23,11 @@ export async function GET(request: NextRequest) {
               ...(await prisma.team.findFirst({where: {number: value.teamNumber ?? -1}})),
               ...value
           }))
-    )).map(({id, eventId, teamNumber, key, ...value}) => value);
+    )).map(({id, eventId, number, teamNumber, key, ...value}) => ({
+        teamNumber: teamNumber,
+        ...value,
+
+    })).sort((a, b) => (a.teamNumber ?? -1) - (b.teamNumber ?? -1));
 
     const matchScouting = (await Promise.all(
           (await Promise.all(
@@ -44,11 +48,16 @@ export async function GET(request: NextRequest) {
                     )),
                     pickupFrom: JSON.stringify(value.pickupFrom)
                 }))
-          )).map(async ({key, teamEntryId, ...value}) => ({
-              team: (await prisma.teamEntry.findFirst({where: {id: teamEntryId ?? -1}}))?.teamNumber,
-              matchKey: key,
-              ...value
-          }))
+          )).map(async ({key, startTime, teamEntryId, ...value}) => {
+              const date = new Date((startTime ?? -1) * 1000);
+              return ({
+                  teamNumber: (await prisma.teamEntry.findFirst({where: {id: teamEntryId ?? -1}}))?.teamNumber,
+                  matchKey: key,
+                  ...value,
+                  startTime: startTime,
+                  startDate: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+              })
+          })
     )).map(({blueTeamKeys, redTeamKeys, ...value}) => ({
         ...value,
         blue1: (blueTeamKeys ?? [])[0],
@@ -57,7 +66,29 @@ export async function GET(request: NextRequest) {
         red1: (redTeamKeys ?? [])[0],
         red2: (redTeamKeys ?? [])[1],
         red3: (redTeamKeys ?? [])[2]
-    }));
+    })).sort((a, b) =>
+          (a.teamNumber ?? -1) - (b.teamNumber ?? -1) ||
+          (a.startTime ?? -1) - (b.startTime ?? -1)
+    );
+
+    const teamEvents = (await prisma.teamEvent.findMany({
+        where: {
+            Team: {
+                teamEntries: {
+                    some: {
+                        eventId: event.id,
+                    },
+                },
+            },
+        },
+    })).map(({id, teamNumber, awards, ...value}) => ({
+        teamNumber,
+        ...value,
+        awards: JSON.stringify(awards)
+    })).sort((a, b) =>
+          (a.teamNumber ?? -1) - (b.teamNumber ?? -1) ||
+          new Date(a.endDate ?? '1970-01-01').getTime() - new Date(b.endDate ?? '1970-01-01').getTime()
+    );
 
     const teamPreviousSeasons = (await prisma.teamPastSeason.findMany({
         where: {
@@ -69,14 +100,17 @@ export async function GET(request: NextRequest) {
                 },
             },
         },
-    })).map(value => ({
-        ...value,
-        percentile: value.percentile.toFixed(4)
-    }));
+    })).map(({id, teamNumber, ...value}) => ({
+        teamNumber: teamNumber,
+        ...value
+    })).sort((a, b) =>
+          (a.teamNumber ?? -1) - (b.teamNumber ?? -1) || (a.year ?? -1) - (b.year ?? -1)
+    );
 
     const archive = archiver("zip", {zlib: {level: 9}});
     archive.append(arrayToCsv(teamScouting), {name: "team-scouting.csv"});
     archive.append(arrayToCsv(matchScouting), {name: "match-scouting.csv"});
+    archive.append(arrayToCsv(teamEvents), {name: "team-events.csv"});
     archive.append(arrayToCsv(teamPreviousSeasons), {name: "team-previous-seasons.csv"});
 
     await archive.finalize();
