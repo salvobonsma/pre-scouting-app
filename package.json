@@ -62,10 +62,12 @@
     "@udecode/plate-toggle": "^34.0.0",
     "@udecode/plate-trailing-block": "^34.0.0",
     "@uidotdev/usehooks": "^2.4.1",
+    "archiver": "^7.0.1",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "0.2.0",
+    "csv-writer": "^1.6.0",
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.1.5",
     "lucide-react": "^0.372.0",
@@ -84,6 +86,7 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -136,11 +136,6 @@ model TeamPastSeason {
 model MatchEntry {
   id Int @id @default(autoincrement())
 
-  totalEPA   Float
-  autoEPA    Float
-  teleopEPA  Float
-  endgameEPA Float
-
   status String
   notes  String @default("[{\"children\":[{\"text\":\"\"}],\"type\":\"p\"}]")
 
@@ -167,6 +162,11 @@ model MatchEntry {
   breakage     Boolean @default(false)
   immobilized  Boolean @default(false)
   tippy        Boolean @default(false)
+
+  totalEPA   Float
+  autoEPA    Float
+  teleopEPA  Float
+  endgameEPA Float
 
   TeamEntry   TeamEntry? @relation(fields: [teamEntryId], references: [id])
   teamEntryId Int?
