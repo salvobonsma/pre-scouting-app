@@ -12,6 +12,19 @@ export async function GET(request: NextRequest) {
     );
     if (!event) return new Response("Invalid eventId", {status: 400});
 
+    const teamScouting = (await Promise.all(
+          (await prisma.teamEntry.findMany(
+                {
+                    where: {
+                        eventId: event.id
+                    }
+                }
+          )).map(async value => ({
+              ...(await prisma.team.findFirst({where: {number: value.teamNumber ?? -1}})),
+              ...value
+          }))
+    )).map(({id, eventId, teamNumber, key, ...value}) => value);
+
     const matchScouting = (await Promise.all(
           (await Promise.all(
                 (await prisma.matchEntry.findMany(
@@ -62,6 +75,7 @@ export async function GET(request: NextRequest) {
     }));
 
     const archive = archiver("zip", {zlib: {level: 9}});
+    archive.append(arrayToCsv(teamScouting), {name: "team-scouting.csv"});
     archive.append(arrayToCsv(matchScouting), {name: "match-scouting.csv"});
     archive.append(arrayToCsv(teamPreviousSeasons), {name: "team-previous-seasons.csv"});
 
