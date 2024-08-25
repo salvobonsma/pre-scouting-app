@@ -15,7 +15,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import UpdateTeamData from "@/lib/database/update-team-data";
-import {Loader2, MoreVertical, ScanEye} from "lucide-react";
+import {ArrowLeftRight, Loader2, MoreVertical, ScanEye} from "lucide-react";
 import {cn} from "@/lib/utils";
 import KeyBindListener from "@/components/key-bind-listener";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
@@ -154,6 +154,12 @@ export default function ClientPage({
                                           View Overview
                                       </DropdownMenuItem>
                                   </a>
+                                  <a href={`/${event.id}/overview/compare?a=${team.number}`}>
+                                      <DropdownMenuItem>
+                                          <ArrowLeftRight className="mr-2 h-4 w-4"/>
+                                          Compare
+                                      </DropdownMenuItem>
+                                  </a>
                               </DropdownMenuContent>
                           </DropdownMenu>
                       </div>
@@ -232,7 +238,11 @@ export default function ClientPage({
                       <h1 className={"mt"}>Statistics</h1>
                       <Separator/>
                       {statistics}
-                      <EPAOverTime matches={matches} events={eventsList}/>
+                      {
+                            matches.length != 0 && (
+                                  <div className={"mt-sm"}><EPAOverTime matches={matches} events={eventsList}/></div>
+                            )
+                      }
                       <h1 className={"mt"}>Events</h1>
                       <Separator/>
                       {events}

@@ -36,11 +36,11 @@ export default function EPAOverTime({matches, events}: {
           .sort((a, b) => a.startTime - b.startTime)
           .map(value => ({
               ...value,
-              xAxis: `${events.find(value1 => value1.eventKey == value.eventKey)?.name ?? ""}\nMatch ${value.matchNumber}`
+              xAxis: `${events.find(value1 => value1.eventKey == value.eventKey)?.name ?? ""}    \nMatch ${value.matchNumber}`
           }));
 
     return (
-          <Card className={"mt-sm w-full xl:w-[65em]"}>
+          <Card className={"w-full xl:w-[65em]"}>
               <CardHeader className={"flex justify-between"}>
                   <CardTitle>EPA Over Time</CardTitle>
               </CardHeader>

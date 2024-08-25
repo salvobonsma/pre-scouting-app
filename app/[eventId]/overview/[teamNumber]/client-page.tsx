@@ -11,7 +11,7 @@ import StatusBadge from "@/components/status-badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import RichTextarea from "@/components/rich-textarea";
 import React, {ReactNode} from "react";
-import {ArrowDown, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
+import {ArrowDown, ArrowLeftRight, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
@@ -47,33 +47,6 @@ export default function ClientPage({
                 <EventCard key={value.eventKey} event={value}/>
           ));
 
-    function epaValue(epa: number, deviation: number) {
-        let arrow;
-        let placement;
-        if (deviation > 0.2) {
-            arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
-            placement = "Above";
-        } else if (deviation > -0.2) {
-            arrow = (<Minus className={"w-5 h-5 self-center"}/>);
-            placement = "Around";
-        } else {
-            arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
-            placement = "Below";
-        }
-
-        return (
-              <QuickTooltip
-                    trigger={
-                        <div className={"flex gap-0.5"}>
-                            <p>{epa.toFixed(1)}</p>
-                            {arrow}
-                        </div>
-                    }
-                    content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
-              />
-        );
-    }
-
     return (
           <>
               <Back link={`/${event.id}/overview#teams`} display={"Event Overview"}/>
@@ -93,6 +66,12 @@ export default function ClientPage({
                               <DropdownMenuItem>
                                   <Edit className="mr-2 h-4 w-4"/>
                                   Make Changes
+                              </DropdownMenuItem>
+                          </a>
+                          <a href={`/${event.id}/overview/compare?a=${team.number}`}>
+                              <DropdownMenuItem>
+                                  <ArrowLeftRight className="mr-2 h-4 w-4"/>
+                                  Compare
                               </DropdownMenuItem>
                           </a>
                       </DropdownMenuContent>
@@ -254,9 +233,9 @@ export default function ClientPage({
                                 </div>
                             </CardContent>
                         </Card>
+                        <EPAOverTime matches={matches} events={events}/>
                     </div>
               )}
-              <EPAOverTime matches={matches} events={events}/>
               <h1 className={"mt"}>Events</h1>
               <Separator/>
               {
@@ -282,5 +261,32 @@ export default function ClientPage({
               <Matches matches={matches}/>
               {previousSeasons}
           </>
+    );
+}
+
+export function epaValue(epa: number, deviation: number) {
+    let arrow;
+    let placement;
+    if (deviation > 0.2) {
+        arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
+        placement = "Above";
+    } else if (deviation > -0.2) {
+        arrow = (<Minus className={"w-5 h-5 self-center"}/>);
+        placement = "Around";
+    } else {
+        arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
+        placement = "Below";
+    }
+
+    return (
+          <QuickTooltip
+                trigger={
+                    <div className={"flex gap-0.5"}>
+                        <p>{epa.toFixed(1)}</p>
+                        {arrow}
+                    </div>
+                }
+                content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
+          />
     );
 }
