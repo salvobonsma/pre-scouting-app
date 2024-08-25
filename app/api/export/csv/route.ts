@@ -23,10 +23,11 @@ export async function GET(request: NextRequest) {
               ...(await prisma.team.findFirst({where: {number: value.teamNumber ?? -1}})),
               ...value
           }))
-    )).map(({id, eventId, number, teamNumber, key, ...value}) => ({
+    )).map(({id, notes, eventId, number, teamNumber, key, ...value}) => ({
         teamNumber: teamNumber,
         ...value,
-
+        stripedNotes: stripToText(JSON.parse(notes)),
+        notes: notes
     })).sort((a, b) => (a.teamNumber ?? -1) - (b.teamNumber ?? -1));
 
     const matchScouting = (await Promise.all(
@@ -48,12 +49,14 @@ export async function GET(request: NextRequest) {
                     )),
                     pickupFrom: JSON.stringify(value.pickupFrom)
                 }))
-          )).map(async ({key, startTime, teamEntryId, ...value}) => {
+          )).map(async ({key, notes, startTime, teamEntryId, ...value}) => {
               const date = new Date((startTime ?? -1) * 1000);
               return ({
                   teamNumber: (await prisma.teamEntry.findFirst({where: {id: teamEntryId ?? -1}}))?.teamNumber,
                   matchKey: key,
                   ...value,
+                  stripedNotes: stripToText(JSON.parse(notes)),
+                  notes: notes,
                   startTime: startTime,
                   startDate: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
               })
@@ -144,4 +147,26 @@ function arrayToCsv(data: any[]) {
     );
 
     return [headers.join(','), ...csvRows].join('\n');
+}
+
+function stripToText(data: any[]): string {
+    let result = '';
+
+    function processNode(node: any) {
+        if (node.text) {
+            result += node.text;
+        }
+
+        if (node.children) {
+            for (const child of node.children) {
+                processNode(child);
+            }
+        }
+    }
+
+    for (const item of data) {
+        processNode(item);
+    }
+
+    return result.trim();
 }
