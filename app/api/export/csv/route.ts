@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
     await archive.finalize();
 
     const headers = new Headers();
-    headers.append("Content-Disposition", 'attachment; filename="test.zip"');
+    headers.append("Content-Disposition", `attachment; filename="${event.key}-pre-scouting-data.zip"`);
     headers.append("Content-Type", "application/zip");
 
     const webStream = new ReadableStream({
