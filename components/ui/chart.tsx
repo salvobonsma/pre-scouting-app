@@ -141,13 +141,10 @@ const ChartTooltipContent = React.forwardRef<
               const [item] = payload
               const key = `${labelKey || item.dataKey || item.name || "value"}`
               const itemConfig = getPayloadConfigFromPayload(config, item, key)
-              let value =
-                    !labelKey && typeof label === "string"
+              const value =
+                    !labelKey
                           ? config[label as keyof typeof config]?.label || label
                           : itemConfig?.label
-
-              if (labelKey == "teamNumber") value = item.payload.teamNumber;
-              if (labelKey == "score") value = `${item.payload.score} Scores`;
 
               if (labelFormatter) {
                   return (

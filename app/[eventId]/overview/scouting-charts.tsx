@@ -3,7 +3,7 @@
 import {MatchEntry} from "@prisma/client";
 import React from "react";
 import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart} from "recharts";
+import {Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, Pie, PieChart, XAxis} from "recharts";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function ScoutingCharts({matches, forTeam}: {
@@ -49,13 +49,13 @@ export default function ScoutingCharts({matches, forTeam}: {
         return scoring.sort((a, b) => a.score - b.score);
     }
 
-    function barChart(config: ChartConfig, data: any[], dataKey: string, labelKey: string) {
+    function barChart(config: ChartConfig, data: any[], dataKey: string) {
         return (
               <ChartContainer config={config} className="h-48 w-full">
                   <BarChart accessibilityLayer data={data}>
                       <CartesianGrid vertical={false}/>
-                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} labelKey={labelKey}
-                                                                  indicator={"line"}/>}/>
+                      <ChartTooltip content={<ChartTooltipContent className={"w-40"} indicator={"line"}/>}/>
+                      <XAxis hide dataKey={"teamNumber"}/>
                       <Bar dataKey={dataKey} fill={`var(--chart-1)`} radius={2}/>
                   </BarChart>
               </ChartContainer>
@@ -164,7 +164,7 @@ export default function ScoutingCharts({matches, forTeam}: {
                                           records: {
                                               label: "Records"
                                           }
-                                      }, teamRecords, "records", "teamNumber")}
+                                      }, teamRecords, "records")}
                                   </CardContent>
                               </Card>
                           </div>

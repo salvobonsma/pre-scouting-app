@@ -93,7 +93,7 @@ export interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export default function PastSeasons<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export default function PreviousSeasons<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
@@ -110,7 +110,7 @@ export default function PastSeasons<TData, TValue>({columns, data}: DataTablePro
 
     return (
           <div>
-              <h1 className={"mt"}>Past Seasons</h1>
+              <h1 className={"mt"}>Previous Seasons</h1>
               <Separator/>
               <div className={"mt-sm"}>
                   <Table className={"overflow-x-scroll"}>

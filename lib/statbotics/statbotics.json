@@ -1839,7 +1839,34 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                      "match": {
+                        "type": "string"
+                      },
+                      "epa": {
+                        "type": "object",
+                        "properties": {
+                          "breakdown": {
+                            "type": "object",
+                            "properties": {
+                              "total_points": {
+                                "type": "number"
+                              },
+                              "auto_points": {
+                                "type": "number"
+                              },
+                              "teleop_points": {
+                                "type": "number"
+                              },
+                              "endgame_points": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   },
                   "title": "Response Read Team Matches V3 Team Matches Get"
                 }

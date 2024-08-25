@@ -10,16 +10,26 @@ import {ThreatGradeType} from "@/lib/database/set-threat-grade";
 import StatusBadge from "@/components/status-badge";
 import {TeamStatus} from "@/lib/database/set-team-statues";
 import RichTextarea from "@/components/rich-textarea";
-import React from "react";
-import {ArrowDown, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
+import React, {ReactNode} from "react";
+import {ArrowDown, ArrowLeftRight, ArrowUp, Edit, Minus, MoreVertical} from "lucide-react";
 import {percentile, withOrdinalSuffix} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import EventCard from "@/app/[eventId]/[teamNumber]/event-card";
 import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
 import Matches, {Match} from "@/app/[eventId]/overview/[teamNumber]/matches/matches";
+import EPAOverTime from "@/components/epa-over-time";
 
-export default function ClientPage({event, team, teamEntry, matches, matchEntries, scoutedMatches, events}: {
+export default function ClientPage({
+                                       event,
+                                       team,
+                                       teamEntry,
+                                       matches,
+                                       matchEntries,
+                                       scoutedMatches,
+                                       events,
+                                       previousSeasons
+                                   }: {
     event: Event,
     team: Team,
     teamEntry: TeamEntry,
@@ -27,6 +37,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
     matchEntries: MatchEntry[],
     scoutedMatches: (MatchEntry & { teamNumber: number })[],
     events: TeamEvent[]
+    previousSeasons: ReactNode
 }) {
     const eventsFiltered = events
           .filter(value => value.eventKey != event.key)
@@ -35,33 +46,6 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
           .map(value => (
                 <EventCard key={value.eventKey} event={value}/>
           ));
-
-    function epaValue(epa: number, deviation: number) {
-        let arrow;
-        let placement;
-        if (deviation > 0.2) {
-            arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
-            placement = "Above";
-        } else if (deviation > -0.2) {
-            arrow = (<Minus className={"w-5 h-5 self-center"}/>);
-            placement = "Around";
-        } else {
-            arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
-            placement = "Below";
-        }
-
-        return (
-              <QuickTooltip
-                    trigger={
-                        <div className={"flex gap-0.5"}>
-                            <p>{epa.toFixed(1)}</p>
-                            {arrow}
-                        </div>
-                    }
-                    content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
-              />
-        );
-    }
 
     return (
           <>
@@ -82,6 +66,12 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
                               <DropdownMenuItem>
                                   <Edit className="mr-2 h-4 w-4"/>
                                   Make Changes
+                              </DropdownMenuItem>
+                          </a>
+                          <a href={`/${event.id}/overview/compare?a=${team.number}`}>
+                              <DropdownMenuItem>
+                                  <ArrowLeftRight className="mr-2 h-4 w-4"/>
+                                  Compare
                               </DropdownMenuItem>
                           </a>
                       </DropdownMenuContent>
@@ -112,8 +102,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
                   </Card>
                   <Card className={"w-full sm:w-fit"}>
                       <CardHeader>
-                          <CardTitle><QuickTooltip trigger={"Threat Grade"} content={"Placeholder"}/>
-                          </CardTitle>
+                          <CardTitle>Threat Grade</CardTitle>
                       </CardHeader>
                       <CardContent className={"flex justify-start sm:justify-center"}>
                           <ThreatGrade grade={teamEntry.threatGrade as ThreatGradeType} size={"large"}/>
@@ -244,6 +233,7 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
                                 </div>
                             </CardContent>
                         </Card>
+                        <EPAOverTime matches={matches} events={events}/>
                     </div>
               )}
               <h1 className={"mt"}>Events</h1>
@@ -269,6 +259,34 @@ export default function ClientPage({event, team, teamEntry, matches, matchEntrie
               <Separator/>
               <ScoutingCharts matches={scoutedMatches} forTeam/>
               <Matches matches={matches}/>
+              {previousSeasons}
           </>
+    );
+}
+
+export function epaValue(epa: number, deviation: number) {
+    let arrow;
+    let placement;
+    if (deviation > 0.2) {
+        arrow = (<ArrowUp className={"w-5 h-5 self-center"}/>);
+        placement = "Above";
+    } else if (deviation > -0.2) {
+        arrow = (<Minus className={"w-5 h-5 self-center"}/>);
+        placement = "Around";
+    } else {
+        arrow = (<ArrowDown className={"w-5 h-5 self-center"}/>);
+        placement = "Below";
+    }
+
+    return (
+          <QuickTooltip
+                trigger={
+                    <div className={"flex gap-0.5"}>
+                        <p>{epa.toFixed(1)}</p>
+                        {arrow}
+                    </div>
+                }
+                content={`${placement} average; ${withOrdinalSuffix((percentile(deviation) * 100))} percentile`}
+          />
     );
 }
