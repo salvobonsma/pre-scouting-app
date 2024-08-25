@@ -5,27 +5,9 @@ import {Button} from "@/components/ui/button";
 import React, {useState} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Label} from "@/components/ui/label";
-import ExportCSV from "@/lib/database/export-csv"; // Adjust the path to where your ExportCSV function is located
 
 export default function ExportDialog({eventId}: { eventId: number }) {
     const [exportType, setExportType] = useState("csv");
-
-    async function downloadCSV() {
-        try {
-            const buffer = await ExportCSV(eventId);
-            const blob = new Blob([buffer], {type: 'application/zip'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'matches.zip';
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } catch (error) {
-            console.error('Error downloading CSV:', error);
-        }
-    }
 
     return (
           <Dialog>
@@ -45,7 +27,9 @@ export default function ExportDialog({eventId}: { eventId: number }) {
                               <SelectItem disabled value={"pdf"}>PDF</SelectItem>
                           </SelectContent>
                       </Select>
-                      <Button onClick={downloadCSV}>Export</Button>
+                      <a href={`/api/export/${exportType}?eventId=${eventId}`}>
+                          <Button>Export</Button>
+                      </a>
                   </div>
               </DialogContent>
           </Dialog>

@@ -1,12 +1,12 @@
 import prisma from "@/lib/prisma";
 import NotFound from "@/app/not-found";
 import {Separator} from "@/components/ui/separator";
-import {Button} from "@/components/ui/button";
 import Back from "@/components/back";
 import React from "react";
 import OverviewCharts from "@/app/[eventId]/overview/overview-charts";
 import ScoutingCharts from "@/app/[eventId]/overview/scouting-charts";
 import Teams from "@/app/[eventId]/overview/teams";
+import ExportDialog from "@/app/[eventId]/overview/export-dialog";
 
 export default async function Overview({params}: { params: { eventId: string } }) {
     if (!+params.eventId) return NotFound();
@@ -52,7 +52,7 @@ export default async function Overview({params}: { params: { eventId: string } }
               <Back link={`/${event.id}`} display={"Event"}/>
               <div className={"flex justify-between items-center gap-2"}>
                   <h1>Event Overview</h1>
-                  <Button className={"m-1.5"} disabled>Export</Button>
+                  <ExportDialog eventId={event.id}/>
               </div>
               <Separator/>
               <OverviewCharts teamEntries={teamEntries}/>
