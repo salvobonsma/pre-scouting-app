@@ -37,18 +37,23 @@ export default async function NewEvent(key: string, year: number, name: string):
         }
     })).id;
 
+    // Missing 8 teams not on tba
+    const teamNumbers: number[] = [
+        360, 4682, 948, 5683, 1294, 5937, 1778, 6390, 2046, 7461, 2147, 7627, 2412,
+        8051, 2522, 9023, 2557, 9442, 2910, 9450, 2930, 4089
+    ]
+
     // Generate Teams
-    const tbaTeams = (await tba.GET("/event/{event_key}/teams", {
-        params: {
-            path: {event_key: key},
-        },
+    const tbaTeams = await Promise.all(teamNumbers.map(async value => {
+        return (await tba.GET("/team/{team_key}", {
+            params: {
+                path: {team_key: `frc${value}`},
+            },
+        })).data;
     }));
-    if (!tbaTeams.data) {
-        return {success: false, message: "TBA API request error (b): " + tbaTeams.response.status}
-    }
 
     const generateTeamsError = (await Promise.all(
-          tbaTeams.data.map((team) => GenerateTeam(team, eventId, year, tbaTeams.data.length, true))
+          tbaTeams.map((team) => GenerateTeam(team, eventId, year, tbaTeams.length, true))
     )).find(res => !res.success);
     if (generateTeamsError) return generateTeamsError;
 
