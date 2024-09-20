@@ -37,7 +37,7 @@ export default async function NewEvent(key: string, year: number, name: string):
         }
     })).id;
 
-    // Missing 8 teams not on tba
+    // Missing 8 teams not on tba.
     const teamNumbers: number[] = [
         360, 4682, 948, 5683, 1294, 5937, 1778, 6390, 2046, 7461, 2147, 7627, 2412,
         8051, 2522, 9023, 2557, 9442, 2910, 9450, 2930, 4089
