@@ -22,7 +22,7 @@ export default async function GenerateStats(eventId: number, update: boolean): P
     );
 
     for (const team of teamEntries) {
-        const totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
+        let totalDeviation = zScore(totalEPAs, team.totalEPA ?? 0);
         const totalPercentile = percentile(totalDeviation);
         let threatGrade;
         if (totalPercentile > 5 / 6) {
@@ -38,6 +38,14 @@ export default async function GenerateStats(eventId: number, update: boolean): P
         } else {
             threatGrade = "F";
         }
+        
+        let teleopDeviation = zScore(teleopEPAs, team.teleopEPA ?? 0);
+        let autoDeviation = zScore(autoEPAs, team.autoEPA ?? 0);
+        let endgameDeviation = zScore(endgameEPAs, team.endgameEPA ?? 0);
+        if (isNaN(teleopDeviation)) teleopDeviation = 0;
+        if (isNaN(autoDeviation)) autoDeviation = 0;
+        if (isNaN(endgameDeviation)) endgameDeviation = 0;
+        if (isNaN(totalDeviation)) totalDeviation = 0;
 
         await prisma.teamEntry.updateMany(
               {
@@ -46,9 +54,9 @@ export default async function GenerateStats(eventId: number, update: boolean): P
                       teamNumber: team.teamNumber
                   },
                   data: {
-                      autoDeviation: zScore(autoEPAs, team.autoEPA ?? 0),
-                      teleopDeviation: zScore(teleopEPAs, team.teleopEPA ?? 0),
-                      endgameDeviation: zScore(endgameEPAs, team.endgameEPA ?? 0),
+                      autoDeviation: autoDeviation,
+                      teleopDeviation: teleopDeviation,
+                      endgameDeviation: endgameDeviation,
                       totalDeviation: totalDeviation,
                       threatGrade: update ? undefined : threatGrade,
                       eventRank: teamEntries.findIndex(value => value.teamNumber == team.teamNumber) + 1

@@ -39,28 +39,27 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
         params: {path: {year: year, team: tbaTeam.team_number.toString()}}
     });
     if (!stats.data) return {success: false, message: "Statbotics API request error (c): " + stats.response.status};
-
     const teamEntryData = {
         key: tbaTeam.key,
         eventId: eventId,
         name: tbaTeam.nickname,
         teamNumber: tbaTeam.team_number,
-        wins: stats.data.record.season.wins,
-        ties: stats.data.record.season.ties,
-        losses: stats.data.record.season.losses,
-        worldRank: stats.data.epa.ranks.total.rank,
-        worldTotal: stats.data.epa.ranks.total.team_count,
-        countyRank: stats.data.epa.ranks.country.rank,
-        countyTotal: stats.data.epa.ranks.country.team_count,
-        districtRank: stats.data.epa.ranks.district.rank,
-        districtTotal: stats.data.epa.ranks.district.team_count,
+        wins: stats.data.record['wins'],
+        ties: stats.data.record['ties'],
+        losses: stats.data.record['losses'],
+        worldRank: stats.data.epa['ranks']['total']['rank'],
+        worldTotal: stats.data.epa['ranks']['total']['team_count'],
+        countyRank: stats.data.epa['ranks']['country']['rank'],
+        countyTotal: stats.data.epa['ranks']['country']['team_count'],
+        districtRank: stats.data.epa['ranks']['district']['rank'],
+        districtTotal: stats.data.epa['ranks']['district']['team_count'],
         eventTotal: totalTeams,
-        autoEPA: stats.data.epa.breakdown.auto_points.mean,
-        teleopEPA: stats.data.epa.breakdown.teleop_points.mean,
-        endgameEPA: stats.data.epa.breakdown.endgame_points.mean,
-        totalEPA: (stats.data.epa.breakdown.auto_points.mean ?? 0) +
-              (stats.data.epa.breakdown.teleop_points.mean ?? 0) +
-              (stats.data.epa.breakdown.endgame_points.mean ?? 0)
+        autoEPA: stats.data.epa['breakdown']['auto_points']['mean'],
+        teleopEPA: stats.data.epa['breakdown']['teleop_points']['mean'],
+        endgameEPA: stats.data.epa['breakdown']['endgame_points']['mean'],
+        totalEPA: (stats.data.epa['breakdown']['auto_points']['mean'] ?? 0) +
+              (stats.data.epa['breakdown']['teleop_points']['mean'] ?? 0) +
+              (stats.data.epa['breakdown']['endgame_points']['mean'] ?? 0)
     }
 
     let teamEntry = await prisma.teamEntry.findFirst({
@@ -150,7 +149,7 @@ export default async function GenerateTeam(tbaTeam: any, eventId: number, year: 
         const generateMatchesError = (await Promise.all(
               tbaMatches.data.map((match) => GenerateMatches(
                     match,
-                    statboticsMatches.data.find(statboticsMatch => statboticsMatch.match === match.key)?.epa?.breakdown,
+                    statboticsMatches.data.find(statboticsMatch => statboticsMatch.match === match.key)?.epa['breakdown'],
                     eventId,
                     teamEntry.id
               ))
